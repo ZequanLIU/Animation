@@ -377,5 +377,108 @@ class RenormalizationScene(MovingCameraScene):
             run_time=2
         )
 
+class PathIntegralScene(Scene):
+    def construct(self):
+        # 标题
+        title = Text("路径积分与系统演化", font="Noto Sans CJK SC")
+        title.to_edge(UP)
+        self.add(title)  # 直接add，不做动画
+
+        # 创建多条路径
+        num_paths = 15
+        paths = []
+        weights = []
+        dots = []
+        
+        # 创建路径和权重
+        for i in range(num_paths):
+            weight = np.random.uniform(0.1, 1.0)
+            weights.append(weight)
+            points = []
+            x = -5
+            y = 0
+            for _ in range(30):
+                x += 0.3
+                y += np.random.normal(0, 0.2)
+                points.append(np.array([x, y, 0]))
+            path = VMobject()
+            path.set_points_as_corners(points)
+            path.set_stroke(width=2, opacity=0.3)
+            paths.append(path)
+            path_dots = VGroup()
+            for point in points[::3]:
+                dot = Dot(point, radius=0.03)
+                dot.set_opacity(0.3)
+                path_dots.add(dot)
+            dots.append(path_dots)
+
+        # 直接add所有路径云
+        for path in paths:
+            self.add(path)
+
+        # 创建权重标签（只显示部分权重）
+        weight_labels = VGroup()
+        for i, (path, weight) in enumerate(zip(paths, weights)):
+            if i % 3 == 0:
+                label = MathTex(f"w_{{{i+1}}}={weight:.2f}")
+                label.scale(0.5)
+                point = path.point_from_proportion(0.5)
+                label.next_to(point, UP, buff=0.1)
+                weight_labels.add(label)
+
+        # 创建平均路径
+        avg_points = []
+        for i in range(30):
+            x = -5 + i * 0.3
+            y = 0
+            total_weight = 0
+            weighted_y = 0
+            for path, weight in zip(paths, weights):
+                point = path.point_from_proportion(i/29)
+                weighted_y += point[1] * weight
+                total_weight += weight
+            y = weighted_y / total_weight
+            avg_points.append(np.array([x, y, 0]))
+        avg_path = VMobject()
+        avg_path.set_points_as_corners(avg_points)
+        avg_path.set_stroke(color=YELLOW, width=4)
+
+        # 1. 权重标签淡入
+        self.play(Write(weight_labels), run_time=1)
+
+        # 2. 粒子运动动画
+        for path_dots in dots:
+            self.add(*path_dots)
+        for _ in range(2):
+            for path_dots in dots:
+                self.play(
+                    *[dot.animate.move_to(path_dots[i+1].get_center()) 
+                      for i, dot in enumerate(path_dots[:-1])],
+                    run_time=0.3,
+                    rate_func=linear
+                )
+
+        # 3. 显示平均路径
+        self.play(Create(avg_path), run_time=1.5)
+
+        # 4. 添加说明文字
+        explanation = Text(
+            "系统演化是所有可能路径的加权平均",
+            font="Noto Sans CJK SC",
+            font_size=24
+        )
+        explanation.next_to(avg_path, DOWN, buff=0.5)
+        self.play(Write(explanation), run_time=1)
+
+        # 5. 最终效果：突出显示平均路径
+        self.play(
+            avg_path.animate.set_stroke(width=6),
+            *[path.animate.set_opacity(0.1) for path in paths],
+            *[dot.animate.set_opacity(0.1) for path_dots in dots for dot in path_dots],
+            weight_labels.animate.set_opacity(0.3),
+            run_time=1
+        )
+        self.wait(1)
+
 # 更新场景配置
-config.scene_names = ["BrainIntroScene", "MultiScaleScene", "MeasurementLimitationsScene", "NetworkDynamicsScene", "RenormalizationScene"] 
+config.scene_names = ["BrainIntroScene", "MultiScaleScene", "MeasurementLimitationsScene", "NetworkDynamicsScene", "RenormalizationScene", "PathIntegralScene"] 
