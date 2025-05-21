@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MomentScene 动画片段</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .gif-block { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .gif-block:last-child { border-bottom: none; }
+        h1 { text-align: center; color: #2c3e50; }
+        h2 { color: #3498db; }
+        img { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        p { line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MomentScene: 矩与累积量解释</h1>
+
+        <div class="gif-block">
+            <h2>1. 矩：均值与方差</h2>
+            <img src="media/videos/brain_animation/480p15/MomentScene_GIF1_MeanVariance.gif" alt="GIF 1: 均值与方差">
+            <p>我们从概率分布 P(x) 开始。第一个矩是均值 (μ)，它定位了分布的中心。第二个中心矩是方差 (σ²)，它度量了分布的离散程度或宽度。</p>
+        </div>
+
+        <div class="gif-block">
+            <h2>2. 高阶矩：偏度与峰度</h2>
+            <img src="media/videos/brain_animation/480p15/MomentScene_GIF2_SkewKurtosis.gif" alt="GIF 2: 偏度与峰度">
+            <p>更高阶的矩描述分布的形状。偏度衡量分布的不对称性，峰度则描述其峰部的尖锐程度和尾部的厚度。</p>
+        </div>
+
+        <div class="gif-block">
+            <h2>3. 矩的局限性：相同矩，不同形</h2>
+            <img src="media/videos/brain_animation/480p15/MomentScene_GIF3_MisleadingMoments.gif" alt="GIF 3: 矩的局限性">
+            <p>然而，仅靠矩有时会产生误导。这两个截然不同的分布拥有完全相同的均值和方差，但它们的形状却大相径庭。</p>
+        </div>
+
+        <div class="gif-block">
+            <h2>4. 累积量：描述形状的新视角</h2>
+            <img src="media/videos/brain_animation/480p15/MomentScene_GIF4_CumulantsIntro.gif" alt="GIF 4: 累积量入门">
+            <p>为了更好地区分分布形状，我们引入累积量 (κ)。第一累积量 (κ₁) 是均值，第二累积量 (κ₂) 是方差。</p>
+        </div>
+
+        <div class="gif-block">
+            <h2>5. 高阶累积量：洞察细微差异</h2>
+            <img src="media/videos/brain_animation/480p15/MomentScene_GIF5_HigherCumulants.gif" alt="GIF 5: 高阶累积量区分复杂形状">
+            <p>关键在于高阶累积量 (κ₃, κ₄, ...)。它们能捕捉到简单的均值和方差所忽略的分布形状细节，从而有效区分那些仅凭低阶矩看似相同的分布。</p>
+        </div>
+
+    </div>
+</body>
+</html> 
