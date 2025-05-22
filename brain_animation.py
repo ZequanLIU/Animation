@@ -4,7 +4,7 @@ import numpy as np
 import scipy.special
 import scipy.stats
 
-class IntroScene(Scene):
+class IntroScene_tempdisabled(Scene):
     def construct(self):
         # 1. 标题动画
         title = Text("第二章：概率、矩与累积量", font="Noto Sans CJK SC", font_size=48)
@@ -221,7 +221,7 @@ class IntroScene(Scene):
             run_time=1.5
         )
 
-class ProbabilityAndObservablesScene(Scene):
+class ProbabilityAndObservablesScene_tempdisabled(Scene):
     def construct(self):
         # 0. 片头文字
         scene_title = Text("场景 1：概率与可观测量", font="Noto Sans CJK SC", font_size=40).to_edge(UP)
@@ -234,226 +234,352 @@ class ProbabilityAndObservablesScene(Scene):
         status_text_obj = Text("", font="Noto Sans CJK SC", font_size=20).to_edge(UP)
         self.add(status_text_obj)
 
-        # --- GIF 1: 随机变量概念引入 ---
+        # --- GIF 1: 随机变量概念引入 (新的动画流程) ---
         self.play(status_text_obj.animate.become(Text("想象随机过程，如粒子运动...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
 
         particles = VGroup(*[Dot(radius=0.05, color=BLUE) for _ in range(50)])
         for particle in particles:
-            particle.move_to(np.random.uniform(-3, 3, 3))
+            particle.move_to(np.random.uniform(-3, 3, 3)) # Spread particles initially
         
         self.play(LaggedStartMap(FadeIn, particles, lag_ratio=0.1, run_time=1))
+        self.wait(0.5)
 
-        def update_particles(mobj, dt):
-            for particle_obj in mobj: 
-                particle_obj.shift(np.random.uniform(-0.1, 0.1, 3) * dt * 5)
-                if not (-4 < particle_obj.get_x() < 4 and -2.5 < particle_obj.get_y() < 2.5):
-                    particle_obj.move_to(np.random.uniform(-3, 3, 3))
-        particles.add_updater(update_particles)
-        self.add(particles) 
-        self.wait(3) 
-        particles.remove_updater(update_particles)
+        # --- Define positions for text blocks ---
+        pos_x_group = UP * 2.8 + LEFT * 4.5
+        pos_px_group = UP * 2.8 + RIGHT * 4.5
+        pos_fx_group = DOWN * 1.5 # Position for f(x) text group
+
+        # 1. Introduce x
+        state_x_text_obj = MathTex("x", font_size=48)
+        state_x_desc_obj = Text("代表系统状态", font="Noto Sans CJK SC", font_size=24).next_to(state_x_text_obj, DOWN, buff=0.2)
+        x_group = VGroup(state_x_text_obj, state_x_desc_obj).move_to(pos_x_group)
+        self.play(Write(x_group))
+        self.wait(1)
+
+        # 2. Introduce x in R^N with particle "变换排列" animation
+        self.play(status_text_obj.animate.become(Text("每个状态是一个N维向量: x ∈ R^N", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
         
-        self.play(FadeOut(particles)) # 只淡出粒子，status_text_obj 会在下一步更新
+        state_vector_text_obj = MathTex("x \\in \\mathbb{R}^N", font_size=48)
+        state_vector_desc_obj = Text("(N维向量)", font="Noto Sans CJK SC", font_size=24).next_to(state_vector_text_obj, DOWN, buff=0.2)
+        x_in_RN_group = VGroup(state_vector_text_obj, state_vector_desc_obj).move_to(pos_x_group)
 
+        # Particle animation: arrange into a line
+        num_particles = len(particles)
+        line_length = 6 # Length of the line the particles will form
+        line_y_position = 0 # y-coordinate for the horizontal line
+        start_x = -line_length / 2
+        end_x = line_length / 2
+
+        line_up_animations = []
+        if num_particles > 0: # Ensure particles exist
+            for i, particle in enumerate(particles):
+                target_x = np.linspace(start_x, end_x, num_particles)[i]
+                target_position = np.array([target_x, line_y_position, 0])
+                line_up_animations.append(
+                    particle.animate.set_opacity(1.0).move_to(target_position)
+                )
+            anim_line_up_final = LaggedStart(*line_up_animations, lag_ratio=0.02, run_time=1.5)
+        else:
+            anim_line_up_final = Wait(0) # If no particles, do nothing for this part
+
+        # Play animations
+        if line_up_animations: # Check if there are actual animations to play for particles
+            self.play(
+                ReplacementTransform(x_group, x_in_RN_group), # Text transforms
+                anim_line_up_final, # Particles arrange into a line
+                run_time=1.5
+            )
+        else: # Only play text transform if no particle animations
+            self.play(
+                ReplacementTransform(x_group, x_in_RN_group),
+                run_time=1.5
+            )
+        self.wait(1.5) # x_in_RN_group is now on screen
+
+        # 3. Introduce p(x) (Probability Density)
+        self.play(status_text_obj.animate.become(Text("p(x) 描述状态x的概率密度...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        prob_density_text_obj = MathTex("p(x)", font_size=60, color=YELLOW)
+        prob_density_desc_obj = Text("概率密度", font="Noto Sans CJK SC", font_size=24).next_to(prob_density_text_obj, DOWN, buff=0.2)
+        px_group = VGroup(prob_density_text_obj, prob_density_desc_obj).move_to(pos_px_group)
+        self.play(Write(px_group))
+        self.wait(1)
+        
+        # 4. Introduce f(x) (Observable) briefly, linking to a "point" (state x)
+        self.play(status_text_obj.animate.become(Text("f(x) 是对特定状态x的一次测量 (可观测量)...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        
+        pos_fx_group = DOWN * 1.5 # Position for f(x) text group
+
+        # Create a distinct highlighted dot for f(x) explanation
+        # Position it centrally or near where f(x) text will appear
+        highlighted_particle_for_fx = Dot(ORIGIN + DOWN * 0.5, color=RED, radius=0.1).set_stroke(WHITE, width=2)
+        
+        observable_f_text_obj = MathTex("f(x)", font_size=48, color=ORANGE)
+        observable_f_desc_obj = Text("一个可观测量", font="Noto Sans CJK SC", font_size=24).next_to(observable_f_text_obj, DOWN, buff=0.2)
+        fx_group = VGroup(observable_f_text_obj, observable_f_desc_obj).move_to(pos_fx_group)
+        
+        # Adjust highlighted particle position if needed, e.g. next to fx_group
+        highlighted_particle_for_fx.next_to(fx_group, UP, buff=0.5) # Position above fx text
+
+        self.play(
+            GrowFromCenter(highlighted_particle_for_fx),
+            Write(fx_group)
+        )
+        self.wait(2)
+
+        # NEW: Explanation for p(f(x)) or p(x_i)
+        self.play(status_text_obj.animate.become(Text("我们通常关注这个可观测量的概率分布 p(f(x))", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        
+        p_fx_text_obj = MathTex("p(f(x))", font_size=48, color=GREEN)
+        p_fx_desc_obj = Text("可观测量的概率分布", font="Noto Sans CJK SC", font_size=24).next_to(p_fx_text_obj, DOWN, buff=0.2)
+        # Position it to the right of f(x) or below it, depending on space
+        p_fx_group = VGroup(p_fx_text_obj, p_fx_desc_obj).next_to(fx_group, RIGHT, buff=1.0) 
+        if p_fx_group.get_right()[0] > config.frame_width / 2 - 0.5: # If too far right
+            p_fx_group.next_to(fx_group, DOWN, buff=0.5)
+
+
+        # Briefly highlight or point from p(x) to p(f(x)) if possible, or just show p(f(x))
+        # For now, just introduce p(f(x))
+        self.play(Write(p_fx_group))
+        self.wait(2.5)
+
+        # Original particle dynamics and fade out logic
+        # 5. Particles continue moving with symbols present (x_in_RN, p(x), f(x) and p(f(x)) now)
+        def update_particles_dynamic(mobj, dt):
+            for particle_obj in mobj: 
+                particle_obj.shift(np.random.uniform(-0.1, 0.1, 3) * dt * 2.5) 
+                center_pos = particle_obj.get_center()
+                if abs(center_pos[0]) > 5 or abs(center_pos[1]) > 3: 
+                    particle_obj.move_to(np.random.uniform(-2, 2, 3))
+        
+        if particles:
+            particles.add_updater(update_particles_dynamic)
+            self.wait(3) 
+            particles.remove_updater(update_particles_dynamic)
+        else:
+            self.wait(3)
+        
+        # 6. Fade out everything from this introductory segment
+        elements_to_fade = VGroup(x_in_RN_group, px_group, fx_group, p_fx_group, highlighted_particle_for_fx) # Added p_fx_group
+        if particles:
+            elements_to_fade.add(particles)
+            
+        self.play(FadeOut(elements_to_fade))
+        self.wait(0.5) 
+        
         # --- New Data to PDF Sequence (Replaces old GIF 2 and part of GIF 3 logic) ---
         
-        # 1. Axes and Initial Data Points
+        # 1. Setup Axes and Plotting Area
+        self.play(status_text_obj.animate.become(Text("我们将分析可观测量的测量数据...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        
+        # Define parameters for data and axes
+        data_mean = 5
+        data_std_dev = 1.5
+        axes_x_min, axes_x_max = 0, 10
+        
+        # Calculate a suitable y_range for the PDF and histogram visualization
+        # Peak of a Gaussian PDF is 1 / (sigma * sqrt(2*pi))
+        pdf_peak_value = 1 / (data_std_dev * np.sqrt(2 * np.pi))
+        axes_y_max_data_units = pdf_peak_value * 1.2 # Add some headroom
+        
         axes = Axes(
-            x_range=[0, 10, 1], y_range=[0, 0.6, 0.1], # Adjusted y_range slightly for potentially taller PDF/lines
-            x_length=7, y_length=3, # Made axes slightly larger for clarity in the lower part
+            x_range=[axes_x_min, axes_x_max, 1], 
+            y_range=[0, axes_y_max_data_units, pdf_peak_value / 2], # y_range now reflects true data values
+            x_length=7, 
+            y_length=3.5, # Increased y_length for better visual separation and PDF display
             axis_config={"include_numbers": True, "font_size": 20}
         )
-        axes_labels = axes.get_axis_labels(x_label="x", y_label="p(x)")
+        # Use a more descriptive y-label, e.g., p(f(x)) or p(y)
+        axes_labels = axes.get_axis_labels(x_label="f(x)", y_label="p(f(x))")
         axes_group = VGroup(axes, axes_labels)
 
-        self.play(status_text_obj.animate.become(Text("创建坐标系以分析测量数据...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        # Position axes_group to allow space below for plotting
+        axes_group.to_edge(UP, buff=0.8) # Increased buff to give more space for status_text_obj
+                                        # and ensure axes_group is not too high
+        
         self.play(Create(axes_group))
         self.wait(0.5)
-        # Position axes at the top, and the data/histogram/PDF will be below it.
-        self.play(axes_group.animate.to_edge(UP, buff=0.3))
-        self.wait(0.5)
+        # No need to move axes_group again, it's positioned correctly for the subsequent elements.
 
-        # Define data generation parameters
-        mean_data = 5
-        std_dev_data = 1.5
-        
         # Initial batch of data points
-        self.play(status_text_obj.animate.become(Text("屏幕上出现坐标轴上的大量数据点。", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        self.play(status_text_obj.animate.become(Text("屏幕上出现大量数据点...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
         num_initial_points = 150
-        initial_data_x = np.random.normal(mean_data, std_dev_data, num_initial_points)
-        initial_data_x = np.clip(initial_data_x, axes.x_range[0], axes.x_range[1])
+        initial_data_x = np.random.normal(data_mean, data_std_dev, num_initial_points)
+        initial_data_x = np.clip(initial_data_x, axes_x_min, axes_x_max)
         
-        # Position initial points near x-axis, within the designated plotting area (below axes_group)
-        plot_area_center_y = axes_group.get_bottom()[1] - 2.0 # Approximate center for plot area below axes
+        initial_dots = VGroup()
+        # Dots are placed at y=0 on the axes, slightly scattered for visual effect
+        for x_val in initial_data_x:
+            # Place dots slightly above the x-axis within the axes coordinate system
+            dot_y_position_on_axes = axes.y_range[0] + 0.01 * axes_y_max_data_units # Small offset above axis line
+            initial_dots.add(Dot(axes.c2p(x_val, dot_y_position_on_axes), color=TEAL_A, radius=0.025))
         
-        initial_dots = VGroup(*[
-            Dot(axes.c2p(x, 0) + DOWN * (1.7 + np.random.uniform(-0.1, 0.1)) , color=TEAL_A, radius=0.025) # Spread out slightly below x-axis line in plot area
-            for x in initial_data_x
-        ])
         initial_dots.set_opacity(0.7)
         self.play(LaggedStartMap(FadeIn, initial_dots, lag_ratio=0.02, run_time=2))
         self.wait(1)
 
-        # 2. Vertical Bin Lines
-        self.play(status_text_obj.animate.become(Text("这些点代表了多次测量神经元活动值...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
+        # 2. Vertical Bin Lines (Minimalist Histogram)
+        self.play(status_text_obj.animate.become(Text("这些点代表了多次测量活动值...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
         
         bin_width = 1.0
-        bins = np.arange(axes.x_range[0], axes.x_range[1] + bin_width, bin_width)
-        counts_initial, _ = np.histogram(initial_data_x, bins=bins)
+        bins = np.arange(axes_x_min, axes_x_max + bin_width, bin_width)
+        counts_initial, _ = np.histogram(initial_data_x, bins=bins, range=(axes_x_min, axes_x_max))
         
-        max_initial_count = np.max(counts_initial) if len(counts_initial) > 0 else 1
-        line_scale_factor = 2.0 / (max_initial_count if max_initial_count > 0 else 1) # Scale lines to fit in y_length=3 roughly
-
+        # Normalize counts to fit within axes.y_range for visualization as "density"
+        # We want the histogram to represent a density, so area should be ~ (bin_width * sum(counts_normalized))
+        # For visual purposes, scale such that the max bar height is reasonable within y_length.
+        # Let's scale based on the PDF's expected peak.
+        # The PDF peak is pdf_peak_value. The bars should approximate this.
+        # If a bar has `c` counts, and total `N` points, its density is `c / (N * bin_width)`.
+        # We want this density to map to axes.y_range.
+        
+        density_initial = counts_initial / (num_initial_points * bin_width)
+        
         histogram_lines = VGroup()
-        for i in range(len(counts_initial)):
+        for i in range(len(density_initial)):
             bin_center_x = (bins[i] + bins[i+1]) / 2
-            line_height = counts_initial[i] * line_scale_factor
-            line = Line(
-                start=axes.c2p(bin_center_x, 0) + DOWN * 1.7, # Start at x-axis level in plot area
-                end=axes.c2p(bin_center_x, line_height) + DOWN * 1.7, # Extend upwards
-                stroke_color=BLUE_B,
-                stroke_width=15 # Make lines thick enough to look like bars
-            )
-            histogram_lines.add(line)
+            line_height_data_units = density_initial[i]
+            # Clip line height to not exceed axes y_range significantly
+            line_height_data_units = min(line_height_data_units, axes.y_range[1] * 0.95)
+
+            if line_height_data_units > 0: # Only draw if height is positive
+                line = Line(
+                    start=axes.c2p(bin_center_x, axes.y_range[0]), # Start at x-axis
+                    end=axes.c2p(bin_center_x, line_height_data_units), # Extend to calculated height
+                    stroke_color=BLUE_B,
+                    stroke_width=15 
+                )
+                histogram_lines.add(line)
         
-        self.play(LaggedStartMap(Create, histogram_lines, lag_ratio=0.1, run_time=1.5))
+        if len(histogram_lines) > 0:
+            self.play(LaggedStartMap(Create, histogram_lines, lag_ratio=0.1, run_time=1.5))
         self.wait(1)
 
         # 3. More Data Points & Line Growth
         self.play(status_text_obj.animate.become(Text("...随着测量次数增加，数据点越来越多...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
         num_additional_points = 350
-        additional_data_x = np.random.normal(mean_data, std_dev_data, num_additional_points)
-        additional_data_x = np.clip(additional_data_x, axes.x_range[0], axes.x_range[1])
+        additional_data_x = np.random.normal(data_mean, data_std_dev, num_additional_points)
+        additional_data_x = np.clip(additional_data_x, axes_x_min, axes_x_max)
         
-        additional_dots = VGroup(*[
-            Dot(axes.c2p(x, 0) + DOWN * (1.7 + np.random.uniform(-0.1, 0.1)), color=TEAL_B, radius=0.025)
-            for x in additional_data_x
-        ])
+        additional_dots = VGroup()
+        for x_val in additional_data_x:
+            dot_y_position_on_axes = axes.y_range[0] + 0.01 * axes_y_max_data_units # Small offset
+            additional_dots.add(Dot(axes.c2p(x_val, dot_y_position_on_axes), color=TEAL_B, radius=0.025))
         additional_dots.set_opacity(0.7)
 
         all_data_x = np.concatenate([initial_data_x, additional_data_x])
-        counts_final, _ = np.histogram(all_data_x, bins=bins)
-        max_final_count = np.max(counts_final) if len(counts_final) > 0 else 1
-        # Adjust line_scale_factor if total counts exceed previous assumptions, or keep fixed to show relative increase
-        final_line_scale_factor = 2.0 / (max_final_count if max_final_count > 0 else 1)
-
+        total_points = len(all_data_x)
+        counts_final, _ = np.histogram(all_data_x, bins=bins, range=(axes_x_min, axes_x_max))
+        density_final = counts_final / (total_points * bin_width)
 
         new_lines_animations = []
-        for i, line in enumerate(histogram_lines):
-            old_end = line.get_end()
-            new_height = counts_final[i] * final_line_scale_factor
-            new_end_y = new_height # y-value in axes's scale
-            # Ensure new_end_y doesn't exceed the plotting area too much
-            # new_end_y = min(new_end_y, axes.y_range[1]*0.8) # Cap height if needed
-            
-            # Target point in screen coordinates for the top of the line
-            target_point = axes.c2p(line.get_start()[0], 0) + UP * new_height + DOWN*1.7 # line.get_start()[0] is screen x
-                                                                                         # for axes.c2p to work correctly with x from screen, need to convert
-            bin_center_x_val = axes.p2c(line.get_start())[0] # Convert screen point back to axes value
+        # Assuming histogram_lines were created and match the bins
+        if len(histogram_lines) == len(density_final):
+            for i, line in enumerate(histogram_lines):
+                bin_center_x_val = axes.p2c(line.get_start())[0] # Get x value from existing line
+                new_height_data_units = density_final[i]
+                new_height_data_units = min(new_height_data_units, axes.y_range[1] * 0.95)
 
-            new_lines_animations.append(
-                line.animate.put_start_and_end_on(
-                    axes.c2p(bin_center_x_val, 0) + DOWN * 1.7,
-                    axes.c2p(bin_center_x_val, new_height) + DOWN * 1.7
-                )
+                if new_height_data_units > 0:
+                    new_lines_animations.append(
+                        line.animate.put_start_and_end_on(
+                            axes.c2p(bin_center_x_val, axes.y_range[0]),
+                            axes.c2p(bin_center_x_val, new_height_data_units)
+                        )
+                    )
+                else: # If new height is zero, fade out the line
+                    new_lines_animations.append(FadeOut(line))
+        
+        # If histogram_lines was empty initially, create them now
+        elif len(histogram_lines) == 0 and len(density_final) > 0:
+            new_histogram_lines = VGroup()
+            for i in range(len(density_final)):
+                bin_center_x = (bins[i] + bins[i+1]) / 2
+                line_height_data_units = density_final[i]
+                line_height_data_units = min(line_height_data_units, axes.y_range[1] * 0.95)
+                if line_height_data_units > 0:
+                    line = Line(
+                        start=axes.c2p(bin_center_x, axes.y_range[0]),
+                        end=axes.c2p(bin_center_x, line_height_data_units),
+                        stroke_color=BLUE_B, stroke_width=15
+                    )
+                    new_histogram_lines.add(line)
+            if len(new_histogram_lines) > 0:
+                 new_lines_animations.append(LaggedStartMap(Create, new_histogram_lines, lag_ratio=0.1))
+                 histogram_lines = new_histogram_lines # Assign for later transform
+
+        if len(new_lines_animations) > 0:
+            self.play(
+                LaggedStartMap(FadeIn, additional_dots, lag_ratio=0.01, run_time=2),
+                LaggedStart(*new_lines_animations, lag_ratio=0.05, run_time=2)
             )
+        else: # Only play dot animation if no line animations
+             self.play(LaggedStartMap(FadeIn, additional_dots, lag_ratio=0.01, run_time=2))
 
-        self.play(
-            LaggedStartMap(FadeIn, additional_dots, lag_ratio=0.01, run_time=2),
-            LaggedStart(*new_lines_animations, lag_ratio=0.05, run_time=2)
-        )
         all_dots = VGroup(initial_dots, additional_dots)
         self.wait(1)
 
         # 4. Smoothing Lines to PDF
         self.play(status_text_obj.animate.become(Text("...条形逐渐平滑，最终浮现出概率密度函数的形状。", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
         
-        # Define the PDF curve object that will appear in the lower plotting area
-        # The PDF should be scaled to match the visual height of the histogram lines
-        pdf_curve_lower = axes.plot(
-            lambda x_val: (1/(std_dev_data * np.sqrt(2 * np.pi))) * np.exp( - (x_val - mean_data)**2 / (2 * std_dev_data**2) ),
-            color=RED,
-            x_range=[axes.x_range[0], axes.x_range[1]]
-        )
-        # We need to scale and position this PDF curve to match where the histogram lines are
-        # The histogram lines have a y_length of `final_line_scale_factor * count`, max height is around 2.0 screen units
-        # The axes has y_length of 3. PDF from axes.plot will use axes's y_range [0, 0.6]
-        # Scale pdf_curve_lower to visually match the histogram heights
-        pdf_max_y_val_in_axes_coords = (1/(std_dev_data * np.sqrt(2 * np.pi))) # Peak of Gaussian
-        # We want this peak to correspond to the visual height of `max_final_count * final_line_scale_factor` (which is 2.0)
-        # The axes plots p(x) from 0 to 0.6. We need to scale our PDF plotted on these axes.
-        # Let's scale the function itself to make it visually larger on these axes.
-        # Target visual height for PDF peak is ~2.0 screen units.
-        # Axes y_length is 3, corresponding to y_range[1] (0.6 data units). So 1 screen unit = 0.6/3 = 0.2 data units.
-        # Target peak height in data units: 2.0 screen units * (0.6 data units / 3 screen units) = 0.4 data units
-        
-        pdf_visual_scale_factor = 0.4 / pdf_max_y_val_in_axes_coords
-
         pdf_curve_final = axes.plot(
-            lambda x_val: pdf_visual_scale_factor * (1/(std_dev_data * np.sqrt(2 * np.pi))) * np.exp( - (x_val - mean_data)**2 / (2 * std_dev_data**2) ),
+            lambda x_val: (1/(data_std_dev * np.sqrt(2 * np.pi))) * np.exp( - (x_val - data_mean)**2 / (2 * data_std_dev**2) ),
             color=RED,
-            x_range=[axes.x_range[0], axes.x_range[1]]
+            x_range=[axes_x_min, axes_x_max] # Use full x_range of axes
         )
-        pdf_curve_final.move_to(histogram_lines.get_center() + UP * (pdf_curve_final.get_height()/2 - histogram_lines.get_height()/2) ) # Align centers better
+        # pdf_curve_final is already plotted with respect to 'axes' and its y_range.
+        # No further scaling or moving should be needed if y_range was set correctly.
         
-        self.play(
-            FadeOut(all_dots, run_time=1),
-            Transform(histogram_lines, pdf_curve_final, run_time=2)
-        )
-        # pdf_curve_obj was histogram_lines, which is a VGroup.
-        # After transform, histogram_lines visually becomes pdf_curve_final.
-        # For subsequent operations needing the curve, we should use pdf_curve_final directly.
-        # However, if we want to fade out what was transformed, we use histogram_lines.
-        # Let's keep pdf_curve_obj as the mobject that holds the visual of the PDF curve after transform.
-        pdf_mobject_on_screen = histogram_lines # This is what was transformed and is on screen as the PDF
+        if len(histogram_lines) > 0 : # Ensure histogram_lines exists before transforming
+            self.play(
+                FadeOut(all_dots, run_time=1),
+                Transform(histogram_lines, pdf_curve_final, run_time=2)
+            )
+            pdf_mobject_on_screen = histogram_lines # This is what was transformed
+        else: # If histogram_lines was empty (e.g. no initial data made bars)
+            self.play(
+                FadeOut(all_dots, run_time=1),
+                Create(pdf_curve_final, run_time=2) # Just create the PDF
+            )
+            pdf_mobject_on_screen = pdf_curve_final
+        
         self.wait(1)
 
-        # --- GIF 3 (Now GIF 2 or 3 depending on cut): PDF Properties ---
+        # --- PDF Properties ---
         self.play(status_text_obj.animate.become(Text("PDF 定义与性质...", font="Noto Sans CJK SC", font_size=20).to_edge(UP)))
         
-        formula_pdf_text = MathTex(r"p(y) = \\langle \\delta(x-y) \\rangle_x").scale(0.8).set_z_index(1)
-        explanation_pdf = Text("系统处于状态y附近的概率", font="Noto Sans CJK SC", font_size=16).scale(0.8).set_z_index(1)
+        # Keep original MathTex but adjust position if needed
+        formula_pdf_text = MathTex(r"p(y) = \\langle \\delta(x-y) \\rangle_x").scale(0.7) # Slightly smaller
+        explanation_pdf = Text("系统处于状态y附近的概率", font="Noto Sans CJK SC", font_size=14).scale(0.7) # Slightly smaller
         
-        # Add definitions for formula_integral and explanation_integral_text here
-        formula_integral = MathTex(r"\\int p(x)dx = 1").scale(0.8).set_z_index(1)
-        explanation_integral_text = Text("总概率为1", font="Noto Sans CJK SC", font_size=16).scale(0.8).set_z_index(1)
+        formula_integral = MathTex(r"\\int p(x)dx = 1").scale(0.7)
+        explanation_integral_text = Text("总概率为1", font="Noto Sans CJK SC", font_size=14).scale(0.7)
 
-        # Adjust positioning of PDF property texts
-        pdf_expl_group_new_pos = VGroup(formula_pdf_text, explanation_pdf).arrange(DOWN, buff=0.1).next_to(axes_group, RIGHT, buff=0.2).shift(DOWN*1.8) # Shift down
-        integral_expl_group_new_pos = VGroup(formula_integral, explanation_integral_text).arrange(DOWN, buff=0.1).next_to(pdf_expl_group_new_pos, UP, buff=0.2)
+        # Position these to the right of the axes_group
+        pdf_expl_group_pos = VGroup(formula_pdf_text, explanation_pdf).arrange(DOWN, buff=0.1)
+        integral_expl_group_pos = VGroup(formula_integral, explanation_integral_text).arrange(DOWN, buff=0.1)
+        
+        full_explanation_group = VGroup(integral_expl_group_pos, pdf_expl_group_pos).arrange(DOWN, buff=0.3)
+        full_explanation_group.next_to(axes_group, RIGHT, buff=0.3)
 
 
-        # Recreate area_under_curve based on the actual PDF curve definition (pdf_curve_final)
+        # Area under curve should now be correctly calculated and displayed by axes.get_area
+        # given pdf_curve_final is correctly defined on these axes.
         area_under_curve = axes.get_area(
-             pdf_curve_final, # Use the actual ParametricFunction object
-             x_range=[axes.x_range[0], axes.x_range[1]],
+             pdf_curve_final, 
+             x_range=[axes_x_min, axes_x_max], # Use full range
              color=YELLOW,
              opacity=0.5
-        ).set_z_index(0)
-        # Ensure area is correctly positioned with pdf_curve_final (which is already positioned correctly)
-        # area_under_curve.move_to(pdf_curve_final.get_center()).align_to(pdf_curve_final, DOWN) # pdf_curve_final is already aligned to axes
-        # The area should be aligned with pdf_curve_final, which is plotted on 'axes' in the lower part of the screen.
-        # pdf_curve_final's y-values are scaled. We need to ensure the area matches this visual.
-        # No, get_area uses the function from pdf_curve_final and plots it on 'axes', so its position should be correct by default
-        # if pdf_curve_final itself is correctly positioned (which it is, relative to the visual space of histogram_lines).
-        # The issue might be that pdf_curve_final is positioned based on histogram_lines.get_center().
-        # Let's ensure the area is added correctly relative to the on-screen PDF mobject.
-        # The area calculation uses the mathematical function of pdf_curve_final with 'axes'.
-        # It should be drawn correctly on 'axes'. We then need to ensure its visual position matches pdf_mobject_on_screen.
-        # Since pdf_mobject_on_screen IS pdf_curve_final visually, aligning to it should be correct.
-        area_under_curve.move_to(pdf_mobject_on_screen.get_center()).align_to(pdf_mobject_on_screen, DOWN)
-
+        ).set_z_index(-1) # Ensure it's behind the curve
 
         self.play(
-            Write(pdf_expl_group_new_pos),
-            Write(integral_expl_group_new_pos),
+            Write(full_explanation_group),
             FadeIn(area_under_curve),
             run_time=2
         )
         self.wait(2)
 
         # Adjust mobjects_to_fade for the new structure
-        mobjects_to_fade_gif3 = [axes_group, pdf_mobject_on_screen, integral_expl_group_new_pos, pdf_expl_group_new_pos, area_under_curve]
+        mobjects_to_fade_gif3 = [axes_group, pdf_mobject_on_screen, full_explanation_group, area_under_curve]
         self.play(FadeOut(*[mob for mob in mobjects_to_fade_gif3 if mob in self.mobjects]))
         self.wait(0.5)
         
@@ -464,7 +590,7 @@ class ProbabilityAndObservablesScene(Scene):
 
         signal_axes = Axes(x_range=[0,10,1], y_range=[-1,1,0.5], x_length=5, y_length=2.5).shift(LEFT*3)
 
-class BrainIntroScene(Scene):
+class BrainIntroScene_tempdisabled(Scene):
     def construct(self):
         title = Text("大脑皮层的多尺度组织", font_size=48)
         self.play(Write(title))
@@ -483,7 +609,7 @@ class BrainIntroScene(Scene):
         self.play(FadeOut(title), FadeOut(intro_mobjects))
         self.wait(1)
 
-class MultiScaleScene(MovingCameraScene):
+class MultiScaleScene_tempdisabled(MovingCameraScene):
     def construct(self):
         self.camera.frame.save_state()
         initial_frame_width = self.camera.frame.get_width() # 保存初始帧宽度
@@ -577,7 +703,7 @@ class MultiScaleScene(MovingCameraScene):
         self.remove(scale_title)
         self.wait(1)
 
-class MeasurementLimitationsScene(Scene):
+class MeasurementLimitationsScene_tempdisabled(Scene):
     def construct(self):
         # 标题
         title = Text("测量方法的局限性", font_size=48)
@@ -633,7 +759,7 @@ class MeasurementLimitationsScene(Scene):
             run_time=2
         )
 
-class NetworkDynamicsScene(MovingCameraScene):
+class NetworkDynamicsScene_tempdisabled(MovingCameraScene):
     def construct(self):
         # 标题
         title = Text("神经元网络的动力学特性", font_size=48).to_edge(UP)
@@ -715,7 +841,7 @@ class NetworkDynamicsScene(MovingCameraScene):
             run_time=2
         )
 
-class RenormalizationScene(MovingCameraScene):
+class RenormalizationScene_tempdisabled(MovingCameraScene):
     def construct(self):
         # 标题
         title = Text("大脑网络的重整化", font_size=48).to_edge(UP)
@@ -840,110 +966,116 @@ class RenormalizationScene(MovingCameraScene):
             run_time=2
         )
 
-class PathIntegralScene(Scene):
+class TaylorExpansionForMomentsScene(Scene):
     def construct(self):
-        # 标题
-        title = Text("路径积分与系统演化", font="Noto Sans CJK SC")
-        title.to_edge(UP)
-        self.add(title)  # 直接add，不做动画
+        # Title for the scene (REMOVED)
+        # title = Text("场景 2前导：泰勒展开与矩的引入", font="Noto Sans CJK SC", font_size=36).to_edge(UP, buff=0.5)
+        # self.play(Write(title))
+        # self.wait(1)
 
-        # 创建多条路径
-        num_paths = 15
-        paths = []
-        weights = []
-        dots = []
+        # Status text
+        status_text_obj = Text("", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)
+        self.add(status_text_obj)
+
+        # 1. Introduce f(x)
+        self.play(status_text_obj.animate.become(Text("对于可观测量 f(x)...", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)))
+        fx_text = MathTex("f(x)").scale(1.5)
+        fx_text.move_to(UP * 1.0)
+        self.play(Write(fx_text))
+        self.wait(1.5)
+
+        # 2. Taylor Expansion of f(x) around 0
+        self.play(status_text_obj.animate.become(Text("...我们可以将其在 x=0 附近进行泰勒展开:", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)))
+        taylor_expansion_tex_str_list = [
+            "f(x)", "=", "f(0)", "+", "f'(0)x", 
+            "+", "\\frac{f''(0)}{2!}x^2", 
+            "+", "\\frac{f'''(0)}{3!}x^3", 
+            "+", "c_4 x^4", 
+            "+", "\\dots"
+        ]
+        taylor_expansion_tex = MathTex(*taylor_expansion_tex_str_list).scale(0.55)
+        taylor_expansion_tex.next_to(fx_text, DOWN, buff=0.6)
+        taylor_expansion_tex.to_edge(LEFT, buff=0.5)
+        self.play(TransformMatchingTex(fx_text, taylor_expansion_tex, transform_mismatched_target_pieces=True))
+        self.wait(3.5)
+
+        # 3. Take Expectation Value
+        self.play(status_text_obj.animate.become(Text("对两边取期望值:", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)))
+        expectation_tex_lhs = MathTex("\\langle f(x) \\rangle").scale(0.55)
+        expectation_tex_lhs.next_to(taylor_expansion_tex, DOWN, buff=0.8) 
+        expectation_tex_lhs.to_edge(LEFT, buff=0.5)
+        self.play(Write(expectation_tex_lhs))
+        expectation_tex_rhs_str = [
+            "=", "f(0)", "+", "f'(0)\\langle x \\rangle", 
+            "+", "\\frac{f''(0)}{2!}\\langle x^2 \\rangle", 
+            "+", "\\frac{f'''(0)}{3!}\\langle x^3 \\rangle", 
+            "+", "c_4 \\langle x^4 \\rangle", 
+            "+", "\\dots"
+        ]
+        expectation_tex_rhs = MathTex(*expectation_tex_rhs_str).scale(0.55)
+        expectation_tex_rhs.next_to(expectation_tex_lhs, RIGHT, buff=0.15)
+        self.play(Write(expectation_tex_rhs))
+        self.wait(2.5)
+
+        # 4. Highlight Moments (Still commented out)
+        self.play(status_text_obj.animate.become(Text("展开式中的这些项就是各阶矩:", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)))
+        self.wait(2.5)
+
+        # 5. General Definition of Moments
+        self.play(status_text_obj.animate.become(Text("推广到一般情况，矩的定义为:", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)))
+        all_to_fade = VGroup(taylor_expansion_tex, expectation_tex_lhs, expectation_tex_rhs)
+        moment_def_title = Text("矩 (Moment) 的定义:", font="Noto Sans CJK SC", font_size=28).move_to(UP*2.5)
+        moment_def_tex_single = MathTex(
+            "\\langle x^n \\rangle = \\int_{-\infty}^{\infty} x^n p(x) dx"
+        ).scale(1.0)
+        moment_def_tex_single.next_to(moment_def_title, DOWN, buff=0.3)
         
-        # 创建路径和权重
-        for i in range(num_paths):
-            weight = np.random.uniform(0.1, 1.0)
-            weights.append(weight)
-            points = []
-            x = -5
-            y = 0
-            for _ in range(30):
-                x += 0.3
-                y += np.random.normal(0, 0.2)
-                points.append(np.array([x, y, 0]))
-            path = VMobject()
-            path.set_points_as_corners(points)
-            path.set_stroke(width=2, opacity=0.3)
-            paths.append(path)
-            path_dots = VGroup()
-            for point in points[::3]:
-                dot = Dot(point, radius=0.03)
-                dot.set_opacity(0.3)
-                path_dots.add(dot)
-            dots.append(path_dots)
+        # Examples for the general definition
+        example_title = Text("例如:", font="Noto Sans CJK SC", font_size=22).next_to(moment_def_tex_single, DOWN, buff=0.35, aligned_edge=LEFT)
+        
+        moment_ex1_formula = MathTex("n=1: \\langle x \\rangle = \\int x p(x) dx").scale(0.8)
+        moment_ex1_formula.next_to(example_title, DOWN, buff=0.2, aligned_edge=LEFT)
+        moment_ex1_label = Text("(均值)", font="Noto Sans CJK SC", font_size=18).scale(0.8) # font_size adjusted based on MathTex scale
+        moment_ex1_label.next_to(moment_ex1_formula, RIGHT, buff=0.1)
+        moment_ex1_group = VGroup(moment_ex1_formula, moment_ex1_label)
 
-        # 直接add所有路径云
-        for path in paths:
-            self.add(path)
+        moment_ex2_formula = MathTex("n=2: \\langle x^2 \\rangle = \\int x^2 p(x) dx").scale(0.8)
+        moment_ex2_formula.next_to(moment_ex1_group, DOWN, buff=0.2, aligned_edge=LEFT)
+        moment_ex2_label = Text("(二阶原点矩)", font="Noto Sans CJK SC", font_size=18).scale(0.8)
+        moment_ex2_label.next_to(moment_ex2_formula, RIGHT, buff=0.1)
+        moment_ex2_group = VGroup(moment_ex2_formula, moment_ex2_label)
 
-        # 创建权重标签（只显示部分权重）
-        weight_labels = VGroup()
-        for i, (path, weight) in enumerate(zip(paths, weights)):
-            if i % 3 == 0:
-                label = MathTex(f"w_{{{i+1}}}={weight:.2f}")
-                label.scale(0.5)
-                point = path.point_from_proportion(0.5)
-                label.next_to(point, UP, buff=0.1)
-                weight_labels.add(label)
+        examples_group = VGroup(example_title, moment_ex1_group, moment_ex2_group)
 
-        # 创建平均路径
-        avg_points = []
-        for i in range(30):
-            x = -5 + i * 0.3
-            y = 0
-            total_weight = 0
-            weighted_y = 0
-            for path, weight in zip(paths, weights):
-                point = path.point_from_proportion(i/29)
-                weighted_y += point[1] * weight
-                total_weight += weight
-            y = weighted_y / total_weight
-            avg_points.append(np.array([x, y, 0]))
-        avg_path = VMobject()
-        avg_path.set_points_as_corners(avg_points)
-        avg_path.set_stroke(color=YELLOW, width=4)
+        moment_def_tex_multi_intro = Text("对于多变量情况:", font="Noto Sans CJK SC", font_size=24).next_to(examples_group, DOWN, buff=0.35)
+        moment_def_tex_multi = MathTex(
+            "\\langle x_1^{n_1} x_2^{n_2} \\dots x_N^{n_N} \\rangle = \\int \\dots \\int p(x_1, \\dots, x_N) x_1^{n_1} \\dots x_N^{n_N} dx_1 \\dots dx_N"
+        ).scale(0.8)
+        moment_def_tex_multi.next_to(moment_def_tex_multi_intro, DOWN, buff=0.2)
 
-        # 1. 权重标签淡入
-        self.play(Write(weight_labels), run_time=1)
-
-        # 2. 粒子运动动画
-        for path_dots in dots:
-            self.add(*path_dots)
-        for _ in range(2):
-            for path_dots in dots:
-                self.play(
-                    *[dot.animate.move_to(path_dots[i+1].get_center()) 
-                      for i, dot in enumerate(path_dots[:-1])],
-                    run_time=0.3,
-                    rate_func=linear
-                )
-
-        # 3. 显示平均路径
-        self.play(Create(avg_path), run_time=1.5)
-
-        # 4. 添加说明文字
-        explanation = Text(
-            "系统演化是所有可能路径的加权平均",
-            font="Noto Sans CJK SC",
-            font_size=24
-        )
-        explanation.next_to(avg_path, DOWN, buff=0.5)
-        self.play(Write(explanation), run_time=1)
-
-        # 5. 最终效果：突出显示平均路径
         self.play(
-            avg_path.animate.set_stroke(width=6),
-            *[path.animate.set_opacity(0.1) for path in paths],
-            *[dot.animate.set_opacity(0.1) for path_dots in dots for dot in path_dots],
-            weight_labels.animate.set_opacity(0.3),
-            run_time=1
+            FadeOut(all_to_fade, run_time=1.5),
+            Write(moment_def_title)
         )
+        self.play(Write(moment_def_tex_single))
+        self.wait(1)
+        self.play(Write(example_title))
+        self.play(Write(moment_ex1_formula), Write(moment_ex1_label))
+        self.wait(1.5)
+        self.play(Write(moment_ex2_formula), Write(moment_ex2_label))
+        self.wait(2)
+
+        self.play(Write(moment_def_tex_multi_intro))
+        self.play(Write(moment_def_tex_multi))
+        self.wait(3.5)
+
+        # End scene
+        self.play(status_text_obj.animate.become(Text("这样，我们就从可观测量的展开中自然地引出了各阶矩的概念。", font="Noto Sans CJK SC", font_size=20).to_edge(UP, buff=0.5)))
+        final_group = VGroup(moment_def_title, moment_def_tex_single, examples_group, moment_def_tex_multi_intro, moment_def_tex_multi, status_text_obj)
+        self.play(FadeOut(final_group, shift=DOWN, run_time=1.5))
         self.wait(1)
 
-class MomentScene(MovingCameraScene):
+class MomentScene_tempdisabled(MovingCameraScene):
     def construct(self):
         # Reuse status text from previous scene for consistency
         status_text_obj = Text("", font_size=24).to_corner(UP + LEFT)
@@ -1332,6 +1464,323 @@ class MomentScene(MovingCameraScene):
         self.play(FadeOut(all_elements))
         self.wait(1)
 
+class FormulaExplanationScene_tempdisabled(Scene):
+    def construct(self):
+        # 0. Scene Title (Optional) - REMOVED
+        # scene_title_text = Text("公式解析: p(y) = <δ(x-y)>_x", font="Noto Sans CJK SC", font_size=36).to_edge(UP, buff=0.5)
+        # self.play(Write(scene_title_text))
+        # self.wait(1)
+
+        # 1. Display the full formula
+        formula = MathTex("p(y)", "=", "\\langle \\delta(x-y) \\rangle_x", font_size=60)
+        formula.move_to(UP * 2.8) # Position formula in the upper-middle part
+        # p_y_part.set_color(RED)
+        # eq_part.set_color(WHITE)
+        # avg_delta_part.set_color(BLUE)
+        self.play(Write(formula))
+        self.wait(2)
+
+        # Breakdown components
+        p_y_part = formula[0]
+        eq_part = formula[1]
+        avg_delta_part = formula[2]
+
+        # --- 2. Explain p(y) ---
+        self.play(Indicate(p_y_part, color=RED, scale_factor=1.2))
+        text_py = Text(
+            "p(y): 概率密度函数", 
+            font="Noto Sans CJK SC", font_size=28, color=RED
+        ).next_to(formula, DOWN, buff=0.7)
+        text_py_desc = Text(
+            "描述随机变量取特定值 y 附近的相对可能性大小。", 
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_py, DOWN, buff=0.2)
+        
+        # Illustrative PDF curve
+        axes = Axes(
+            x_range=[-3, 3, 1], y_range=[0, 0.6, 0.2],
+            x_length=4, y_length=2,
+            axis_config={"include_tip": False, "font_size":16}
+        )
+        pdf_curve_example = axes.plot(lambda x: np.exp(-x**2/2)/np.sqrt(2*PI), color=RED)
+        pdf_graphic = VGroup(axes, pdf_curve_example).scale(0.7).next_to(text_py_desc, DOWN, buff=0.3)
+
+        self.play(Write(text_py))
+        self.play(Write(text_py_desc))
+        self.play(Create(pdf_graphic))
+        self.wait(3)
+        self.play(FadeOut(text_py), FadeOut(text_py_desc), FadeOut(pdf_graphic))
+
+        # --- 3. Explain y ---
+        # Highlight y in p(y) and in δ(x-y)
+        # formula is MathTex("p(y)", "=", "\\langle \\delta(x-y) \\rangle_x")
+        # p(y) is formula[0]. y is the char 'y' in it.
+        # δ(x-y) is inside formula[2]. \\langle \\delta(x-y) \\rangle_x
+        # To target 'y' inside MathTex, it's easier to remake part of the tex or use substrings if possible.
+        # Simpler: just indicate the formula parts containing y.
+
+        self.play(Indicate(p_y_part, color=BLUE_D), Indicate(avg_delta_part, color=BLUE_D))
+        text_y = Text(
+            "y: 特定的观测值/状态", 
+            font="Noto Sans CJK SC", font_size=28, color=BLUE_D
+        ).next_to(formula, DOWN, buff=0.7)
+        text_y_desc = Text(
+            "是我们感兴趣的、希望知道其概率密度的那个确切结果或读数。", 
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_y, DOWN, buff=0.2)
+
+        # Visual: Number line with a point y
+        y_val = 1.5
+        num_line_y = NumberLine(
+            x_range=[-4, 4, 1],
+            length=8,
+            include_numbers=True,
+            label_direction=UP,
+            font_size=20
+        ).next_to(text_y_desc, DOWN, buff=0.5)
+        y_dot = Dot(num_line_y.n2p(y_val), color=BLUE_D)
+        y_label = MathTex("y", color=BLUE_D).next_to(y_dot, DOWN, buff=0.2)
+        y_visual = VGroup(num_line_y, y_dot, y_label)
+
+        self.play(Write(text_y))
+        self.play(Write(text_y_desc))
+        self.play(Create(num_line_y), Create(y_dot), Write(y_label))
+        self.wait(3)
+        self.play(FadeOut(text_y), FadeOut(text_y_desc), FadeOut(y_visual))
+
+        # --- 4. Explain x ---
+        # avg_delta_part is formula[2] = "\\langle \\delta(x-y) \\rangle_x"
+        # We want to highlight x within this part.
+        self.play(Indicate(avg_delta_part, color=GREEN_D, scale_factor=1.1))
+        text_x = Text(
+            "x: 系统的瞬时随机状态", 
+            font="Noto Sans CJK SC", font_size=28, color=GREEN_D
+        ).next_to(formula, DOWN, buff=0.7)
+        text_x_desc = Text(
+            "代表系统实际经历的、不断随机变化的内部变量或数值。", 
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_x, DOWN, buff=0.2)
+
+        # Visual: Number line with moving x points
+        num_line_x = NumberLine(
+            x_range=[-4, 4, 1],
+            length=8,
+            include_numbers=True,
+            label_direction=UP,
+            font_size=20
+        ).next_to(text_x_desc, DOWN, buff=0.5)
+        self.play(Create(num_line_x))
+        self.play(Write(text_x), Write(text_x_desc))
+        
+        # Single moving dot for x
+        x_dot = Dot(num_line_x.n2p(-3), color=GREEN_D)
+        x_label = MathTex("x", color=GREEN_D).add_updater(lambda m: m.next_to(x_dot, DOWN, buff=0.2))
+        self.play(FadeIn(x_dot), FadeIn(x_label))
+
+        # Animate x moving randomly
+        self.play(
+            x_dot.animate.move_to(num_line_x.n2p(2.5)), 
+            run_time=1.5, rate_func=linear
+        )
+        self.play(
+            x_dot.animate.move_to(num_line_x.n2p(-1.5)), 
+            run_time=1.5, rate_func=linear
+        )
+        # Show multiple random static points for x
+        x_random_points = VGroup()
+        for _ in range(15):
+            x_val_rand = np.random.uniform(-3.5, 3.5)
+            x_random_points.add(Dot(num_line_x.n2p(x_val_rand), color=GREEN_D, radius=0.05))
+        
+        self.play(Transform(x_dot, x_random_points), FadeOut(x_label)) # x_dot becomes many points
+        self.wait(3)
+        self.play(FadeOut(text_x), FadeOut(text_x_desc), FadeOut(num_line_x), FadeOut(x_dot)) # x_dot is already transformed
+
+        # --- 5. Explain δ(x-y) ---
+        # avg_delta_part is formula[2] = "\\langle \\delta(x-y) \\rangle_x"
+        self.play(Indicate(avg_delta_part, color=ORANGE, scale_factor=1.1))
+        text_delta_func = Text(
+            "δ(x-y): 狄拉克 δ (Delta) 函数", 
+            font="Noto Sans CJK SC", font_size=28, color=ORANGE
+        ).next_to(formula, DOWN, buff=0.5)
+        text_delta_desc1 = Text(
+            """一个理想化的"选择器"或"探针"。""", 
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_delta_func, DOWN, buff=0.2)
+        text_delta_desc2 = Text(
+            "当 x ≠ y 时, δ(x-y) = 0", 
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_delta_desc1, DOWN, buff=0.2)
+        text_delta_desc3 = Text(
+            "当 x = y 时, δ(x-y) → ∞  (积分为1)", 
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_delta_desc2, DOWN, buff=0.2)
+
+        self.play(Write(text_delta_func))
+        self.play(Write(text_delta_desc1))
+        self.wait(1)
+        self.play(Write(text_delta_desc2))
+        self.wait(1)
+        self.play(Write(text_delta_desc3))
+        self.wait(1.5)
+
+        # Visual animation for δ function
+        delta_axes = Axes(
+            x_range=[-4, 4, 1], y_range=[0, 5, 1], # y_range for spike visualization
+            x_length=8, y_length=3,
+            axis_config={"include_tip": False, "font_size": 16},
+            y_axis_config={"include_numbers": False} # No numbers on y for conceptual spike
+        ).next_to(text_delta_desc3, DOWN, buff=0.4)
+        delta_axes_labels = delta_axes.get_axis_labels(x_label="x", y_label=MathTex("{\\delta}(x-y)"))
+        
+        y_val_delta_vis = 0 # Let y be at the origin for this vis
+        y_marker_line = DashedLine(
+            delta_axes.c2p(y_val_delta_vis, 0),
+            delta_axes.c2p(y_val_delta_vis, delta_axes.y_range[1]*0.8), # Spike height up to 80% of y_range
+            color=BLUE_D
+        )
+        y_marker_label = MathTex("y", color=BLUE_D).next_to(delta_axes.c2p(y_val_delta_vis,0), DOWN)
+
+        self.play(Create(delta_axes), Write(delta_axes_labels), Create(y_marker_line), Write(y_marker_label))
+        self.wait(0.5)
+
+        # Moving x and spike animation
+        x_tracker = ValueTracker(-3) # Initial x value
+        x_dot_delta = Dot(color=GREEN_D).add_updater(
+            lambda m: m.move_to(delta_axes.c2p(x_tracker.get_value(), 0))
+        )
+        x_label_delta = MathTex("x", color=GREEN_D).add_updater(
+            lambda m: m.next_to(x_dot_delta, DOWN, buff=0.2)
+        )
+
+        # Delta spike - an arrow
+        delta_spike = Arrow(
+            start=delta_axes.c2p(y_val_delta_vis, 0),
+            end=delta_axes.c2p(y_val_delta_vis, delta_axes.y_range[1]*0.7), # Fixed height for spike
+            color=ORANGE, stroke_width=8, max_tip_length_to_length_ratio=0.2
+        )
+        delta_spike.set_opacity(0) # Initially invisible
+
+        def spike_updater(mobj):
+            current_x = x_tracker.get_value()
+            if abs(current_x - y_val_delta_vis) < 0.1: # If x is close to y
+                mobj.set_opacity(1)
+                mobj.move_to(delta_axes.c2p(y_val_delta_vis, 0) + UP * delta_axes.y_range[1]*0.7 / 2) # Centered
+            else:
+                mobj.set_opacity(0)
+        delta_spike.add_updater(spike_updater)
+
+        self.play(FadeIn(x_dot_delta), FadeIn(x_label_delta), Create(delta_spike))
+        self.play(x_tracker.animate.set_value(3), run_time=4, rate_func=linear)
+        self.play(x_tracker.animate.set_value(-2), run_time=3, rate_func=linear) # Show it passing y again
+        
+        delta_spike.remove_updater(spike_updater) # remove updater before fadeout
+        x_label_delta.clear_updaters()
+        x_dot_delta.clear_updaters()
+        self.wait(2)
+
+        delta_visuals = VGroup(delta_axes, delta_axes_labels, y_marker_line, y_marker_label, x_dot_delta, x_label_delta, delta_spike)
+        delta_texts = VGroup(text_delta_func, text_delta_desc1, text_delta_desc2, text_delta_desc3)
+        self.play(FadeOut(delta_visuals), FadeOut(delta_texts))
+
+        # --- 6. Explain < ... >_x (Expectation over x) ---
+        self.play(Indicate(avg_delta_part, color=TEAL, scale_factor=1.1))
+        text_avg_op = Text(
+            "<...>_x : 对所有可能的随机状态 x 取平均", 
+            font="Noto Sans CJK SC", font_size=28, color=TEAL
+        ).next_to(formula, DOWN, buff=0.5)
+        text_avg_desc1 = Text(
+            """计算 δ(x-y) 在大量随机观测下的平均"响应强度".""",
+            font="Noto Sans CJK SC", font_size=24
+        ).next_to(text_avg_op, DOWN, buff=0.2)
+        text_avg_desc2 = Text(
+            "数学上是期望值: ∫δ(x-y)P_underlying(x)dx",
+            font="Noto Sans CJK SC", font_size=22
+        ).next_to(text_avg_desc1, DOWN, buff=0.2)
+
+        self.play(Write(text_avg_op))
+        self.play(Write(text_avg_desc1))
+        self.play(Write(text_avg_desc2))
+        self.wait(2)
+
+        # Visual: Many x points, and δ responses averaging out
+        avg_axes = Axes(
+            x_range=[-4, 4, 1], y_range=[0, 1, 0.2], # y_range for conceptual p(y)
+            x_length=8, y_length=3,
+            axis_config={"include_tip": False, "font_size": 16},
+            y_axis_config={"include_numbers": True, "font_size": 16}
+        ).next_to(text_avg_desc2, DOWN, buff=0.4)
+        avg_axes_labels = avg_axes.get_axis_labels(
+            x_label=Text("y (特定状态)", font="Noto Sans CJK SC", font_size=16),
+            y_label=Text("p(y) (平均响应)", font="Noto Sans CJK SC", font_size=16)
+        )
+        self.play(Create(avg_axes), Write(avg_axes_labels))
+        self.wait(0.5)
+
+        y_val_avg = 0.5 # A specific y for this visualization
+        y_line_avg = DashedLine(avg_axes.c2p(y_val_avg,0), avg_axes.c2p(y_val_avg,1), color=BLUE_D, stroke_width=2)
+        y_label_avg = MathTex("y", color=BLUE_D).next_to(avg_axes.c2p(y_val_avg,0), DOWN)
+        self.play(Create(y_line_avg), Write(y_label_avg))
+
+        # Show many random x points and conceptual delta responses
+        num_x_samples = 50
+        x_samples_dots = VGroup()
+        delta_responses_vis = VGroup() # Store visual cues for delta responses
+
+        # Simulate where a PDF might be higher
+        def underlying_x_dist(x_val):
+            # Example: bimodal distribution to make it interesting
+            return 0.5 * np.exp(-(x_val + 1.5)**2 / (2*0.5**2)) + 0.5 * np.exp(-(x_val - 1.5)**2 / (2*0.8**2))
+        
+        generated_x_values = []
+        for _ in range(num_x_samples * 5): # Generate more and pick based on distribution
+            test_x = np.random.uniform(-3.5, 3.5)
+            if np.random.rand() < underlying_x_dist(test_x) * 0.8: # Acceptance-rejection like
+                generated_x_values.append(test_x)
+            if len(generated_x_values) >= num_x_samples:
+                break
+        if not generated_x_values: generated_x_values = np.random.uniform(-3.5, 3.5, num_x_samples) # Fallback
+
+        for x_val in generated_x_values[:num_x_samples]:
+            dot = Dot(avg_axes.c2p(x_val, np.random.uniform(0.02, 0.08)), color=GREEN_E, radius=0.04)
+            x_samples_dots.add(dot)
+            if abs(x_val - y_val_avg) < 0.2: # If x is close to chosen y
+                # Add a small vertical line indicating a "hit" or strong delta response for this x
+                response_vis = Line(
+                    avg_axes.c2p(x_val, 0.1), avg_axes.c2p(x_val, 0.3),
+                    color=ORANGE, stroke_width=3
+                )
+                delta_responses_vis.add(response_vis)
+
+        self.play(LaggedStartMap(FadeIn, x_samples_dots, lag_ratio=0.05, run_time=1.5))
+        self.play(LaggedStartMap(GrowFromCenter, delta_responses_vis, lag_ratio=0.1, run_time=1))
+        self.wait(1)
+
+        # Show the "averaging" resulting in p(y)
+        # The number of delta_responses_vis near y_val_avg gives an idea of p(y_val_avg)
+        num_hits = len(delta_responses_vis)
+        py_value_estimate = num_hits / num_x_samples * 5 # Arbitrary scaling for visual
+        py_value_estimate = min(py_value_estimate, avg_axes.y_range[1]*0.9) # Cap at y_range
+
+        py_dot = Dot(avg_axes.c2p(y_val_avg, py_value_estimate), color=RED, radius=0.08)
+        py_line_to_axis = DashedLine(avg_axes.c2p(y_val_avg, 0), py_dot.get_center(), color=RED)
+        py_label = MathTex(f"p(y={y_val_avg:.1f}) \\approx {py_value_estimate:.2f}", font_size=24, color=RED)
+        py_label.next_to(py_dot, RIGHT, buff=0.2)
+        
+        self.play(
+            FadeOut(x_samples_dots, delta_responses_vis),
+            Create(py_line_to_axis),
+            GrowFromCenter(py_dot),
+            Write(py_label)
+        )
+        self.wait(3)
+
+        avg_visuals = VGroup(avg_axes, avg_axes_labels, y_line_avg, y_label_avg, py_line_to_axis, py_dot, py_label)
+        avg_texts = VGroup(text_avg_op, text_avg_desc1, text_avg_desc2)
+        self.play(FadeOut(avg_visuals), FadeOut(avg_texts))
+        self.wait(1)
+
+
 # Entry point for Manim
 # To render a specific scene, set its name in config.scene_names
 # For example: config.scene_names = ["IntroScene"]
@@ -1345,5 +1794,5 @@ if __name__ == "__main__":
     print("For example: manim -pql brain_animation.py IntroScene")
 
 # 更新场景配置
-config.scene_names = ["ProbabilityAndObservablesScene"]  # 只播放此场景以进行GIF生成
+# config.scene_names = ["ProbabilityAndObservablesScene"]  # 只播放此新场景
 # config.scene_names = ["IntroScene", "ProbabilityAndObservablesScene", "BrainIntroScene", "MultiScaleScene", "MeasurementLimitationsScene", "NetworkDynamicsScene", "RenormalizationScene", "PathIntegralScene", "MomentScene"]
