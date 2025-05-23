@@ -105,37 +105,44 @@
 
             <div class="gif-block">
                 <h3>1. 矩：均值与方差</h3>
-                <img src="media/images/MomentScene_GIF1_MeanVariance.gif" alt="GIF 1: 均值与方差">
-                <p><strong>动画演示:</strong> 我们从一个高斯概率分布 \(P(x)\) 开始看起。首先是第一个矩，也就是均值 (\(\mu = \langle x \rangle\))，它为我们定位了分布的中心，在视觉上，您会看到一条垂直线来指示这个中心。接下来是第二个中心矩，即方差 (\(\sigma^2 = \langle (x-\mu)^2 \rangle\))，它度量了分布的离散程度或宽度。动画会演示分布曲线是如何根据不同的 \(\sigma^2\) 值围绕均值'变胖'（这意味着方差较大）或'变瘦'（方差较小）的。</p>
+                <img src="media/images/MomentScene_GIF1_MeanVariance_v2.gif" alt="GIF 1: 均值与方差">
+                <p><strong>动画演示:</strong> 我们从一个标准高斯概率分布 \(P(x)\) 开始。首先展示的是均值 (\(\mu = \langle x \rangle\))，它通过一条垂直的虚线标示出分布的中心。接着，动画会引入方差 (\(\sigma^2 = \langle (x-\mu)^2 \rangle\)) 的概念，通过在均值两侧标出 \(\pm \sigma\) 的范围，并用特定颜色填充该区域，来形象地展示方差如何度量分布的离散程度或宽度。相应的数学符号和文字标签（如"Mean", "Variance"）也会一并出现。</p>
                 <p><strong>旁白 (VO):</strong> "一阶矩 (\(\langle x \rangle\)) 就是我们熟悉的均值（用 (\(\mu\)) 表示），它告诉我们分布的中心位置。二阶中心矩 (\(\langle (x - \langle x \rangle)^2 \rangle\)) 是方差（用 (\(\sigma^2\)) 表示），描述了分布的离散程度或展宽。"</p>
             </div>
 
             <div class="gif-block">
-                <h3>2. 高阶矩：偏度与峰度</h3>
-                <img src="media/images/MomentScene_GIF2_SkewKurtosis.gif" alt="GIF 2: 偏度与峰度">
-                <p><strong>动画演示:</strong> 更高阶的矩能够描述分布的更多形状特征。动画将继续向我们展示概率分布：首先演示的是偏度，它衡量了分布的不对称性。例如，您会看到分布的尾部向右拖长（这称为正偏或右偏），或者向左拖长（称为负偏或左偏）。然后，动画会演示峰度，它描述了分布峰部的尖锐程度和尾部的厚度。例如，与标准高斯分布相比，分布的峰值可以显得更尖峭（称为尖峰或正峰度），或者更平坦（称为平顶或负峰度），同时其尾部的厚度也会相应地发生变化。</p>
-                <p><strong>旁白 (VO):</strong> "更高阶的矩则描述了分布的偏斜度（与三阶矩相关）和峰度（与四阶矩相关）等更精细的特征，如同分布的独特'指纹'。"</p>
+                <h3>2. 偏度 (Skewness)</h3>
+                <img src="media/images/MomentScene_GIF2_Skewness_v1.gif" alt="GIF 2: 偏度">
+                <p><strong>动画演示:</strong> 在介绍了均值和方差之后，动画过渡到偏度。初始的高斯分布会首先转变为一个正偏（右偏）分布（例如使用偏斜正态分布实现），此时屏幕右侧会出现标签"正偏度 (Right Skew)"和数学符号 \(\gamma_1 > 0\)。然后，分布会转变为负偏（左偏）分布，标签相应变为"负偏度 (Left Skew)"和 \(\gamma_1 < 0\)。最后，动画会展示偏度的定义公式：\(\gamma_1 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^3 \right]\)。</p>
+                <p><strong>旁白 (VO):</strong> "三阶矩与偏斜度 (Skewness) 相关，它衡量了分布的不对称性。正偏斜意味着分布的右尾更长，负偏斜则意味着左尾更长。"</p>
             </div>
 
             <div class="gif-block">
-                <h3>3. 矩的局限性：相同矩，不同形</h3>
-                <img src="media/images/MomentScene_GIF3_MisleadingMoments.gif" alt="GIF 3: 矩的局限性">
-                <p><strong>动画演示:</strong> 然而，仅靠低阶矩有时会产生误导。动画将会并列展示两个或多个形状明显不同的概率分布。通过文字或符号，我们会了解到，尽管它们的均值 (\(\mu\)) 和方差 (\(\sigma^2\)) 完全相同，但它们的整体形态（比如对称性、峰态、尾部行为等）却存在显著的差异。这清晰地说明了，仅靠均值和方差是不足以完全描述一个分布的。</p>
+                <h3>3. 峰度 (Kurtosis)</h3>
+                <img src="media/images/MomentScene_GIF3_Kurtosis_v1.gif" alt="GIF 3: 峰度">
+                <p><strong>动画演示:</strong> 偏度演示完毕后，分布会恢复到标准高斯形态，作为峰度演示的基准（正态峰，Mesokurtic, \(\gamma_2 = 0\)，其中 \(\gamma_2\) 指超额峰度）。接着，高斯分布的虚影会保留在背景中，前景的分布曲线会首先变换为一个更尖峭、尾部更厚的分布（例如t分布），屏幕右侧标签显示"尖峰 (Leptokurtic)"和 \(\gamma_2 > 0\)。然后，曲线会再次变换，变为一个峰顶更平坦、尾部更薄的分布（例如均匀分布的近似），标签显示"平峰 (Platykurtic)"和 \(\gamma_2 < 0\)。最后，动画会展示超额峰度的定义公式：\(\gamma_2 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^4 \right] - 3\)。</p>
+                <p><strong>旁白 (VO):</strong> "四阶矩与峰度 (Kurtosis) 相关，它描述了分布峰部的尖锐程度以及尾部的厚重程度。与正态分布相比，尖峰分布具有更尖的峰和更厚的尾，而平峰分布则相反。"</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>4. 矩的局限性：相同矩，不同形</h3>
+                <img src="media/images/MomentScene_GIF4_MisleadingMoments_v2.gif" alt="GIF 4: 矩的局限性">
+                <p><strong>动画演示:</strong> 然而，仅靠低阶矩有时会产生误导。动画将会并列展示两个形状明显不同的概率分布（例如一个单峰Gamma分布和一个双峰高斯混合分布）。通过文字或符号，我们会了解到，尽管它们的均值 (\(\mu\)) 和方差 (\(\sigma^2\)) 可能完全相同或非常接近，但它们的整体形态却存在显著的差异。屏幕下方会出现文字"Same Mean & Variance, Different Shapes!"，清晰地说明了仅靠均值和方差是不足以完全描述一个分布的。</p>
                 <p><strong>旁白 (VO):</strong> "矩虽然为我们提供了很多关于分布的信息，但仅靠低阶矩（如均值和方差）有时会产生误导。不同的分布可能拥有相同的低阶矩，但形状却大相径庭。"</p>
             </div>
 
             <div class="gif-block">
-                <h3>4. 累积量：描述形状的新视角</h3>
-                <img src="media/images/MomentScene_GIF4_CumulantsIntro.gif" alt="GIF 4: 累积量入门">
-                <p><strong>动画演示:</strong> 为了更好地区分这些分布的形状，我们现在引入累积量的概念，通常用 (\(\kappa_n\) 或 \(\langle\langle x^n \rangle\rangle_c\)) 来表示。动画中首先会明确指出，第一累积量 (\(\kappa_1 = \mu\)) 其实就是我们已经熟悉的均值，而第二累积量 (\(\kappa_2 = \sigma^2\)) 就是方差。这告诉我们，前两阶的累积量与我们之前讨论的前两阶矩（或中心矩）是完全相同的。</p>
+                <h3>5. 累积量：描述形状的新视角（定义）</h3>
+                <img src="media/images/MomentScene_GIF5_CumulantsIntro_v2.gif" alt="GIF 5: 累积量定义">
+                <p><strong>动画演示:</strong> 为了更好地区分这些分布的形状，我们现在引入累积量的概念。之前展示不同分布的图形和统计数据会淡出。屏幕左上角会出现标题 "Cumulants (\(\kappa\))"，紧接着下方会列出前几阶累积量的定义：\(\kappa_1 = \text{Mean}\)，\(\kappa_2 = \text{Variance}\)，以及 \(\kappa_3, \kappa_4, \dots\) 用于捕捉其他形状细节。这部分内容现在固定在屏幕左上角，为后续演示留出空间。</p>
                 <p><strong>旁白 (VO):</strong> "为了更好地区分分布形状，并提炼出'纯粹'的统计依赖关系，我们引入累积量（用 (\(\kappa\)) 或双尖括号 (\(\langle\langle \dots \rangle\rangle\)) 表示）。第一累积量 (\(\kappa_1\)) 就是均值 (\(\mu\))，第二累积量 (\(\kappa_2\)) 就是方差 (\(\sigma^2\))。"</p>
             </div>
 
             <div class="gif-block">
-                <h3>5. 高阶累积量：洞察细微差异</h3>
-                <img src="media/images/MomentScene_GIF5_HigherCumulants.gif" alt="GIF 5: 高阶累积量区分复杂形状">
-                <p><strong>动画演示:</strong> 关键在于更高阶的累积量，例如 (\(\kappa_3, \kappa_4, \dots\))。它们能够捕捉到那些仅凭简单的均值和方差所忽略的分布形状细节。动画会再次展示之前我们看到的那两个均值和方差相同但形状不同的分布。但现在，通过计算并显示它们的高阶累积量（比如 (\(\kappa_3\)) 或 (\(\kappa_4\))），我们就能清楚地看到这些高阶累积量的值是不同的，从而成功地区分了这两个分布。动画可能还会简要提及高斯分布的一个特殊性质，那就是它的所有三阶及以上 (即 (\(n > 2\))) 的累积量 (\(\kappa_n\)) 都严格为0。这进一步强调了累积量在刻画分布的非高斯性时的重要作用。</p>
-                <p><strong>旁白 (VO):</strong> "关键在于高阶累积量（如 (\(\kappa_3, \kappa_4, \dots\))）。它们能捕捉到简单的均值和方差所忽略的分布形状细节，从而有效区分那些仅凭低阶矩看似相同的分布。例如，所有高斯分布的三阶及以上累积量都为零。"</p>
+                <h3>6. 高阶累积量：洞察细微差异</h3>
+                <img src="media/images/MomentScene_GIF6_HigherCumulants_v2.gif" alt="GIF 6: 高阶累积量区分复杂形状">
+                <p><strong>动画演示:</strong> 关键在于更高阶的累积量。在左上角累积量公式的下方，之前用于展示"矩的局限性"的两个不同分布（A和B）会以较小的尺寸重新出现，并排排列。动画会高亮显示左上角的 \(\kappa_3, \kappa_4, \dots\) 部分，然后从它引出箭头，分别指向分布A和分布B，并配以文字说明（如"Different Shape (e.g., Skew)"，"Different Shape (e.g., Bimodality)"）来强调这些高阶累积量如何捕捉到这些分布的独特特征，即使它们的低阶矩可能相似。屏幕下方最后会出现总结性文字，如"Higher cumulants (\(\kappa_3, \kappa_4, \dots\)) quantify these distinct features."，强调高阶累积量在区分复杂形状时的威力。</p>
+                <p><strong>旁白 (VO):</strong> "关键在于高阶累积量（如 (\(\kappa_3, \kappa_4, \dots\))）。它们能捕捉到简单的均值和方差所忽略的分布形状细节，从而有效区分那些仅凭低阶矩看似相同的分布。例如，所有高斯分布的三阶及以上累积量都为零，这使得高阶累积量成为衡量分布非高斯性的一个重要指标。"</p>
             </div>
         </div>
 
