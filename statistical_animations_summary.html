@@ -6,7 +6,7 @@
     <title>统计物理概念动画合集</title>
     <style>
         body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
-        .main-container { max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .main-container { max-width: 900px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         .scene-section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #ccc; }
         .scene-section:last-child { border-bottom: none; }
         .gif-block { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
@@ -14,7 +14,15 @@
         h1 { text-align: center; color: #2c3e50; margin-bottom: 30px;}
         h2 { color: #16a085; text-align: center; margin-bottom: 25px;} /* Scene title */
         h3 { color: #3498db; } /* GIF block title */
-        img { display: block; margin: 10px auto; max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        img { 
+            display: block; 
+            margin: 10px auto; 
+            width: 854px; 
+            height: 480px; 
+            border-radius: 4px; 
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            object-fit: contain;
+        }
         p { line-height: 1.6; text-align: justify;}
     </style>
     <script>
@@ -41,20 +49,20 @@
 
             <div class="gif-block">
                 <h3>1. 系统状态描述：向量 x, 概率 p(x), 可观测量 f(x) 与 p(f(x))</h3>
-                <img src="media/images/ProbScene_GIF1_FullIntro_v2.gif" alt="GIF 1: 系统状态描述：向量 x, 概率 p(x), 可观测量 f(x) 与 p(f(x))">
+                <img src="media/videos/brain_animation/480p15/IntroScene_GIF1.gif" alt="GIF 1: 系统状态描述：向量 x, 概率 p(x), 可观测量 f(x) 与 p(f(x))">
                 <p><strong>动画演示:</strong> 在这个动画中，我们首先会看到一群随机运动的抽象粒子。接着，屏幕上出现符号 \(x\)，它代表了系统的瞬时状态。然后您会注意到，当 \(x\) 被定义为N维向量 \(x \in \mathbb{R}^N\) 时，这个符号会演变为 \(x \in \mathbb{R}^N\)，同时粒子们会排列成一条直线，这样就形象地展示了N维向量的概念。紧随其后，概率密度函数 \(p(x)\) 登场，它描述了我们找到系统处于特定状态 \(x\) 的可能性大小。再然后，通过一个高亮显示的粒子，我们引出了可观测量 \(f(x)\)，它代表了对特定状态的一次测量。最后，我们引入了 \(p(f(x))\)，也就是这个可观测量的概率分布。所有这些重要的符号会和动态的粒子一起展示一段时间，然后渐渐淡出，为我们下一阶段的分析做好准备。</p>
                 <p><strong>旁白 (VO):</strong> "想象一下，我们想描述一个神经元的活动，或者一群粒子的位置。这些都是随机变量，它们的状态可以用一个向量 \(x \in \mathbb{R}^N\) 来表示。我们如何精确描述它们的行为呢？首先，我们需要概率密度函数 \(p(x)\)。对于系统，我们可以进行观测，这些可观测量是系统状态的函数，记为 \(f(x)\)。而我们通常关注的是这个可观测量的概率分布 \(p(f(x))\)。"</p>
             </div>
 
             <div class="gif-block">
                 <h3>2. 数据点、坐标轴(f(x), p(f(x)))与直方图</h3>
-                <img src="media/images/ProbScene_GIF2_DataToHist_v2.gif" alt="GIF 2: 数据点、坐标轴(f(x), p(f(x)))与直方图">
+                <img src="media/videos/brain_animation/480p15/IntroScene_GIF2.gif" alt="GIF 2: 数据点、坐标轴(f(x), p(f(x)))与直方图">
                 <p><strong>动画演示:</strong> 在我们了解了基本概念之后，您会看到场景中首先出现了一个坐标系，横轴是可观测量 \(f(x)\)，纵轴则是它的概率密度 \(p(f(x))\)。紧接着，大量的随机数据点，就如同我们对神经元活动进行了多次测量一样，出现在坐标轴的下方。这些数据点代表了对可观测量 \(f(x)\) 的多次测量结果。请注意观察，这些数据点是如何开始聚集成一些初步的直方图条形的。我们通过统计落在不同区间内的数据点数量，并进行归一化处理，就得到了这些直方图线条。这些线条展示了数据分布的初步形态，而它们的高度，则直接反映了对应区间的概率密度值。</p>
             </div>
 
             <div class="gif-block">
                 <h3>3. 直方图到PDF(基于p(f(x)))及性质</h3>
-                <img src="media/images/ProbScene_GIF3_HistToPDF_v2.gif" alt="GIF 3: 直方图到PDF(基于p(f(x)))及性质">
+                <img src="media/videos/brain_animation/480p15/IntroScene_GIF3.gif" alt="GIF 3: 直方图到PDF(基于p(f(x)))及性质">
                 <p><strong>动画演示:</strong> 随着我们加入更多的数据点，之前形成的、基于概率密度的直方图条形会继续增长和调整，逐渐显现出平滑的轮廓。最终，这些条形会过渡并演化成一条平滑的曲线，这就是我们所说的概率密度函数 (PDF)，比如一条高斯曲线。这条曲线下的面积就对应着概率。动画接下来会为我们展示PDF的一些重要性质，例如，屏幕上会出现公式 \(p(y) = \langle\delta(x-y)\rangle_x\)，它解释了PDF的一种重要理论表达。随后，动画还会演示PDF曲线下总面积被填充的过程，并显示公式 \(\int p(x)dx = 1\)，以此来强调总概率为1的重要性。</p>
             </div>
 
@@ -81,13 +89,6 @@
                 <img src="media/images/FormulaScene_GIF4_Expectation.gif" alt="GIF 3.4: 期望值的解释">
                 <p><strong>动画演示:</strong> 最后，动画为我们解释了 \(\langle \dots \rangle_x\) 这个符号的含义，它表示对所有可能的随机状态 \(x\) 取统计平均，也就是期望值。在视觉上，我们会看到大量随机采样的 \(x\) 点，这些点的分布可能遵循某个潜在的 \(P_{underlying}(x)\)。对于每一个 \(x\)，当它接近某个特定的 \(y\) 值时，就会产生一个 \(\delta(x-y)\) 响应。动画会示意我们如何将这些响应'平均'起来，最终在 \(y\) 处得到一个值，而这个值就对应于 \(p(y)\)。这就强调了 \(p(y) = \langle\delta(x-y)\rangle_x\) 的深刻含义：通过对 \(\delta(x-y)\) 在大量随机观测下的'响应强度'进行平均，我们就能够得到系统处于特定状态 \(y\) 的概率密度。</p>
             </div>
-
-            <div class="gif-block">
-                <h3>4. 可观测量的初步引入</h3>
-                <img src="media/images/ProbScene_GIF4_ObservableIntro_v2.gif" alt="GIF 4: 可观测量概念总结">
-                <p><strong>动画演示:</strong> 在我们深入理解了概率密度函数之后，动画会再次带我们回到'可观测量'这个概念。这部分内容可以看作是一个抽象的测量过程的总结。比如说，一个探针接触到随机信号，仪表盘的指针经过摆动后稳定在一个平均值上。此时，屏幕上会出现公式 \(\langle f(x) \rangle = \int p(x)f(x)dx\)，并配有文字解释'对所有可能状态的加权平均'。这为我们后续更深入的讨论，比如不同类型的可观测量或其矩的分析，铺平了道路。</p>
-                <p><strong>旁白 (VO):</strong> "对于系统，我们可以进行观测，比如测量神经元的平均放电率，或者粒子的平均位置。这些可观测量是系统状态的函数，记为 \(f(x)\)。它们的平均值，即期望值 \(\langle f(x) \rangle\)，包含了关于系统的重要信息。"</p>
-            </div>
         </div>
 
         <div class="scene-section">
@@ -98,9 +99,9 @@
 
             <div class="gif-block">
                 <h3>前导：泰勒展开与矩的引入</h3>
-                <img src="media/images/taylor_expansion_for_moments_scene_v1.gif" alt="GIF 0: 泰勒展开与矩的引入">
-                <p><strong>动画演示:</strong> 这个动画展示了如何从一个一般的可观测量 \(f(x)\) 出发，通过对其进行泰勒展开，自然地引出各阶矩的概念。首先，我们展示函数 \(f(x)\)。接着，将其在 \(x=0\) 附近进行泰勒展开，显示出展开式的前几项：\(f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \frac{f'''(0)}{3!}x^3 + c_4 x^4 + \dots\)，其中 \(c_4 x^4\) 是对四阶项的简化表示。然后，对整个展开式两边取期望值，得到 \(\langle f(x) \rangle = f(0) + f'(0)\langle x \rangle + \frac{f''(0)}{2!}\langle x^2 \rangle + \frac{f'''(0)}{3!}\langle x^3 \rangle + c_4 \langle x^4 \rangle + \dots\)。在这个过程中，（尽管此版本动画中高亮矩的部分因技术问题暂时移除）原始意图是逐项高亮 \(\langle x \rangle\) (一阶矩，均值)，\(\langle x^2 \rangle\) (二阶矩)，\(\langle x^3 \rangle\) (三阶矩)，以及 \(c_4 \langle x^4 \rangle\) (与四阶矩相关项)，并给出文字说明。最后，动画会展示矩的一般定义式 \(\langle x^n \rangle = \int_{-\infty}^{\infty} x^n p(x) dx\)。为了更具体地说明，动画接着会给出例子，例如当 \(n=1\) 时，该定义对应于均值 \(\langle x \rangle = \int x p(x) dx\)，而当 \(n=2\) 时，它对应于二阶原点矩 \(\langle x^2 \rangle = \int x^2 p(x) dx\)。随后还会展示多变量情况下矩的推广定义，以此总结如何从可观测量的展开中引出矩的概念。</p>
-                <p><strong>旁白 (VO):</strong> "为了系统地理解可观测量的统计特性，我们常常分析它的各阶矩。一个强大的方法是从可观测函数的泰勒展开入手。考虑一个可观测量 \(f(x)\)，如果它足够平滑，我们可以在某一点（比如 \(x=0\)）附近将其展开成幂级数。当对这个展开式取期望时，每一项都自然地对应于 \(x\) 的不同幂次的期望值，也就是我们所说的各阶矩。这个过程为我们理解均值、方差乃至更高阶的统计量提供了一个统一的视角。"</p>
+                <img src="media/videos/brain_animation/480p15/TaylorExpansionScene.gif" alt="GIF 0: 泰勒展开与矩的引入">
+                <p><strong>动画演示:</strong> 这个动画展示了如何从一个一般的可观测量 \(f(x)\) 出发，通过对其进行泰勒展开，自然地引出各阶矩的概念。首先，我们展示一个简单的二次函数 \(f(x) = x^2\) 作为示例。接着，将其在 \(x=0\) 附近进行泰勒展开，显示出展开式的前几项：\(f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \frac{f'''(0)}{3!}x^3 + \cdots\)。在展示每一项时，动画都会在坐标系中显示对应的几何意义：常数项、切线、二阶近似等。然后，对整个展开式两边取期望值，得到 \(\langle f(x) \rangle = f(0) + f'(0)\langle x \rangle + \frac{f''(0)}{2!}\langle x^2 \rangle + \frac{f'''(0)}{3!}\langle x^3 \rangle + \cdots\)。在这个过程中，动画高亮显示了各阶矩：\(\langle x \rangle\) (一阶矩，均值)，\(\langle x^2 \rangle\) (二阶矩)，\(\langle x^3 \rangle\) (三阶矩)。最后，动画展示了矩的一般定义式 \(\langle x^n \rangle = \int_{-\infty}^{\infty} x^n p(x) dx\)。</p>
+                <p><strong>旁白 (VO):</strong> "为了系统地理解可观测量的统计特性，我们从泰勒展开入手。考虑一个可观测量 \(f(x)\)，如果它足够平滑，我们可以在某一点（比如 \(x=0\)）附近将其展开成幂级数。当对这个展开式取期望时，每一项都自然地对应于 \(x\) 的不同幂次的期望值，也就是我们所说的各阶矩。这个过程为我们理解均值、方差乃至更高阶的统计量提供了一个统一的视角。"</p>
             </div>
 
             <div class="gif-block">
