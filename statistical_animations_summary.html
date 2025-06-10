@@ -24,6 +24,41 @@
             object-fit: contain;
         }
         p { line-height: 1.6; text-align: justify;}
+        
+        /* 并排布局样式 */
+        .side-by-side {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .side-item {
+            width: 48%;
+            box-sizing: border-box;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .side-item h4 {
+            text-align: center;
+            color: #2980b9;
+            margin-top: 0;
+        }
+        .side-item img {
+            width: 100%;
+            height: auto;
+        }
+        .side-item p {
+            font-size: 0.95em;
+            margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .side-item {
+                width: 100%;
+            }
+        }
     </style>
     <script>
         MathJax = {
@@ -47,47 +82,141 @@
         <div class="scene-section">
             <h2>场景 1: 概率与可观测量</h2>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[5, 10, 14]">
                 <h3>1. 系统状态描述：向量 x, 概率 p(x), 可观测量 f(x) 与 p(f(x))</h3>
-                <img src="media/videos/brain_animation/480p15/IntroScene_GIF1.gif" alt="GIF 1: 系统状态描述：向量 x, 概率 p(x), 可观测量 f(x) 与 p(f(x))">
-                <p><strong>动画演示:</strong> 在这个动画中，我们首先会看到一群随机运动的抽象粒子。接着，屏幕上出现符号 \(x\)，它代表了系统的瞬时状态。然后您会注意到，当 \(x\) 被定义为N维向量 \(x \in \mathbb{R}^N\) 时，这个符号会演变为 \(x \in \mathbb{R}^N\)，同时粒子们会排列成一条直线，这样就形象地展示了N维向量的概念。紧随其后，概率密度函数 \(p(x)\) 登场，它描述了我们找到系统处于特定状态 \(x\) 的可能性大小。再然后，通过一个高亮显示的粒子，我们引出了可观测量 \(f(x)\)，它代表了对特定状态的一次测量。最后，我们引入了 \(p(f(x))\)，也就是这个可观测量的概率分布。所有这些重要的符号会和动态的粒子一起展示一段时间，然后渐渐淡出，为我们下一阶段的分析做好准备。</p>
-                <p><strong>旁白 (VO):</strong> "想象一下，我们想描述一个神经元的活动，或者一群粒子的位置。这些都是随机变量，它们的状态可以用一个向量 \(x \in \mathbb{R}^N\) 来表示。我们如何精确描述它们的行为呢？首先，我们需要概率密度函数 \(p(x)\)。对于系统，我们可以进行观测，这些可观测量是系统状态的函数，记为 \(f(x)\)。而我们通常关注的是这个可观测量的概率分布 \(p(f(x))\)。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/IntroScene_GIF1.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>欢迎来到统计场论的奇妙世界！<br />🎉 想象一下你面前有一群随机运动的小粒子——它们可能是神经元在放电，也可能是股市里跳动的数字。<br />这个动画首先让我们看到这些"小家伙们"在屏幕上自由舞蹈，然后神奇的事情发生了：一个符号 \(x\) 出现了！<br />这就是我们用来描述系统瞬时状态的"身份证"。</p>
+                
+                <p>当 \(x\) 进化成 \(x \in \mathbb{R}^N\) 时，那些随意游走的粒子突然排成了一条整齐的队列——这就是N维向量的视觉化展示！<br />紧接着，概率密度函数 \(p(x)\) 华丽登场，它就像一个"可能性探测器"，告诉我们系统出现在某个特定状态的几率有多大。</p>
+                
+                <p>然后我们遇到了可观测量 \(f(x)\)——简单来说，就是我们实际能测量到的东西，比如神经元的平均放电率，或者粒子的平均位置。<br />它们的期望值 \(\langle f(x) \rangle\) 就像是从无数次测量中提炼出的"精华"，包含了关于系统最重要的信息。<br />这些概念不只是抽象的数学符号，它们是我们理解复杂随机世界的基本工具！</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[4, 9, 14]">
                 <h3>2. 数据点、坐标轴(f(x), p(f(x)))与直方图</h3>
-                <img src="media/videos/brain_animation/480p15/IntroScene_GIF2.gif" alt="GIF 2: 数据点、坐标轴(f(x), p(f(x)))与直方图">
-                <p><strong>动画演示:</strong> 在我们了解了基本概念之后，您会看到场景中首先出现了一个坐标系，横轴是可观测量 \(f(x)\)，纵轴则是它的概率密度 \(p(f(x))\)。紧接着，大量的随机数据点，就如同我们对神经元活动进行了多次测量一样，出现在坐标轴的下方。这些数据点代表了对可观测量 \(f(x)\) 的多次测量结果。请注意观察，这些数据点是如何开始聚集成一些初步的直方图条形的。我们通过统计落在不同区间内的数据点数量，并进行归一化处理，就得到了这些直方图线条。这些线条展示了数据分布的初步形态，而它们的高度，则直接反映了对应区间的概率密度值。</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/IntroScene_GIF2.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>现在到了激动人心的部分！<br />📊 屏幕上首先出现一个坐标系——横轴是我们的可观测量 \(f(x)\)，纵轴是它的概率密度 \(p(f(x))\)。<br />接下来就像魔法一样：大量的数据点开始从天而降！<br />这些小点点代表着我们对神经元活动进行的无数次测量结果。</p>
+                
+                <p>观测现实世界的随机现象时，我们收集到的总是有限的数据点。<br />但正是通过这些点点滴滴的积累，我们才能窥见隐藏在随机性背后的深层规律。<br />你会看到这些数据点开始"抱团"，形成直方图的雏形——这个过程展示了从离散观测到连续概率分布的关键转变，就像从无序的拼图碎片逐渐拼出完整的图案！</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[7, 11, 14]">
                 <h3>3. 直方图到PDF(基于p(f(x)))及性质</h3>
-                <img src="media/videos/brain_animation/480p15/IntroScene_GIF3.gif" alt="GIF 3: 直方图到PDF(基于p(f(x)))及性质">
-                <p><strong>动画演示:</strong> 随着我们加入更多的数据点，之前形成的、基于概率密度的直方图条形会继续增长和调整，逐渐显现出平滑的轮廓。最终，这些条形会过渡并演化成一条平滑的曲线，这就是我们所说的概率密度函数 (PDF)，比如一条高斯曲线。这条曲线下的面积就对应着概率。动画接下来会为我们展示PDF的一些重要性质，例如，屏幕上会出现公式 \(p(y) = \langle\delta(x-y)\rangle_x\)，它解释了PDF的一种重要理论表达。随后，动画还会演示PDF曲线下总面积被填充的过程，并显示公式 \(\int p(x)dx = 1\)，以此来强调总概率为1的重要性。</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/IntroScene_GIF3.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>见证奇迹的时刻到了！<br />✨ 随着越来越多的数据点加入，那些粗糙的直方图条开始变得优雅起来。<br />它们慢慢融合、平滑，最终华丽变身成一条流畅的曲线——这就是大名鼎鼎的概率密度函数(PDF)！<br />可能是经典的钟形高斯曲线，也可能是其他有趣的形状。</p>
+                
+                <p>这里体现了统计学的一个核心思想：从离散到连续，从有限到无限。<br />当我们看到公式 \(p(y) = \langle\delta(x-y)\rangle_x\) 时，别被它吓到——它其实在说：这个概率密度就是系统处于状态 \(y\) 附近的平均"响应强度"。<br />而曲线下方被逐渐填充的面积，优雅地展示了 \(\int p(x)dx = 1\) 这个基本真理：所有可能性加起来必须等于100%！</p>
             </div>
 
-            <div class="gif-block">
+
+
+            <div class="gif-block" data-steps="[4, 8]">
                 <h3>3.1 公式概览：\(p(y) = \langle\delta(x-y)\rangle_x\)</h3>
-                <img src="media/images/FormulaScene_GIF1_FormulaAndPy.gif" alt="GIF 3.1: 公式总览与 p(y) 的解释">
-                <p><strong>动画演示:</strong> 这个动画片段专注于解释概率密度函数 \(p(y)\) 的核心定义公式：\(p(y) = \langle\delta(x-y)\rangle_x\)。首先，您会看到完整的公式在屏幕上方清晰展示。然后，动画的焦点会移到公式的左侧，也就是 \(p(y)\)，同时文字会解释它就是'概率密度函数'。为了更直观地展示其含义，动画还会配上一个示例性的PDF曲线图，告诉我们它描述的是随机变量取特定值 \(y\) 附近的相对可能性大小。</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=0,10" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>准备好迎接一个看起来有点"吓人"但实际上很友好的公式了吗？<br />😄 \(p(y) = \langle\delta(x-y)\rangle_x\) 这个等式就像是概率论的"身份证"。<br />动画首先展示完整的公式，然后聚焦到左边的 \(p(y)\)——这就是我们的概率密度函数，它描述的是随机变量取特定值 \(y\) 附近的相对可能性大小。<br />配上一个示例性的PDF曲线图，你就能直观地理解它在说什么了！</p>
             </div>
 
             <div class="gif-block">
                 <h3>3.2 解释 \(y\) (特定状态) 与 \(x\) (随机状态)</h3>
-                <img src="media/images/FormulaScene_GIF2_YandX.gif" alt="GIF 3.2: y 和 x 的解释">
-                <p><strong>动画演示:</strong> 在公式 \(p(y) = \langle\delta(x-y)\rangle_x\) 中，动画首先会为我们解释 \(y\)。文字会说明，\(y\) 代表的是'特定的观测值或状态'，也就是我们希望了解其概率密度的那个确切结果。在视觉上，我们会通过数轴上的一个固定点来表示 \(y\)。接着，动画会解释 \(x\)。文字告诉我们，\(x\) 是'系统的瞬时随机状态'，代表了系统内部那些不断随机变化的变量或数值。相应地，视觉上则会通过数轴上一个不断随机移动的点（或者多个随机点）来表示 \(x\)。</p>
+                <p>让我们来玩一个"角色扮演"游戏！<br />在公式 \(p(y) = \langle\delta(x-y)\rangle_x\) 中，\(y\) 和 \(x\) 就像两个性格完全不同的角色。</p>
+                
+                <div class="side-by-side">
+                    <div class="side-item">
+                        <h4>\(y\): 特定状态（固定值）</h4>
+                        <div style="height: 200px; background-color: #e8f4f8; position: relative; overflow: hidden; border-radius: 8px;">
+                            <div style="position: absolute; top: 50%; left: 10%; right: 10%; height: 4px; background-color: #333;"></div>
+                            <div style="position: absolute; top: calc(50% - 8px); left: 50%; width: 16px; height: 16px; background-color: #3498db; border-radius: 50%; transform: translateX(-8px); animation: pulse 2s infinite;">
+                                <div style="position: absolute; top: -30px; font-weight: bold; color: #2c3e50; font-size: 20px;">y</div>
+                            </div>
+                            <style>
+                                @keyframes pulse {
+                                    0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+                                    70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+                                    100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+                                }
+                            </style>
+                            <div style="position: absolute; bottom: 30px; width: 100%; text-align: center; color: #2c3e50;">
+                                固定位置，不随时间变化
+                            </div>
+                        </div>
+                        <p>\(y\) 就像一个<strong>专一的守护者</strong>，它代表我们想要了解概率密度的那个确切结果。<br />在视觉上，它是数轴上的一个<strong>稳定的灯塔</strong>，永远在那里等着我们去探索。</p>
+                    </div>
+                    
+                    <div class="side-item">
+                        <h4>\(x\): 随机状态（变量）</h4>
+                        <div style="height: 200px; background-color: #f8e8e8; position: relative; overflow: hidden; border-radius: 8px;">
+                            <div style="position: absolute; top: 50%; left: 10%; right: 10%; height: 4px; background-color: #333;"></div>
+                            <div id="xRandomPoint" style="position: absolute; top: calc(50% - 8px); left: 50%; width: 16px; height: 16px; background-color: #e74c3c; border-radius: 50%; transform: translateX(-8px); transition: left 0.5s ease-out;">
+                                <div style="position: absolute; top: -30px; font-weight: bold; color: #2c3e50; font-size: 20px;">x</div>
+                            </div>
+                            <script>
+                                (function() {
+                                    const xPoint = document.getElementById('xRandomPoint');
+                                    function moveRandomly() {
+                                        // 生成10%-90%之间的随机位置
+                                        const randomPosition = 10 + Math.random() * 80;
+                                        xPoint.style.left = `${randomPosition}%`;
+                                        
+                                        // 随机时间后再次移动
+                                        const randomDelay = 500 + Math.random() * 1000;
+                                        setTimeout(moveRandomly, randomDelay);
+                                    }
+                                    // 开始随机移动
+                                    setTimeout(moveRandomly, 500);
+                                })();
+                            </script>
+                            <div style="position: absolute; bottom: 30px; width: 100%; text-align: center; color: #2c3e50;">
+                                随机移动，表示系统状态变化
+                            </div>
+                        </div>
+                        <p>\(x\) 是<strong>系统的自由灵魂</strong>，代表了那些不断随机变化的系统状态。它就像一个<strong>永不停歇的探险家</strong>，在数轴上不断跳跃，探索着所有可能的位置。</p>
+                    </div>
+                </div>
+                
+                <p>当我们计算 \(p(y)\) 时，实际上是在测量随机变量 \(x\) 处于特定值 \(y\) 附近的概率密度。\(\delta(x-y)\) 函数就像一个超级挑剔的"探测器"——只有当 \(x = y\) 时才会激动地响应！而 \(\langle\dots\rangle_x\) 表示我们要对所有可能的 \(x\) 状态取平均。</p>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <video width="70%" height="auto">
+                        <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=10,20" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[24, 28]">
                 <h3>3.3 狄拉克 \(\delta\) 函数：\(\delta(x-y)\)</h3>
-                <img src="media/images/FormulaScene_GIF3_DeltaFunction.gif" alt="GIF 3.3: 狄拉克 Delta 函数的解释">
-                <p><strong>动画演示:</strong> 现在，动画的焦点集中在 \(\delta(x-y)\) 这一项上，它为我们解释了什么是狄拉克 Delta 函数。通过文字描述，我们了解到它的特性：这是一个理想化的'选择器'或'探针'。当系统的瞬时状态 \(x\) 正好是我们所关注的特定状态 \(y\) 时（也就是说，当 \(x=y\) 时），它会产生一个无限大的尖锐响应，并且其积分为1；而当 \(x \neq y\) 时，它的值则为零。在视觉上，我们会看到一个坐标系，其中 \(y\) 是固定的，一个移动的 \(x\) 点在横轴上扫过。请注意观察，当 \(x\) 经过 \(y\) 点时，一个尖锐的脉冲（也就是Delta函数）就会在 \(y\) 的位置出现，否则这个脉冲就会消失。</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=20,30" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>现在让我们认识一个数学界的"传奇人物"——狄拉克Delta函数！🎯 这个 \(\delta(x-y)\) 看起来简单，实际上是个超级厉害的"选择器"。想象它是一个极其挑剔的朋友：当系统的瞬时状态 \(x\) 正好等于我们关注的特定状态 \(y\) 时（也就是 \(x=y\) 的瞬间），它会爆发出无限大的热情！而当 \(x \neq y\) 时，它就完全沉默，值为零。</p>
+                
+                <p>在动画中，你会看到一个坐标系，\(y\) 像个稳重的守卫站在固定位置，而 \(x\) 点在横轴上到处游走。神奇的时刻出现了：每当 \(x\) 经过 \(y\) 点时，就会有一个尖锐的脉冲在 \(y\) 位置闪现——这就是Delta函数在"工作"！其他时候？一片安静，什么都没有。</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[34, 38]">
                 <h3>3.4 期望值 \(\langle\dots\rangle_x\)：对所有 \(x\) 取平均</h3>
-                <img src="media/images/FormulaScene_GIF4_Expectation.gif" alt="GIF 3.4: 期望值的解释">
-                <p><strong>动画演示:</strong> 最后，动画为我们解释了 \(\langle \dots \rangle_x\) 这个符号的含义，它表示对所有可能的随机状态 \(x\) 取统计平均，也就是期望值。在视觉上，我们会看到大量随机采样的 \(x\) 点，这些点的分布可能遵循某个潜在的 \(P_{underlying}(x)\)。对于每一个 \(x\)，当它接近某个特定的 \(y\) 值时，就会产生一个 \(\delta(x-y)\) 响应。动画会示意我们如何将这些响应'平均'起来，最终在 \(y\) 处得到一个值，而这个值就对应于 \(p(y)\)。这就强调了 \(p(y) = \langle\delta(x-y)\rangle_x\) 的深刻含义：通过对 \(\delta(x-y)\) 在大量随机观测下的'响应强度'进行平均，我们就能够得到系统处于特定状态 \(y\) 的概率密度。</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=30,40" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>最后一块拼图来了！ \(\langle \dots \rangle_x\) 这个符号代表着统计学中最核心的操作——期望值，也就是对所有可能的随机状态 \(x\) 取统计平均。为什么要把 \(x\) 乘以概率呢？这其实触及了统计学的一个超级重要概念！</p>
+                
+                <p>动画会展示大量随机采样的 \(x\) 点，它们按照某个潜在的分布 \(P_{underlying}(x)\) 进行分布。对于每一个 \(x\)，当它靠近某个特定的 \(y\) 值时，就会产生一个 \(\delta(x-y)\) 响应。然后魔法发生了：我们把这些响应"平均"起来，最终在 \(y\) 处得到一个值——这就是 \(p(y)\)！</p>
+                
+                <p>将变量 \(x\) 与其概率密度 \(p(x)\) 相乘后积分，实际上是在计算一个加权平均。通过对 \(\delta(x-y)\) 在大量随机观测下的"响应强度"进行平均，我们就能得到系统处于特定状态 \(y\) 的概率密度。这就是 \(p(y) = \langle\delta(x-y)\rangle_x\) 的深刻含义！</p>
             </div>
         </div>
 
@@ -97,56 +226,791 @@
             <p><strong>概念引入 (源自VO脚本):</strong> "期望值可以通过对可观测量 \(f(x)\) 进行泰勒展开来计算，这自然地引出了'矩'的概念。如果我们将 \(f(x)\) 围绕原点展开，那么展开式中的系数就与 \(x\) 的各阶幂次的期望值，即各阶矩，联系起来了。"</p>
             <p>在理解这一概念时，脚本中设想的视觉表现为：首先展示 \(f(x)\) 的泰勒展开式 \(f(x) = f(0) + f'(0)x + f''(0)x^2/2! + \dots\)。取期望后，我们得到 \(\langle f(x) \rangle = f(0) + f'(0)\langle x \rangle + f''(0)\langle x^2 \rangle/2! + \dots\)。由此，矩的定义，例如多变量情况下的 \(\langle x_1^{n_1}\dots x_N^{n_N} \rangle := \int p(x) x_1^{n_1}\dots x_N^{n_N} dx\)，被突出显示，为后续讨论具体的矩（如均值和方差）奠定了基础。</p>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[3, 5, 7, 9]">
                 <h3>前导：泰勒展开与矩的引入</h3>
-                <img src="media/videos/brain_animation/480p15/TaylorExpansionScene.gif" alt="GIF 0: 泰勒展开与矩的引入">
-                <p><strong>动画演示:</strong> 这个动画展示了如何从一个一般的可观测量 \(f(x)\) 出发，通过对其进行泰勒展开，自然地引出各阶矩的概念。首先，我们展示一个简单的二次函数 \(f(x) = x^2\) 作为示例。接着，将其在 \(x=0\) 附近进行泰勒展开，显示出展开式的前几项：\(f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \frac{f'''(0)}{3!}x^3 + \cdots\)。在展示每一项时，动画都会在坐标系中显示对应的几何意义：常数项、切线、二阶近似等。然后，对整个展开式两边取期望值，得到 \(\langle f(x) \rangle = f(0) + f'(0)\langle x \rangle + \frac{f''(0)}{2!}\langle x^2 \rangle + \frac{f'''(0)}{3!}\langle x^3 \rangle + \cdots\)。在这个过程中，动画高亮显示了各阶矩：\(\langle x \rangle\) (一阶矩，均值)，\(\langle x^2 \rangle\) (二阶矩)，\(\langle x^3 \rangle\) (三阶矩)。最后，动画展示了矩的一般定义式 \(\langle x^n \rangle = \int_{-\infty}^{\infty} x^n p(x) dx\)。</p>
-                <p><strong>旁白 (VO):</strong> "为了系统地理解可观测量的统计特性，我们从泰勒展开入手。考虑一个可观测量 \(f(x)\)，如果它足够平滑，我们可以在某一点（比如 \(x=0\)）附近将其展开成幂级数。当对这个展开式取期望时，每一项都自然地对应于 \(x\) 的不同幂次的期望值，也就是我们所说的各阶矩。这个过程为我们理解均值、方差乃至更高阶的统计量提供了一个统一的视角。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/TaylorExpansionScene.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>准备好来一次数学的"考古"之旅吗？🔍 我们要从一个看似简单的可观测量 \(f(x)\) 开始，通过泰勒展开这个强大的数学工具，挖掘出"矩"这个宝藏概念！</p>
+                
+                <p>动画从一个简单的二次函数 \(f(x) = x^2\) 开始（没错，就是这么朴实无华），然后在 \(x=0\) 附近进行泰勒展开。你会看到展开式的前几项逐一登场：\(f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \frac{f'''(0)}{3!}x^3 + \cdots\)。每一项都在坐标系中展示它们的几何意义——常数项、切线、二阶近似等等，就像乐队的乐器一个个加入演奏。</p>
+                
+                <p>然后神奇的事情发生了：当我们对整个展开式取期望值时，各阶矩就像明星一样闪亮登场！\(\langle x \rangle\)（一阶矩，我们熟悉的均值）、\(\langle x^2 \rangle\)（二阶矩）、\(\langle x^3 \rangle\)（三阶矩）...最后，矩的一般定义式 \(\langle x^n \rangle = \int_{-\infty}^{\infty} x^n p(x) dx\) 优雅地出现，为我们理解均值、方差乃至更高阶统计量提供了一个统一而美妙的视角。</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[4, 8]">
                 <h3>1. 矩：均值与方差</h3>
-                <img src="media/images/MomentScene_GIF1_MeanVariance_v2.gif" alt="GIF 1: 均值与方差">
-                <p><strong>动画演示:</strong> 我们从一个标准高斯概率分布 \(P(x)\) 开始。首先展示的是均值 (\(\mu = \langle x \rangle\))，它通过一条垂直的虚线标示出分布的中心。接着，动画会引入方差 (\(\sigma^2 = \langle (x-\mu)^2 \rangle\)) 的概念，通过在均值两侧标出 \(\pm \sigma\) 的范围，并用特定颜色填充该区域，来形象地展示方差如何度量分布的离散程度或宽度。相应的数学符号和文字标签（如"Mean", "Variance"）也会一并出现。</p>
-                <p><strong>旁白 (VO):</strong> "一阶矩 (\(\langle x \rangle\)) 就是我们熟悉的均值（用 (\(\mu\)) 表示），它告诉我们分布的中心位置。二阶中心矩 (\(\langle (x - \langle x \rangle)^2 \rangle\)) 是方差（用 (\(\sigma^2\)) 表示），描述了分布的离散程度或展宽。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=0,10" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>现在让我们认识概率分布的"基本信息"！📋 从一个优雅的标准高斯分布开始，首先登场的是均值 \(\mu = \langle x \rangle\)——它就像分布的"重心"，用一条垂直虚线标出分布的中央位置。</p>
+                
+                <p>接下来是方差 \(\sigma^2 = \langle (x-\mu)^2 \rangle\)，它描述的是数据的"散布程度"。动画会在均值两侧标出 \(\pm \sigma\) 的范围，并用特定颜色填充这个区域——这就是大名鼎鼎的"一个标准差范围"！这些基本统计量就像分布的"身份证"，为我们提供了理解随机现象的第一把钥匙。想象一下，一阶矩告诉你"中心在哪里"，二阶矩告诉你"散得有多开"——简单而强大！</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[14, 18]">
                 <h3>2. 偏度 (Skewness)</h3>
-                <img src="media/images/MomentScene_GIF2_Skewness_v1.gif" alt="GIF 2: 偏度">
-                <p><strong>动画演示:</strong> 在介绍了均值和方差之后，动画过渡到偏度。初始的高斯分布会首先转变为一个正偏（右偏）分布（例如使用偏斜正态分布实现），此时屏幕右侧会出现标签"正偏度 (Right Skew)"和数学符号 \(\gamma_1 > 0\)。然后，分布会转变为负偏（左偏）分布，标签相应变为"负偏度 (Left Skew)"和 \(\gamma_1 < 0\)。最后，动画会展示偏度的定义公式：\(\gamma_1 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^3 \right]\)。</p>
-                <p><strong>旁白 (VO):</strong> "三阶矩与偏斜度 (Skewness) 相关，它衡量了分布的不对称性。正偏斜意味着分布的右尾更长，负偏斜则意味着左尾更长。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=10,20" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>准备好看分布"变身"了吗？✨ 在认识了均值和方差这对"基础组合"之后，我们要探索更高阶的矩——它们就像分布的"个性特征"，如同每个人独特的指纹！</p>
+                
+                <p>初始的对称高斯分布开始展现它的"性格"：首先变成正偏（右偏）分布，就像一个向右伸长舌头的调皮鬼，屏幕会显示"正偏度 (Right Skew)"和 \(\gamma_1 > 0\)。然后它又变脸成负偏（左偏）分布，像是向左撅嘴的小朋友，标签变为"负偏度 (Left Skew)"和 \(\gamma_1 < 0\)。</p>
+                
+                <p>三阶矩与偏斜度密切相关，它揭示了分布的不对称性：是尾巴向右拖长（右偏），还是向左拖长（左偏）？最后出现的偏度定义公式 \(\gamma_1 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^3 \right]\) 看起来复杂，实际上就是在标准化后计算三次方的期望——很酷，对吧？</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[24, 28]">
                 <h3>3. 峰度 (Kurtosis)</h3>
-                <img src="media/images/MomentScene_GIF3_Kurtosis_v1.gif" alt="GIF 3: 峰度">
-                <p><strong>动画演示:</strong> 偏度演示完毕后，分布会恢复到标准高斯形态，作为峰度演示的基准（正态峰，Mesokurtic, \(\gamma_2 = 0\)，其中 \(\gamma_2\) 指超额峰度）。接着，高斯分布的虚影会保留在背景中，前景的分布曲线会首先变换为一个更尖峭、尾部更厚的分布（例如t分布），屏幕右侧标签显示"尖峰 (Leptokurtic)"和 \(\gamma_2 > 0\)。然后，曲线会再次变换，变为一个峰顶更平坦、尾部更薄的分布（例如均匀分布的近似），标签显示"平峰 (Platykurtic)"和 \(\gamma_2 < 0\)。最后，动画会展示超额峰度的定义公式：\(\gamma_2 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^4 \right] - 3\)。</p>
-                <p><strong>旁白 (VO):</strong> "四阶矩与峰度 (Kurtosis) 相关，它描述了分布峰部的尖锐程度以及尾部的厚重程度。与正态分布相比，尖峰分布具有更尖的峰和更厚的尾，而平峰分布则相反。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=20,30" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>现在到了"峰度秀"时间！🏔️ 分布重新变回标准高斯形态，作为我们的"基准选手"（正态峰，Mesokurtic，\(\gamma_2 = 0\)）。然后高斯分布的"幽灵"会留在背景中当参照，而前景的分布开始了它的变形表演！</p>
+                
+                <p>首先，它变成一个更尖锐、尾部更厚重的分布（比如t分布），就像一个戴着尖帽子的小精灵，标签显示"尖峰 (Leptokurtic)"和 \(\gamma_2 > 0\)。然后它又摇身一变，成为峰顶平坦、尾部轻薄的分布（接近均匀分布），像一个被压扁的小山包，标签变为"平峰 (Platykurtic)"和 \(\gamma_2 < 0\)。</p>
+                
+                <p>四阶矩描述的是峰的"个性"——是尖锐还是平缓？最后的超额峰度公式 \(\gamma_2 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^4 \right] - 3\) 中那个"-3"很有意思，它确保了正态分布的超额峰度刚好为零！从理论上讲，如果我们知道了所有的矩，就能完全重构出原始的概率分布——这就是矩的神奇力量！</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[35, 39]">
                 <h3>4. 矩的局限性：相同矩，不同形</h3>
-                <img src="media/images/MomentScene_GIF4_MisleadingMoments_v2.gif" alt="GIF 4: 矩的局限性">
-                <p><strong>动画演示:</strong> 然而，仅靠低阶矩有时会产生误导。动画将会并列展示两个形状明显不同的概率分布（例如一个单峰Gamma分布和一个双峰高斯混合分布）。通过文字或符号，我们会了解到，尽管它们的均值 (\(\mu\)) 和方差 (\(\sigma^2\)) 可能完全相同或非常接近，但它们的整体形态却存在显著的差异。屏幕下方会出现文字"Same Mean & Variance, Different Shapes!"，清晰地说明了仅靠均值和方差是不足以完全描述一个分布的。</p>
-                <p><strong>旁白 (VO):</strong> "矩虽然为我们提供了很多关于分布的信息，但仅靠低阶矩（如均值和方差）有时会产生误导。不同的分布可能拥有相同的低阶矩，但形状却大相径庭。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=30,40" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>剧情反转来了！😱 矩虽然强大，但它们也有"小脾气"。这个动画要揭露一个令人惊讶的事实：有时候仅靠低阶矩会让我们"看走眼"！</p>
+                
+                <p>屏幕上会并排展示两个长得完全不同的概率分布——一个可能是温和的单峰Gamma分布，另一个可能是调皮的双峰高斯混合分布。但是惊喜（或者说惊吓）来了：它们的均值 \(\mu\) 和方差 \(\sigma^2\) 竟然几乎一模一样！</p>
+                
+                <p>屏幕下方会出现大大的"Same Mean & Variance, Different Shapes!"字样，就像在宣告：仅凭均值和方差来判断分布，有时就像仅凭身高体重来识别一个人一样不靠谱！这就是为什么我们需要更高阶的统计工具——它们能够捕捉到那些被低阶矩"混杂"掉的细微特征。</p>
             </div>
 
-            <div class="gif-block">
+            <div class="gif-block" data-steps="[43, 46, 49]">
                 <h3>5. 累积量：描述形状的新视角（定义）</h3>
-                <img src="media/images/MomentScene_GIF5_CumulantsIntro_v2.gif" alt="GIF 5: 累积量定义">
-                <p><strong>动画演示:</strong> 为了更好地区分这些分布的形状，我们现在引入累积量的概念。之前展示不同分布的图形和统计数据会淡出。屏幕左上角会出现标题 "Cumulants (\(\kappa\))"，紧接着下方会列出前几阶累积量的定义：\(\kappa_1 = \text{Mean}\)，\(\kappa_2 = \text{Variance}\)，以及 \(\kappa_3, \kappa_4, \dots\) 用于捕捉其他形状细节。这部分内容现在固定在屏幕左上角，为后续演示留出空间。</p>
-                <p><strong>旁白 (VO):</strong> "为了更好地区分分布形状，并提炼出'纯粹'的统计依赖关系，我们引入累积量（用 (\(\kappa\)) 或双尖括号 (\(\langle\langle \dots \rangle\rangle\)) 表示）。第一累积量 (\(\kappa_1\)) 就是均值 (\(\mu\))，第二累积量 (\(\kappa_2\)) 就是方差 (\(\sigma^2\))。"</p>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=40,50" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>英雄总是在关键时刻登场！🦸‍♂️ 当矩显露出它的"局限性"之后，累积量(Cumulants)就像救世主一样出现了！之前那些让人困惑的分布图形慢慢淡出，屏幕左上角出现了闪亮的标题"Cumulants (\(\kappa\))"。</p>
+                
+                <p>那么累积量到底有什么特殊能力呢？它们的使命是提炼出"纯粹"的、特定阶数固有的统计依赖关系，去除那些由低阶效应引起的"噪音"。累积量的核心思想就是要量化随机变量之间超出低阶矩组合所能解释的额外关联——听起来是不是很酷？</p>
+                
+                <p>前几阶累积量的定义简洁明了：\(\kappa_1 = \text{Mean}\)（第一累积量就是均值），\(\kappa_2 = \text{Variance}\)（第二累积量就是方差），而 \(\kappa_3, \kappa_4, \dots\) 则用于捕捉那些更微妙的形状细节。这些定义固定在屏幕左上角，像是为即将到来的精彩表演搭建的舞台！</p>
+            </div>
+
+            <div class="gif-block" data-steps="[54, 58]">
+                <h3>6. 高阶累积量：洞察细微差异</h3>
+                <video width="854" height="480">
+                    <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=50,60" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <p>高潮来了！🎭 关键就在于那些高阶累积量——它们就像统计学界的"福尔摩斯"，能够发现那些被简单统计量忽略的细微线索！</p>
+                
+                <p>在左上角累积量公式的下方，之前那两个"形状不同但均值方差相同"的分布(A和B)以较小尺寸重新登场，像是案件的重要证据。动画会高亮显示 \(\kappa_3, \kappa_4, \dots\) 部分，然后射出箭头分别指向分布A和B，并配上解释文字（比如"Different Shape (e.g., Skew)"、"Different Shape (e.g., Bimodality)"）。</p>
+                
+                <p>累积量就像一把精密的解剖刀，帮助我们剥离掉由低阶统计量引起的表面关联，直达数据背后纯粹的、特定阶次的相互作用和依赖结构。这些高阶累积量能捕捉到简单均值和方差所忽略的分布形状细节，从而有效区分那些仅凭低阶矩看似相同的分布。</p>
+                
+                <p>最后的总结文字"Higher cumulants (\(\kappa_3, \kappa_4, \dots\)) quantify these distinct features"就像宣告：高阶累积量是衡量分布非高斯性的重要指标，例如所有高斯分布的三阶及以上累积量都严格为零！</p>
+            </div>
+        </div>
+
+        <div class="scene-section">
+            <h2>场景 3: 矩生成函数</h2>
+            
+            <p><strong>概念引入:</strong> "我们已经看到了如何通过计算各阶矩来细致地描绘一个概率分布。<br />但如果矩的阶数很高，或者变量很多，逐个计算它们可能会非常繁琐。<br />有没有一种更紧凑、更强大的方式来一次性包含所有矩的信息呢？<br />答案是肯定的！<br />这就是矩生成函数，我们通常用 Z(j) 来表示。"</p>
+
+            <div class="gif-block" data-steps="[8, 30]">
+                <h3>3.1 矩生成函数的定义</h3>
+                <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-1">
+                    <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4#t=0,30" type="video/mp4">
+                    您的浏览器不支持 HTML5 视频。
+                </video>
+                <p>终极武器登场！<br />🚀 我们已经见识了如何通过各阶矩来描绘概率分布的"画像"，但如果矩的阶数很高，或者变量很多，逐个计算就像用小勺子挖游泳池一样效率低下。<br />有没有更优雅的方式来一次性包含所有矩的信息呢？<br />当然有——矩生成函数(MGF)！</p>
+                
+                <p>这个视频展示了MGF的基本定义：\(M_X(t) = E[e^{tX}] = \int e^{tx} p(x) dx\)。<br />别被这个指数函数吓到，它其实就是对 \(e^{tx}\) 关于随机变量X的概率分布进行加权平均。<br />这个想法的背后，与我们熟悉的泰勒展开和傅立叶变换有着奇妙的对偶联系——数学的美妙就在于这些看似无关的概念之间的深层联系！</p>
+            </div>
+
+            <div class="gif-block" data-steps="[45, 60]">
+                <h3>3.2 矩的提取与计算</h3>
+                <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-2">
+                    <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4#t=30,60" type="video/mp4">
+                    您的浏览器不支持 HTML5 视频。
+                </video>
+                <p>为什么叫"生成函数"呢？因为它真的能"生成"矩！🎰 就像操作一台精密的自动售货机——你想要第n阶矩？没问题，在t=0处对 \(M_X(t)\) 求n阶导数就行了：\(E[X^n] = M_X^{(n)}(0)\)。</p>
+                
+                <p>这个视频通过具体的高斯分布例子，展示了这个"矩工厂"是如何工作的。\(Z(j)\) 关于源变量 j 的泰勒展开系数本身就包含了各阶矩的信息。更妙的是，我们可以通过对 \(Z(j)\) 关于 j 的不同分量求偏导数，然后在 j=0 处取值，就像操作一台精密的机器一样，系统地'生成'出我们想要的任意阶矩！</p>
             </div>
 
             <div class="gif-block">
-                <h3>6. 高阶累积量：洞察细微差异</h3>
-                <img src="media/images/MomentScene_GIF6_HigherCumulants_v2.gif" alt="GIF 6: 高阶累积量区分复杂形状">
-                <p><strong>动画演示:</strong> 关键在于更高阶的累积量。在左上角累积量公式的下方，之前用于展示"矩的局限性"的两个不同分布（A和B）会以较小的尺寸重新出现，并排排列。动画会高亮显示左上角的 \(\kappa_3, \kappa_4, \dots\) 部分，然后从它引出箭头，分别指向分布A和分布B，并配以文字说明（如"Different Shape (e.g., Skew)"，"Different Shape (e.g., Bimodality)"）来强调这些高阶累积量如何捕捉到这些分布的独特特征，即使它们的低阶矩可能相似。屏幕下方最后会出现总结性文字，如"Higher cumulants (\(\kappa_3, \kappa_4, \dots\)) quantify these distinct features."，强调高阶累积量在区分复杂形状时的威力。</p>
-                <p><strong>旁白 (VO):</strong> "关键在于高阶累积量（如 (\(\kappa_3, \kappa_4, \dots\))）。它们能捕捉到简单的均值和方差所忽略的分布形状细节，从而有效区分那些仅凭低阶矩看似相同的分布。例如，所有高斯分布的三阶及以上累积量都为零，这使得高阶累积量成为衡量分布非高斯性的一个重要指标。"</p>
+                <h3>3.3 独立随机变量之和的性质</h3>
+                <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-3">
+                    <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4#t=60,90" type="video/mp4">
+                    您的浏览器不支持 HTML5 视频。
+                </video>
+                <p>MGF还有个超酷的特性！💫 在物理学和其他科学领域中，我们经常不只关心原始随机变量 x 本身，更关心它经过某种变换后的统计特性（比如神经网络中的激活函数）。</p>
+                
+                <p>这个动画展示了一个重要性质：如果X和Y是独立的随机变量，那么它们和 \(Z=X+Y\) 的矩生成函数满足 \(M_Z(t) = M_X(t) \cdot M_Y(t)\)。这意味着独立变量的"组合"在MGF的世界里变成了简单的"乘法"！这种简便性是MGF的核心优势之一，使得分析独立随机变量之和变得轻松愉快，也是中心极限定理证明的关键工具。</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>3.4 具体分布的矩生成函数应用</h3>
+                <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-4">
+                    <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4" type="video/mp4">
+                    您的浏览器不支持 HTML5 视频。
+                </video>
+                <p>压轴表演时间！🎪 这部分展示了MGF在具体概率分布中的应用——正态分布、泊松分布等这些"明星分布"都有自己独特的MGF"签名"。通过矩生成函数，我们可以系统地研究这些分布的性质，以及它们在叠加时的行为特征。</p>
+                
+                <p>所以说，MGF就像一个神奇的矩的宝库和工厂！它不仅自身包含了所有矩的信息，还能按需为我们精确生产出任意一个矩。这个强大的工具在统计物理中与"配分函数"有着深刻的类比和联系，是我们理解复杂系统统计特性的关键一步。</p>
+                
+                <p>回顾我们的旅程：概率密度、矩、MGF、累积量、CGF——这些概念和工具共同构成了我们分析随机现象、理解复杂系统统计特性的强大武器库。掌握了它们，你就拥有了探索随机世界奥秘的"超能力"！🌟</p>
+            </div>
+        </div>
+
+        <div class="scene-section">
+            <h2>场景 4: 累积量生成函数 — 对数的魔法</h2>
+            
+            <p><strong>概念引入:</strong> "解决矩'混杂性'问题的一个非常巧妙的数学技巧，就是对MGF取自然对数！这样我们就得到了一个新的函数，称为累积量生成函数(CGF)，我们通常用 W(j) 来表示。"</p>
+
+            <div class="gif-block">
+                <h3>4.1 累积量生成函数的定义与神奇特性</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/CumulantGeneratingFunctionScene_GIF1_CGFDefinition.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>还记得我们刚才认识的矩生成函数MGF吗？现在要见证数学的一个小魔法了！✨ 当我们对 \(Z(j)\) 取自然对数时，就得到了累积量生成函数：\(W(j) = \ln Z(j)\)。看起来简单，但这个小小的对数操作却有着令人惊讶的威力！</p>
+                
+                <p>为什么这个简单的对数变换如此重要呢？关键在于它能将MGF的"乘积关系"（对于独立变量）神奇地转化为CGF的"加性关系"！想象一下两个独立的随机变量 \(x_1\) 和 \(x_2\)：</p>
+                
+                <p>🔸 对于MGF：\(Z_{joint}(j_1,j_2) = Z_1(j_1) \times Z_2(j_2)\)（乘法关系）<br/>
+                🔸 对于CGF：\(W_{joint}(j_1,j_2) = W_1(j_1) + W_2(j_2)\)（加法关系）</p>
+                
+                <p>这意味着什么？如果一组变量是相互独立的，它们的联合CGF就是各自CGF的简单相加！这种加性特性让分析独立系统变得超级简单，就像把复杂的乘法题变成了简单的加法题。</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>4.2 累积量的定义与独立性的完美体现</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/CumulantGeneratingFunctionScene_GIF2_CumulantDefinition.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>现在到了揭晓"累积量"真正威力的时刻！🎭 累积量就是CGF \(W(j)\) 关于源变量 \(j\) 的泰勒展开系数，我们用双尖括号 \(\langle\langle \dots \rangle\rangle\) 来表示：</p>
+                
+                <p>\[\langle\langle x_1^{n_1} \cdots x_N^{n_N} \rangle\rangle_c := \left\{\prod_{i=1}^N \left(\frac{\partial}{\partial j_i}\right)^{n_i}\right\} W(j) \bigg|_{j=0}\]</p>
+                
+                <p>这里最美妙的地方来了！🌟 由于CGF对于独立变量具有加性特性，这直接导致了一个极其重要的结论：<strong>对于相互独立的变量，所有包含多个不同变量的'混合累积量'都将严格为零！</strong></p>
+                
+                <p>比如说，如果 \(x_1\) 和 \(x_2\) 是独立的，那么：<br/>
+                🔸 \(\langle\langle x_1 x_2 \rangle\rangle_c = 0\)（二阶混合累积量为零）<br/>
+                🔸 \(\langle\langle x_1 x_2 x_3 \rangle\rangle_c = 0\)（只要涉及独立变量的混合）</p>
+                
+                <p>这正是我们想要的特性！它清晰地指出了变量之间是否存在超出低阶效应的"真正"统计依赖关系。累积量就像一个超级精准的"关联探测器"，能够区分真正的相互作用和虚假的统计关联。</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>4.3 物理类比：配分函数与自由能</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>这里有个非常酷的物理类比！🔬 在统计物理中，\(W(j)\)（或其变体）对应于系统的自由能，而 \(Z(j)\) 对应于配分函数。自由能具有加性特质——这与独立子系统的CGF是加性的完全一致！</p>
+                
+                <p>这不是偶然的巧合，而是深层数学结构的体现。无论是在统计物理、神经网络理论，还是在金融数学中，这种对数变换都扮演着核心角色。它告诉我们，自然界似乎更"偏爱"加性的量，因为它们更容易处理和理解。</p>
+                
+                <p>另外，还有一个小细节：\(W(0) = \ln Z(0) = \ln 1 = 0\)。这个看似简单的性质实际上很有用，它确保了我们的数学框架具有良好的归一化特性。</p>
+            </div>
+        </div>
+
+        <div class="scene-section">
+            <h2>场景 5: 矩与累积量的华丽变换</h2>
+            
+            <p><strong>概念引入:</strong> "我们已经分别探讨了矩和累积量，它们都是描述概率分布的重要统计量。现在让我们揭示连接这两类统计量的精确数学桥梁！"</p>
+
+            <div class="gif-block">
+                <h3>5.1 指数函数的泰勒展开 — 变换的核心</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/720p30/MomentCumulantTransformScene_GIF1_ExponentialExpansion.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>准备好见证数学的"变形术"了吗？🎪 我们知道 \(Z(j) = e^{W(j)}\)，现在要通过泰勒展开来揭示矩和累积量之间的精确关系！</p>
+                
+                <p>首先，让我们回忆指数函数的经典展开：\[e^{W(j)} = 1 + W(j) + \frac{W(j)^2}{2!} + \frac{W(j)^3}{3!} + \cdots\]</p>
+                
+                <p>而 \(W(j)\) 本身也是累积量的幂级数：\[W(j) = \sum_k \frac{\langle\langle x^k \rangle\rangle}{k!} j^k\]</p>
+                
+                <p>当我们将第二个式子代入第一个时，魔法就开始了！通过收集 \(j\) 的各次幂的系数，我们可以建立矩与累积量之间的精确对应关系。这就像解一个巨大的数学拼图，每一片都完美地契合在一起！</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>5.2 低阶转换：简单而优雅</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/MomentCumulantTransformScene_GIF2_LowOrderConversion.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>让我们从最简单的情况开始！对于低阶的矩和累积量，转换关系出奇地简洁：</p>
+                
+                <p>🔸 <strong>一阶</strong>：\(\langle x \rangle = \langle\langle x \rangle\rangle\)（均值就是第一累积量）<br/>
+                🔸 <strong>二阶</strong>：\(\langle x^2 \rangle = \langle\langle x^2 \rangle\rangle + \langle\langle x \rangle\rangle^2\)（二阶矩 = 方差 + 均值的平方）</p>
+                
+                <p>这些简单的关系背后隐藏着深刻的统计学洞察。第一个告诉我们，均值在两个体系中是一样的；第二个展示了为什么我们通常关心"中心矩"——因为它们直接对应于累积量！</p>
+                
+                <p>对于多变量情况，比如 \(\langle x_1 x_2 \rangle\)：\[\langle x_1 x_2 \rangle = \langle\langle x_1 x_2 \rangle\rangle + \langle\langle x_1 \rangle\rangle \langle\langle x_2 \rangle\rangle\]</p>
+                
+                <p>这个公式美妙地展示了：如果 \(x_1\) 和 \(x_2\) 独立，那么 \(\langle\langle x_1 x_2 \rangle\rangle = 0\)，所以 \(\langle x_1 x_2 \rangle = \langle x_1 \rangle \langle x_2 \rangle\)——正是我们对独立变量的期望！</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>5.3 高阶组合：数学的艺术品</h3>
+                <div class="gif-container">
+                    <img src="MomentCumulantTransformScene_GIF3_HighOrderPartitions.gif" alt="高阶矩累积量的划分组合演示">
+                </div>
+                <p>对于更高阶的情况，事情变得更加有趣！🎨 第k阶矩可以表示为所有可能的将这k个变量"划分到不同组"的方式的贡献总和。每一组对应一个累积量！</p>
+                
+                <p>以三阶矩 \(\langle x_1 x_2 x_3 \rangle\) 为例，我们可以有以下划分方式：</p>
+                
+                <p>🔹 <strong>一组</strong>：\(\{x_1, x_2, x_3\}\) → 贡献 \(\langle\langle x_1 x_2 x_3 \rangle\rangle\)<br/>
+                🔹 <strong>两组</strong>：\(\{x_1\}, \{x_2, x_3\}\) → 贡献 \(\langle\langle x_1 \rangle\rangle \langle\langle x_2 x_3 \rangle\rangle\)<br/>
+                🔹 <strong>两组</strong>：\(\{x_2\}, \{x_1, x_3\}\) → 贡献 \(\langle\langle x_2 \rangle\rangle \langle\langle x_1 x_3 \rangle\rangle\)<br/>
+                🔹 <strong>两组</strong>：\(\{x_3\}, \{x_1, x_2\}\) → 贡献 \(\langle\langle x_3 \rangle\rangle \langle\langle x_1 x_2 \rangle\rangle\)<br/>
+                🔹 <strong>三组</strong>：\(\{x_1\}, \{x_2\}, \{x_3\}\) → 贡献 \(\langle\langle x_1 \rangle\rangle \langle\langle x_2 \rangle\rangle \langle\langle x_3 \rangle\rangle\)</p>
+                
+                <p>这种"划分游戏"背后蕴含着深刻的组合数学结构！每一种划分方式都代表了变量间不同层次的相互作用。这不仅仅是数学的精巧，更是自然界中复杂系统行为的数学表达。</p>
+            </div>
+        </div>
+
+        <div class="scene-section">
+            <h2>场景 6: 高斯分布 — 简单与完美的化身</h2>
+            
+            <p><strong>概念引入:</strong> "让我们通过一个在自然界和工程领域中无处不在的分布——高斯分布——来看看累积量的威力！"</p>
+
+            <div class="gif-block">
+                <h3>6.1 高斯分布的累积量：令人惊讶的简洁性</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/GaussianDistributionScene_GIF1_CumulantSimplicity.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>准备好被高斯分布的"极简主义"震撼吧！😲 假设我们有一个均值为 \(\mu\)，方差为 \(\sigma^2\) 的高斯分布。它的累积量有什么特别之处呢？</p>
+                
+                <p>首先，让我们计算它的矩生成函数：\[Z(j) = \langle e^{jx} \rangle = e^{j\mu + \frac{1}{2}j^2\sigma^2}\]</p>
+                
+                <p>然后取对数得到累积量生成函数：\[W(j) = \ln Z(j) = j\mu + \frac{1}{2}j^2\sigma^2\]</p>
+                
+                <p>哇！这是一个关于 \(j\) 的<strong>纯二次多项式</strong>！🎯 这意味着什么呢？在 \(W(j)\) 的泰勒展开中，只有 \(j\) 的一次幂和二次幂的系数是非零的！</p>
+                
+                <p>所以，高斯分布的累积量是：<br/>
+                🔸 \(\kappa_1 = \mu\)（一阶累积量 = 均值）<br/>
+                🔸 \(\kappa_2 = \sigma^2\)（二阶累积量 = 方差）<br/>
+                🔸 \(\kappa_n = 0\) for \(n > 2\)（所有高阶累积量都为零！）</p>
+                
+                <p>这个结果太重要了！它告诉我们，累积量是衡量一个分布偏离高斯分布程度的天然指标。如果一个分布的所有高阶累积量（三阶及以上）都为零，那么它就是高斯分布。反之，非零的高阶累积量则表征了分布的非高斯特性！</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>6.2 高斯分布的独特地位</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/GaussianDistributionScene_GIF2_GoldenStandard.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>高斯分布就像统计学世界的"黄金标准"！✨ 它的这种"累积量简洁性"不是偶然的，而是它在许多理论分析中扮演核心角色的重要原因。</p>
+                
+                <p>想想看，当我们说一个系统"表现得很随机但很'正常'"时，我们其实是在说它接近高斯行为。而累积量给了我们一个精确的数学工具来量化这种"正常性"的偏离程度！</p>
+                
+                <p>在后续的威克定理（Wick's theorem）和费曼图技术中，高斯分布的这种特性将发挥关键作用。它极大地简化了涉及高阶统计量的计算，就像给复杂的数学运算安装了一个"简化器"！</p>
+                
+                <p>这也解释了为什么中心极限定理如此重要——它告诉我们，在很多情况下，复杂系统的行为最终会收敛到这种"简洁"的高斯形式。</p>
+            </div>
+        </div>
+
+        <div class="scene-section">
+            <h2>场景 7: 中心极限定理的累积量视角</h2>
+            
+            <p><strong>概念引入:</strong> "现在让我们从累积量的角度重新审视中心极限定理这个统计学的明珠！"</p>
+
+            <div class="gif-block">
+                <h3>7.1 样本平均的累积量缩放</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/CentralLimitTheoremScene_GIF1_CumulantScaling.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>想象你有N个独立同分布的随机变量 \(x_i\)，每个都有相同的累积量 \(\kappa_n^{(x)}\)。现在我们关心它们的算术平均值：\[S_N = \frac{1}{N} \sum_{i=1}^N x_i\]</p>
+                
+                <p>这个 \(S_N\) 的累积量会如何表现呢？通过一些巧妙的数学推导（涉及CGF的缩放性质），我们可以得到一个令人震撼的结果：</p>
+                
+                <p>🎯 \(\langle\langle S_N^n \rangle\rangle = \frac{\kappa_n^{(x)}}{N^{n-1}}\)</p>
+                
+                <p>让我们看看这意味着什么：<br/>
+                🔸 \(\langle\langle S_N \rangle\rangle = \kappa_1^{(x)}\)（均值保持不变！）<br/>
+                🔸 \(\langle\langle S_N^2 \rangle\rangle = \frac{\kappa_2^{(x)}}{N}\)（方差按1/N缩小）<br/>
+                🔸 \(\langle\langle S_N^3 \rangle\rangle = \frac{\kappa_3^{(x)}}{N^2}\)（三阶累积量按1/N²缩小）<br/>
+                🔸 \(\langle\langle S_N^4 \rangle\rangle = \frac{\kappa_4^{(x)}}{N^3}\)（四阶累积量按1/N³缩小）</p>
+                
+                <p>看到规律了吗？高阶累积量衰减得比低阶累积量更快！这就是中心极限定理背后的数学机制！</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>7.2 收敛到高斯：累积量的"消失术"</h3>
+                <div class="gif-container">
+                    <img src="CentralLimitTheoremScene_GIF2_ConvergenceToGaussian.gif" alt="收敛到高斯分布的累积量消失演示">
+                </div>
+                <p>现在到了见证奇迹的时刻！🎩✨ 当N变得非常大时会发生什么？</p>
+                
+                <p>🔸 \(\langle\langle S_N \rangle\rangle\) 保持常数（原始均值）<br/>
+                🔸 \(\langle\langle S_N^2 \rangle\rangle \to 0\)（方差趋向零，分布变得很"窄"）<br/>
+                🔸 所有高阶累积量 \(\langle\langle S_N^n \rangle\rangle\) (n≥3) 都更快地趋向零！</p>
+                
+                <p>这意味着什么？无论原始的 \(x_i\) 是什么分布（只要它有定义良好的均值和方差），当N足够大时，\(S_N\) 的累积量分布会变成：</p>
+                
+                <p>🎯 只有一阶累积量（均值）和（很小的）二阶累积量（方差）非零，所有高阶累积量都接近零</p>
+                
+                <p>而这正是高斯分布的特征！这就完美地解释了中心极限定理：大量独立随机因素的叠加和平均，其结果往往会趋向于高斯分布，<strong>无论原始分布是什么样子</strong>！</p>
+                
+                <p>这种累积量随N的缩放行为，不仅是理解中心极限定理的关键，也是后续大偏差原理和统计场论的基础。平均操作有效地"抹平"了原始分布的非高斯特性——这就是自然界为什么经常呈现高斯行为的深层原因！</p>
+            </div>
+        </div>
+
+        <div class="scene-section">
+            <h2>场景 8: 概率密度的逆向重构</h2>
+            
+            <p><strong>概念引入:</strong> "我们已经看到，MGF和CGF包含了分布的所有统计信息。但它们的作用远不止于此——它们实际上完整地编码了原始的概率密度函数本身！"</p>
+
+            <div class="gif-block">
+                <h3>8.1 从生成函数到概率密度：数学的"逆向工程"</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/ProbabilityReconstructionScene_GIF1_InverseTransform.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>这里要揭示一个令人兴奋的事实：如果我们知道了MGF或CGF，理论上我们就可以通过类似于傅立叶逆变换的方法，精确地恢复出原始的概率密度函数！🔄</p>
+                
+                <p>恢复公式看起来像这样：\[p(x) = \int \mathcal{D}j \exp(-j^T x + W(j))\]</p>
+                
+                <p>这个公式可能看起来有点抽象，但它传达了一个深刻的信息：<strong>生成函数和概率密度函数是完全等价的表示</strong>！就像一枚硬币的两面，它们包含了完全相同的信息，只是表达方式不同。</p>
+                
+                <p>这种可逆性非常重要，因为它表明：<br/>
+                🔸 MGF/CGF不仅仅是描述性统计量的汇总<br/>
+                🔸 它们是概率分布的完整等价表示<br/>
+                🔸 在许多理论推导中，操作生成函数比直接处理概率密度更方便</p>
+                
+                <p>想象一下，这就像有了一台神奇的"概率变换器"——输入累积量信息，输出完整的概率分布！</p>
+            </div>
+
+            <div class="gif-block">
+                <h3>8.2 旅程总结：统计物理工具箱的完整画像</h3>
+                <div class="gif-container">
+                    <video width="854" height="480" controls autoplay muted loop>
+                        <source src="media/videos/scenes_4_8_animations_simple/480p15/ProbabilityReconstructionScene_GIF2_JourneySummary.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                <p>让我们回顾一下这趟精彩的统计物理之旅！🌟 我们从最基本的概率密度函数 \(p(x)\) 出发，一路探索了描述随机现象的强大工具箱：</p>
+                
+                <p><strong>🎯 核心概念回顾：</strong></p>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background-color: #f0f8ff;">
+                            <th style="border: 1px solid #ddd; padding: 12px;">概念</th>
+                            <th style="border: 1px solid #ddd; padding: 12px;">符号</th>
+                            <th style="border: 1px solid #ddd; padding: 12px;">核心作用</th>
+                            <th style="border: 1px solid #ddd; padding: 12px;">特殊性质</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;"><strong>概率密度</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">\(p(x)\)</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">描述随机变量的基础</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">归一化：\(\int p(x)dx = 1\)</td>
+                        </tr>
+                        <tr style="background-color: #f9f9f9;">
+                            <td style="border: 1px solid #ddd; padding: 10px;"><strong>矩</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">\(\langle x^n \rangle\)</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">刻画分布形状特征</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">包含"混杂"的低阶贡献</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;"><strong>矩生成函数</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">\(Z(j)\)</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">系统生成所有矩</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">独立性：乘积关系</td>
+                        </tr>
+                        <tr style="background-color: #f9f9f9;">
+                            <td style="border: 1px solid #ddd; padding: 10px;"><strong>累积量</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">\(\langle\langle x^n \rangle\rangle\)</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">提炼"纯粹"的统计依赖</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">独立性：混合累积量为零</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;"><strong>累积量生成函数</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">\(W(j)\)</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">系统生成所有累积量</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">独立性：加性关系</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>🔗 关键联系：</strong><br/>
+                🔸 \(W(j) = \ln Z(j)\)（对数变换的魔法）<br/>
+                🔸 \(Z(j) = e^{W(j)}\)（指数变换建立矩与累积量的桥梁）<br/>
+                🔸 \(p(x) = \int \mathcal{D}j \exp(-j^T x + W(j))\)（逆变换重构概率密度）</p>
+                
+                <p><strong>🎓 核心洞察：</strong></p>
+                <p>这些概念不仅仅是抽象的数学构造，它们是通往更高级主题的基石！无论是神经网络的统计特性分析、量子场论中的费曼图技术，还是金融数学中的风险评估，这些工具都扮演着至关重要的角色。</p>
+                
+                <p>掌握好这些基础，你就拥有了理解复杂随机系统行为的"超能力"，能够从数据的表面现象深入到其背后的本质规律。感谢你陪伴我们完成这趟精彩的统计物理之旅！🚀✨</p>
             </div>
         </div>
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. Setup Buttons and initial state ---
+            const body = document.body;
+            const controlPanel = document.createElement('div');
+            controlPanel.className = 'control-panel';
+            controlPanel.innerHTML = `
+                <button id="play-step-btn" title="播放此动画 (向下键)">播放此步 (↓)</button>
+                <div class="nav-controls">
+                    <button id="prev-anim-btn" title="上一个动画 (向左键)">上一个 (←)</button>
+                    <button id="next-anim-btn" title="下一个动画 (向右键)">下一个 (→)</button>
+                </div>
+            `;
+            body.appendChild(controlPanel);
+
+            const notificationElement = document.createElement('div');
+            notificationElement.id = 'pause-notification';
+            notificationElement.className = 'pause-notification';
+            body.appendChild(notificationElement);
+            let notificationTimeout;
+
+            const playStepBtn = document.getElementById('play-step-btn');
+            const prevAnimBtn = document.getElementById('prev-anim-btn');
+            const nextAnimBtn = document.getElementById('next-anim-btn');
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .control-panel {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    z-index: 1000;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                .control-panel button {
+                    background-color: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    padding: 12px 18px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                    transition: all 0.2s ease-in-out;
+                    font-family: sans-serif;
+                    font-weight: bold;
+                }
+                .control-panel button:hover:not(:disabled) {
+                    background-color: #2980b9;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+                }
+                .control-panel button:active:not(:disabled) {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                }
+                 .control-panel button:disabled {
+                    background-color: #95a5a6;
+                    cursor: not-allowed;
+                }
+                .nav-controls {
+                    display: flex;
+                    gap: 10px;
+                }
+                .nav-controls button {
+                    flex: 1;
+                }
+                .current-animation {
+                    outline: 4px solid #1abc9c;
+                    border-radius: 8px;
+                    box-shadow: 0 0 20px rgba(26, 188, 156, 0.8);
+                    transition: all 0.3s ease-in-out;
+                }
+                .pause-notification {
+                    position: fixed;
+                    bottom: 150px; /* Adjusted for new button row */
+                    right: 20px;
+                    background-color: #e67e22;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    z-index: 1001; /* Above control panel */
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-align: center;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                    pointer-events: none;
+                }
+                .pause-notification.is-visible {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            `;
+            document.head.appendChild(style);
+
+            // --- 2. Prepare animations and their states ---
+            let currentAnimationIndex = -1;
+            const animationStates = Array.from(document.querySelectorAll('.gif-block')).map((block, index) => {
+                const video = block.querySelector('video');
+                if (video) {
+                    video.removeAttribute('autoplay');
+                    video.removeAttribute('loop');
+                    video.removeAttribute('muted');
+                    video.removeAttribute('controls');
+                    video.preload = 'auto';
+                }
+
+                let steps = [];
+                if (block.dataset.steps) {
+                    try {
+                        steps = JSON.parse(block.dataset.steps);
+                    } catch (e) {
+                        console.error(`Error parsing data-steps for animation ${index}:`, block.dataset.steps, e);
+                    }
+                }
+                
+                let baseStartTime = 0;
+                if (video) {
+                    const sourceSrc = video.querySelector('source')?.src || video.src;
+                    if (sourceSrc && sourceSrc.includes('#t=')) {
+                        baseStartTime = parseFloat(sourceSrc.split('#t=')[1].split(',')[0]);
+                    }
+                }
+
+                return {
+                    block: block,
+                    video: video,
+                    gif: block.querySelector('img'),
+                    steps: steps, // e.g., [10, 20, 30]
+                    baseStartTime: baseStartTime, // e.g., 0 from #t=0,30
+                    currentSubStep: 0,
+                    timeUpdateListener: null
+                };
+            });
+            
+            // --- 3. Core Logic ---
+            function showPauseNotification(message) {
+                clearTimeout(notificationTimeout);
+                notificationElement.textContent = message;
+                notificationElement.classList.add('is-visible');
+
+                notificationTimeout = setTimeout(() => {
+                    notificationElement.classList.remove('is-visible');
+                }, 2500); // Show for 2.5 seconds
+            }
+
+            function getVisibleAnimationIndex() {
+                let bestIndex = -1;
+                let maxScore = -1;
+
+                animationStates.forEach((state, index) => {
+                    const rect = state.block.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+                    if (rect.bottom < 0 || rect.top > viewportHeight) return;
+                    const visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
+                    const visibilityRatio = state.block.offsetHeight > 0 ? visibleHeight / state.block.offsetHeight : 0;
+                    const viewCenterY = viewportHeight / 2;
+                    const elementCenterY = rect.top + rect.height / 2;
+                    const centerBonus = 1 - (Math.abs(viewCenterY - elementCenterY) / viewCenterY);
+                    const score = visibilityRatio + centerBonus * 0.5;
+                    if (score > maxScore) {
+                        maxScore = score;
+                        bestIndex = index;
+                    }
+                });
+                return bestIndex;
+            }
+            
+            function updatePlayButtonText() {
+                if (currentAnimationIndex === -1) {
+                    playStepBtn.textContent = '播放此步 (↓)';
+                    playStepBtn.disabled = true;
+                    return;
+                }
+                const state = animationStates[currentAnimationIndex];
+                if (!state) return;
+
+                if (state.steps.length > 0) {
+                    if (state.currentSubStep >= state.steps.length) {
+                        playStepBtn.textContent = `已完成 (${state.steps.length}/${state.steps.length})`;
+                        playStepBtn.disabled = true;
+                    } else {
+                        playStepBtn.textContent = `播放此步 (${state.currentSubStep + 1}/${state.steps.length}) (↓)`;
+                        playStepBtn.disabled = false;
+                    }
+                } else {
+                    playStepBtn.textContent = '播放此步 (↓)';
+                    playStepBtn.disabled = false;
+                }
+            }
+
+            function updateCurrentAnimationHighlight() {
+                const visibleIndex = getVisibleAnimationIndex();
+                if (visibleIndex !== -1 && visibleIndex !== currentAnimationIndex) {
+                    if(currentAnimationIndex > -1 && animationStates[currentAnimationIndex]) {
+                        animationStates[currentAnimationIndex].block.classList.remove('current-animation');
+                    }
+                    currentAnimationIndex = visibleIndex;
+                    if(currentAnimationIndex > -1 && animationStates[currentAnimationIndex]) {
+                        const state = animationStates[currentAnimationIndex];
+                        state.block.classList.add('current-animation');
+                        state.currentSubStep = 0; // Reset step on focus
+                        updatePlayButtonText();
+                    }
+                }
+            }
+            
+            function scrollToNextAnimation() {
+                if (currentAnimationIndex === -1) {
+                    if (animationStates.length > 0) {
+                        animationStates[0].block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+                const nextIndex = (currentAnimationIndex + 1) % animationStates.length;
+                animationStates[nextIndex].block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function scrollToPreviousAnimation() {
+                if (currentAnimationIndex === -1) {
+                    if (animationStates.length > 0) {
+                        animationStates[animationStates.length - 1].block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+                const prevIndex = (currentAnimationIndex - 1 + animationStates.length) % animationStates.length;
+                animationStates[prevIndex].block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function playCurrentAnimation() {
+                if (currentAnimationIndex === -1) {
+                    updateCurrentAnimationHighlight();
+                    if (currentAnimationIndex === -1) return;
+                }
+
+                const state = animationStates[currentAnimationIndex];
+                if (!state) return;
+                
+                const { video, gif, steps, baseStartTime } = state;
+
+                if (steps.length > 0) {
+                    if (state.currentSubStep >= steps.length || !video) return;
+
+                    const startTime = state.currentSubStep === 0 ? baseStartTime : steps[state.currentSubStep - 1];
+                    const endTime = steps[state.currentSubStep];
+                    
+                    if (state.timeUpdateListener) video.removeEventListener('timeupdate', state.timeUpdateListener);
+
+                    state.timeUpdateListener = () => {
+                        if (video.currentTime >= endTime) {
+                            video.pause();
+                            showPauseNotification(`步骤 ${state.currentSubStep} 播放完毕`);
+                            if(state.timeUpdateListener) video.removeEventListener('timeupdate', state.timeUpdateListener);
+                            state.timeUpdateListener = null;
+                        }
+                    };
+                    video.addEventListener('timeupdate', state.timeUpdateListener);
+                    
+                    video.currentTime = startTime;
+                    video.play();
+                    
+                    state.currentSubStep++;
+                    updatePlayButtonText();
+                } else {
+                    // Original logic for non-stepped animation
+                    if (video) {
+                        const sourceSrc = video.querySelector('source')?.src || video.src;
+                        if (sourceSrc && sourceSrc.includes('#t=')) {
+                            const timeParts = sourceSrc.split('#t=')[1].split(',');
+                            const startTime = parseFloat(timeParts[0]);
+                            const endTime = parseFloat(timeParts[1]);
+                            if (state.timeUpdateListener) video.removeEventListener('timeupdate', state.timeUpdateListener);
+                             state.timeUpdateListener = () => {
+                                if (video.currentTime >= endTime) {
+                                   video.pause();
+                                   showPauseNotification("动画片段播放完毕");
+                                }
+                             };
+                             video.addEventListener('timeupdate', state.timeUpdateListener);
+                            video.currentTime = startTime;
+                        } else {
+                            video.currentTime = 0;
+                        }
+                        video.play();
+                    } else if (gif && gif.src) {
+                        const src = gif.src;
+                        gif.src = '';
+                        gif.src = src;
+                    }
+                }
+            }
+
+            // --- 4. Event Listeners ---
+            playStepBtn.addEventListener('click', playCurrentAnimation);
+            prevAnimBtn.addEventListener('click', scrollToPreviousAnimation);
+            nextAnimBtn.addEventListener('click', scrollToNextAnimation);
+            
+            window.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (!playStepBtn.disabled) playCurrentAnimation();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    scrollToNextAnimation();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    scrollToPreviousAnimation();
+                }
+            });
+            
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(updateCurrentAnimationHighlight, 100);
+            }, { passive: true });
+
+            // Initial check
+            setTimeout(() => {
+                updateCurrentAnimationHighlight();
+                updatePlayButtonText();
+            }, 150);
+        });
+    </script>
 </body>
 </html> 

@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/zq/code/Animation/media/videos/scenes_4_8_animations_simple/480p15/partial_movie_files/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty/1185818338_4107889059_223132457.mp4'
+file 'file:/home/zq/code/Animation/media/videos/scenes_4_8_animations_simple/480p15/partial_movie_files/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty/624642324_1368131417_3269711171.mp4'
+file 'file:/home/zq/code/Animation/media/videos/scenes_4_8_animations_simple/480p15/partial_movie_files/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty/624642324_930230468_427718255.mp4'
+file 'file:/home/zq/code/Animation/media/videos/scenes_4_8_animations_simple/480p15/partial_movie_files/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty/624642324_1177231959_1064279557.mp4'
+file 'file:/home/zq/code/Animation/media/videos/scenes_4_8_animations_simple/480p15/partial_movie_files/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty/624642324_610800146_802427646.mp4'
+file 'file:/home/zq/code/Animation/media/videos/scenes_4_8_animations_simple/480p15/partial_movie_files/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty/624642324_2844360058_727699941.mp4'

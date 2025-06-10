@@ -993,18 +993,18 @@ class TaylorExpansionScene(Scene):
         self.play(Write(title))
         self.wait(1)
 
-        # 创建坐标系 - 缩小并移到右侧
+        # 创建坐标系 - 进一步缩小并移到右侧
         axes = Axes(
             x_range=[-2, 2, 1],
             y_range=[-1, 4, 1],
-            x_length=6,  # 减小坐标轴长度
-            y_length=4,  # 减小坐标轴长度
+            x_length=5,  # 进一步减小坐标轴长度
+            y_length=3.5,  # 进一步减小坐标轴长度
             axis_config={"include_numbers": True}
-        ).scale(0.8)  # 整体缩放
+        ).scale(0.7)  # 整体缩放
         
         # 将坐标系移到右侧
         axes_group = VGroup(axes)
-        axes_group.shift(RIGHT * 3)
+        axes_group.shift(RIGHT * 3.5)  # 稍微往右移动一点
         
         axes_labels = axes.get_axis_labels(x_label="x", y_label="f(x)")
         axes_group.add(axes_labels)
@@ -1021,13 +1021,21 @@ class TaylorExpansionScene(Scene):
             return x**2
             
         original_function = axes.plot(f, color=BLUE)
-        function_label = MathTex("f(x) = x^2", color=BLUE).next_to(original_function, UR, buff=0.2)
         
-        # 泰勒展开公式（分步显示）- 放在左侧
+        # 泰勒展开公式（分步显示）- 放在左侧，添加颜色
         taylor_expansion = MathTex(
-            "f(x)", "&=", "f(0)", "+", "f'(0)x", "+", "\\frac{f''(0)}{2!}x^2", "+", "\\frac{f'''(0)}{3!}x^3", "+", "\\cdots",
-            font_size=36  # 稍微减小字号
-        ).shift(LEFT * 3 + UP * 1.5)  # 移到左侧上方
+            "f(x)", "&=", 
+            "\\underbrace{f(0)}_{c}", "+", 
+            "\\underbrace{f'(0)x}_{l}", "+",
+            "\\underbrace{\\frac{f''(0)}{2!}x^2}_{q}", "+",
+            "\\frac{f'''(0)}{3!}x^3", "+", "\\cdots",
+            font_size=36
+        ).shift(LEFT * 3 + UP * 1.5)
+
+        # 设置不同项的颜色
+        taylor_expansion[2].set_color(RED)  # 常数项
+        taylor_expansion[4].set_color(YELLOW)  # 一阶项
+        taylor_expansion[6].set_color(GREEN)  # 二阶项
 
         # 常数项 f(0)
         self.play(Write(taylor_expansion[:3]))  # f(x) = f(0)
@@ -1080,7 +1088,6 @@ class TaylorExpansionScene(Scene):
         # 显示原函数并与近似对比
         self.play(
             Create(original_function),
-            Write(function_label),
             approx_2.animate.set_color(BLUE_A),
             tangent_line.animate.set_color(BLUE_A),
             constant_term.animate.set_color(BLUE_A),
@@ -1088,39 +1095,54 @@ class TaylorExpansionScene(Scene):
         )
         self.wait(1)
 
-        # 添加标注说明每一项的贡献 - 放在左侧中间
+        # 添加标注说明每一项的贡献 - 放在公式下方对应位置
         term_explanations = VGroup(
-            Text("常数项: f(0)", font="Noto Sans CJK SC", font_size=24, color=RED),
-            Text("一阶项: f'(0)x = 0", font="Noto Sans CJK SC", font_size=24, color=YELLOW),
-            Text("二阶项: f''(0)x²/2 = x²", font="Noto Sans CJK SC", font_size=24, color=GREEN)
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
-        term_explanations.shift(LEFT * 3 + DOWN * 0.5)  # 移到左侧中间
+            Text("常数项", font="Noto Sans CJK SC", font_size=24, color=RED),
+            Text("一阶项", font="Noto Sans CJK SC", font_size=24, color=YELLOW),
+            Text("二阶项", font="Noto Sans CJK SC", font_size=24, color=GREEN)
+        ).arrange(RIGHT, buff=1.5)
+        
+        # 将说明文字放在泰勒展开公式下方
+        term_explanations.next_to(taylor_expansion, DOWN, buff=0.5)
+        term_explanations[0].align_to(taylor_expansion[2], LEFT)  # 对齐常数项
+        term_explanations[1].align_to(taylor_expansion[4], LEFT)  # 对齐一阶项
+        term_explanations[2].align_to(taylor_expansion[6], LEFT)  # 对齐二阶项
         
         self.play(Write(term_explanations))
         self.wait(1)
 
         # 期望值公式 - 放在左侧下方
         expectation = MathTex(
-            "\\langle f(x) \\rangle", "=", "f(0)", "+", "f'(0)\\langle x \\rangle", "+", 
-            "\\frac{f''(0)}{2!}\\langle x^2 \\rangle", "+", "\\frac{f'''(0)}{3!}\\langle x^3 \\rangle", "+", "\\cdots",
-            font_size=32  # 稍微减小字号
-        ).shift(LEFT * 3 + DOWN * 2)  # 移到左侧下方
+            "\\langle f(x) \\rangle", "=", 
+            "f(0)", "+", 
+            "f'(0)\\langle x \\rangle", "+", 
+            "\\frac{f''(0)}{2!}\\langle x^2 \\rangle", "+",
+            "\\frac{f'''(0)}{3!}\\langle x^3 \\rangle", "+", "\\cdots",
+            font_size=32
+        ).shift(LEFT * 3 + DOWN * 2)
+
+        # 设置颜色
+        expectation[2].set_color(RED)  # f(0)
+        expectation[4].set_color(YELLOW)  # f'(0)⟨x⟩
+        expectation[6].set_color(GREEN)  # f''(0)⟨x²⟩/2!
 
         self.play(Write(expectation))
         self.wait(1)
 
-        # 高亮显示矩
+        # 用方框框住矩符号
         moments = VGroup(
-            expectation[4][2:5],  # ⟨x⟩
-            expectation[6][2:5],  # ⟨x²⟩
-            expectation[8][2:5]   # ⟨x³⟩
+            expectation[4][-3:],  # ⟨x⟩
+            expectation[6][-3:],  # ⟨x²⟩
+            expectation[8][-3:]   # ⟨x³⟩
         )
         
+        moment_boxes = VGroup(*[
+            SurroundingRectangle(moment, buff=0.1, color=BLUE)
+            for moment in moments
+        ])
+        
         self.play(
-            *[m.animate.set_color(YELLOW) for m in moments],
-            Flash(moments[0], color=YELLOW, flash_radius=0.2),
-            Flash(moments[1], color=YELLOW, flash_radius=0.2),
-            Flash(moments[2], color=YELLOW, flash_radius=0.2),
+            Create(moment_boxes),
             run_time=2
         )
         self.wait(1)
@@ -1128,13 +1150,241 @@ class TaylorExpansionScene(Scene):
         # 矩的定义 - 放在最下方
         moment_def = MathTex(
             "\\langle x^n \\rangle = \\int_{-\\infty}^{\\infty} x^n p(x) dx",
-            font_size=32  # 稍微减小字号
-        ).shift(DOWN * 3)  # 移到底部
+            font_size=32
+        ).shift(DOWN * 3)
 
         self.play(Write(moment_def))
         self.wait(2)
 
         # 淡出所有内容
+        self.play(
+            *[FadeOut(mob) for mob in self.mobjects]
+        )
+        self.wait(1)
+
+        # 添加新的复杂函数示例：f(x) = e^(-x²/4) * cos(2x)
+        new_title = Text("复杂函数展开：e^(-x²/4)cos(2x)", font="Noto Sans CJK SC", font_size=40).to_edge(UP)
+        self.play(Write(new_title))
+        self.wait(1)
+
+        # 创建新的坐标系
+        axes = Axes(
+            x_range=[-4, 4, 1],
+            y_range=[-1.5, 1.5, 0.5],
+            x_length=5,
+            y_length=3.5,
+            axis_config={"include_numbers": True}
+        ).scale(0.7)
+        
+        axes_group = VGroup(axes)
+        axes_group.shift(RIGHT * 3.5)
+        axes_labels = axes.get_axis_labels(x_label="x", y_label="f(x)")
+        axes_group.add(axes_labels)
+        
+        self.play(Create(axes_group))
+        self.wait(1)
+
+        # 原函数
+        def f(x):
+            return np.exp(-x**2/4) * np.cos(2*x)
+            
+        original_function = axes.plot(f, color=BLUE)
+
+        # 泰勒展开公式（分步显示）
+        taylor_expansion = MathTex(
+            "f(x)", "&=", 
+            "\\underbrace{1}_{c}", "+",
+            "\\underbrace{0x}_{l}", "+",
+            "\\underbrace{(-2-\\frac{1}{4})\\frac{x^2}{2!}}_{q}", "+",
+            "\\underbrace{0\\frac{x^3}{3!}}_{3}", "+",
+            "\\underbrace{(4+\\frac{3}{4})\\frac{x^4}{4!}}_{4}", "+", "\\cdots",
+            font_size=32
+        ).shift(LEFT * 3 + UP * 1.5)
+
+        # 设置不同项的颜色
+        taylor_expansion[2].set_color(RED)      # 常数项
+        taylor_expansion[4].set_color(YELLOW)   # 一阶项
+        taylor_expansion[6].set_color(GREEN)    # 二阶项
+        taylor_expansion[8].set_color(PURPLE)   # 三阶项
+        taylor_expansion[10].set_color(ORANGE)  # 四阶项
+
+        # 添加标注
+        term_explanations = VGroup(
+            Text("常数项", font="Noto Sans CJK SC", font_size=24, color=RED),
+            Text("一阶项", font="Noto Sans CJK SC", font_size=24, color=YELLOW),
+            Text("二阶项", font="Noto Sans CJK SC", font_size=24, color=GREEN),
+            Text("三阶项", font="Noto Sans CJK SC", font_size=24, color=PURPLE),
+            Text("四阶项", font="Noto Sans CJK SC", font_size=24, color=ORANGE)
+        ).arrange(RIGHT, buff=0.8)
+        term_explanations.scale(0.8)  # 缩小文字大小
+        term_explanations.next_to(taylor_expansion, DOWN, buff=0.5)
+
+        # 逐项显示泰勒展开
+        self.play(Write(taylor_expansion[:3]))  # f(x) = 1
+        
+        def taylor_0(x):
+            return 1
+        approx_0 = axes.plot(taylor_0, color=RED)
+        self.play(Create(approx_0))
+        self.wait(1)
+
+        self.play(Write(taylor_expansion[3:5]))  # + 0x
+        def taylor_1(x):
+            return 1 + 0*x
+        approx_1 = axes.plot(taylor_1, color=YELLOW)
+        self.play(
+            Transform(approx_0, approx_1),
+            run_time=1.5
+        )
+        self.wait(1)
+
+        self.play(Write(taylor_expansion[5:7]))  # + (-2-1/4)x²/2!
+        def taylor_2(x):
+            return 1 + 0*x + (-2-1/4)*(x**2)/2
+        approx_2 = axes.plot(taylor_2, color=GREEN)
+        self.play(
+            Transform(approx_0, approx_2),
+            run_time=1.5
+        )
+        self.wait(1)
+
+        self.play(Write(taylor_expansion[7:9]))  # + 0x³/3!
+        def taylor_3(x):
+            return 1 + 0*x + (-2-1/4)*(x**2)/2 + 0*(x**3)/6
+        approx_3 = axes.plot(taylor_3, color=PURPLE)
+        self.play(
+            Transform(approx_0, approx_3),
+            run_time=1.5
+        )
+        self.wait(1)
+
+        self.play(Write(taylor_expansion[9:]))  # + (4+3/4)x⁴/4!
+        def taylor_4(x):
+            return 1 + 0*x + (-2-1/4)*(x**2)/2 + 0*(x**3)/6 + (4+3/4)*(x**4)/24
+        approx_4 = axes.plot(taylor_4, color=ORANGE)
+        self.play(
+            Transform(approx_0, approx_4),
+            run_time=1.5
+        )
+        self.wait(1)
+
+        # 显示原函数并与近似对比
+        self.play(
+            Create(original_function),
+            approx_0.animate.set_color(BLUE_A),
+            Write(term_explanations),
+            run_time=2
+        )
+        self.wait(2)
+
+        # 添加生物学意义的解释
+        bio_meaning = VGroup(
+            Text("• v=0: 静息电位", font="Noto Sans CJK SC", font_size=24),
+            Text("• v>0: 去极化", font="Noto Sans CJK SC", font_size=24),
+            Text("• v<0: 超极化", font="Noto Sans CJK SC", font_size=24),
+            Text("• 三阶项提供负反馈", font="Noto Sans CJK SC", font_size=24)
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+        bio_meaning.scale(0.8)
+        bio_meaning.next_to(term_explanations, DOWN, buff=0.5)
+
+        self.play(Write(bio_meaning))
+        self.wait(2)
+
+        # 最后淡出所有内容
+        self.play(
+            *[FadeOut(mob) for mob in self.mobjects]
+        )
+        self.wait(1)
+
+        # 添加完整的 HH 方程
+        new_title = Text("Hodgkin-Huxley 方程", font="Noto Sans CJK SC", font_size=48).to_edge(UP)
+        subtitle = Text("完整模型 vs 简化模型", font="Noto Sans CJK SC", font_size=36).next_to(new_title, DOWN)
+        self.play(Write(new_title), Write(subtitle))
+        self.wait(1)
+
+        # HH 方程组 - 重新定位和布局
+        hh_equations = VGroup(
+            MathTex("C_m\\frac{dV}{dt}", "=", "-g_{Na}m^3h(V-E_{Na})", "-g_Kn^4(V-E_K)", "-g_L(V-E_L)", "+I_{ext}", font_size=44),
+            MathTex("\\frac{dm}{dt}", "=", "\\alpha_m(V)(1-m)", "-\\beta_m(V)m", font_size=44),
+            MathTex("\\frac{dh}{dt}", "=", "\\alpha_h(V)(1-h)", "-\\beta_h(V)h", font_size=44),
+            MathTex("\\frac{dn}{dt}", "=", "\\alpha_n(V)(1-n)", "-\\beta_n(V)n", font_size=44)
+        ).arrange(DOWN, buff=0.6, aligned_edge=LEFT)  # 增加方程间距
+        
+        # 将方程组整体向左移动并居中
+        hh_equations.move_to(ORIGIN).shift(LEFT * 3 + UP * 0.5)
+
+        # 为不同离子通道添加颜色
+        hh_equations[0][2].set_color(YELLOW)  # Na+ 通道
+        hh_equations[0][3].set_color(BLUE)    # K+ 通道
+        hh_equations[0][4].set_color(GREEN)   # 漏电流
+        
+        # 添加方程说明 - 调整位置
+        explanations = VGroup(
+            Text("• Na+ 通道: 快速激活和失活", font="Noto Sans CJK SC", font_size=32, color=YELLOW),
+            Text("• K+ 通道: 缓慢激活", font="Noto Sans CJK SC", font_size=32, color=BLUE),
+            Text("• 漏电流: 静息电导", font="Noto Sans CJK SC", font_size=32, color=GREEN),
+            Text("• m, h, n: 门控变量", font="Noto Sans CJK SC", font_size=32)
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        explanations.next_to(hh_equations, DOWN, buff=0.8)
+
+        self.play(Write(hh_equations))
+        self.wait(1)
+        self.play(Write(explanations))
+        self.wait(1)
+
+        # 时间尺度分离 - 调整位置
+        timescale_text = VGroup(
+            Text("时间尺度分离：", font="Noto Sans CJK SC", font_size=36),
+            Text("• Na+ 通道: ~0.1ms", font="Noto Sans CJK SC", font_size=32),
+            Text("• K+ 通道: ~1ms", font="Noto Sans CJK SC", font_size=32),
+            Text("• 膜电位: ~1ms", font="Noto Sans CJK SC", font_size=32)
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        
+        # 将时间尺度说明移到右侧
+        timescale_text.move_to(ORIGIN).shift(RIGHT * 3 + UP * 1)
+
+        self.play(Write(timescale_text))
+        self.wait(1)
+
+        # 显示简化后的FN方程 - 调整位置
+        fn_equation = MathTex(
+            "\\frac{dv}{dt}", "=", "v - \\frac{v^3}{3} - w + I_{ext}",
+            font_size=48
+        ).scale(1.2)
+        
+        # 将FN方程放在时间尺度说明下方
+        fn_equation.next_to(timescale_text, DOWN, buff=1.5)
+
+        # 调整箭头，使其从HH方程组指向FN方程
+        arrow = Arrow(
+            start=hh_equations[1].get_right(),  # 从HH方程组中间指向
+            end=fn_equation.get_left(),         # 指向FN方程左侧
+            buff=0.3,
+            color=WHITE,
+            stroke_width=4,
+            max_tip_length_to_length_ratio=0.15  # 调整箭头头部大小
+        )
+
+        self.play(
+            GrowArrow(arrow),
+            Write(fn_equation)
+        )
+        self.wait(1)
+
+        # 添加简化说明 - 调整位置
+        simplification_notes = VGroup(
+            Text("• 合并离子通道动力学", font="Noto Sans CJK SC", font_size=32),
+            Text("• 保留关键非线性特征", font="Noto Sans CJK SC", font_size=32),
+            Text("• 捕捉兴奋性阈值行为", font="Noto Sans CJK SC", font_size=32)
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        
+        # 将简化说明放在FN方程下方
+        simplification_notes.next_to(fn_equation, DOWN, buff=0.8)
+
+        self.play(Write(simplification_notes))
+        self.wait(2)
+
+        # 最后淡出所有内容
         self.play(
             *[FadeOut(mob) for mob in self.mobjects]
         )
