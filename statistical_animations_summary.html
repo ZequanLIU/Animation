@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>统计物理概念动画合集</title>
+    <title>神经网络的统计力学概念动画合集</title>
     <style>
         body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
         .main-container { max-width: 900px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
@@ -77,59 +77,61 @@
 </head>
 <body>
     <div class="main-container">
-        <h1>统计物理核心概念动画演示</h1>
+        <h1>神经网络的统计力学概念动画演示</h1>
 
         <div class="scene-section">
             <h2>场景 1: 概率与可观测量</h2>
 
-            <div class="gif-block" data-steps="[5, 10, 14]">
+            <div class="gif-block" data-steps="[3, 6, 8, 11, 15, 18, 22, 25, 28]">
                 <h3>1. 系统状态描述：向量 x, 概率 p(x), 可观测量 f(x) 与 p(f(x))</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/IntroScene_GIF1.mp4" type="video/mp4">
                     您的浏览器不支持视频播放。
                 </video>
-                <p>欢迎来到统计场论的奇妙世界！<br />🎉 想象一下你面前有一群随机运动的小粒子——它们可能是神经元在放电，也可能是股市里跳动的数字。<br />这个动画首先让我们看到这些"小家伙们"在屏幕上自由舞蹈，然后神奇的事情发生了：一个符号 \(x\) 出现了！<br />这就是我们用来描述系统瞬时状态的"身份证"。</p>
+                <p>欢迎来到神经网络与统计力学的奇妙世界！<br />🎉 你面前有一群随机运动的粒子——它们可以是代表收集到的神经元spiking数据。<br />起初这些家伙在屏幕上跳舞，然后神奇的事情发生了，它们发生了进化，获得了一个新名字：符号 \(x\)。 <br />他们用来描述系统瞬时状态，就像是一张张彩票的兑奖号码！</p>
                 
-                <p>当 \(x\) 进化成 \(x \in \mathbb{R}^N\) 时，那些随意游走的粒子突然排成了一条整齐的队列——这就是N维向量的视觉化展示！<br />紧接着，概率密度函数 \(p(x)\) 华丽登场，它就像一个"可能性探测器"，告诉我们系统出现在某个特定状态的几率有多大。</p>
+                <p>当 \(x\) 进化成 \(x \in \mathbb{R}^N\) 时，随意游走的粒子排成了一条整齐的队列——这就是N维向量！<br />于是，概率密度函数 \(p(x)\) 华丽登场，它就像一个幽灵探测器，告诉我们系统出现在某个特定状态的几率是多大。</p>
                 
-                <p>然后我们遇到了可观测量 \(f(x)\)——简单来说，就是我们实际能测量到的东西，比如神经元的平均放电率，或者粒子的平均位置。<br />它们的期望值 \(\langle f(x) \rangle\) 就像是从无数次测量中提炼出的"精华"，包含了关于系统最重要的信息。<br />这些概念不只是抽象的数学符号，它们是我们理解复杂随机世界的基本工具！</p>
+                <p>人们也会称呼 \(x\) 为可观测量 \(f(x)\)——为什么要换个名字？因为这就是我们实际能测量到的东西，比如神经元的平均放电率，或者粒子的平均位置。<br />它们的期望值 \(\langle f(x) \rangle\) 是从无数次测量中提炼出的平均值。想象你是个老师，你知道你某个学生所有的平时成绩，这里的期望就是你给的期末加权成绩。</p>
             </div>
 
-            <div class="gif-block" data-steps="[4, 9, 14]">
+            <div class="gif-block" data-steps="[2, 3, 8, 12, 14]">
                 <h3>2. 数据点、坐标轴(f(x), p(f(x)))与直方图</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/IntroScene_GIF2.mp4" type="video/mp4">
                     您的浏览器不支持视频播放。
                 </video>
-                <p>现在到了激动人心的部分！<br />📊 屏幕上首先出现一个坐标系——横轴是我们的可观测量 \(f(x)\)，纵轴是它的概率密度 \(p(f(x))\)。<br />接下来就像魔法一样：大量的数据点开始从天而降！<br />这些小点点代表着我们对神经元活动进行的无数次测量结果。</p>
+                <p>让我们与统计的世界更进一步！📊 屏幕上首先出现一个坐标系，横轴是我们的可观测量 \(f(x)\)，纵轴是它的概率密度 \(p(f(x))\)。<br />这些小点点代表着我们对神经元活动进行的无数次测量结果。</p>
                 
-                <p>观测现实世界的随机现象时，我们收集到的总是有限的数据点。<br />但正是通过这些点点滴滴的积累，我们才能窥见隐藏在随机性背后的深层规律。<br />你会看到这些数据点开始"抱团"，形成直方图的雏形——这个过程展示了从离散观测到连续概率分布的关键转变，就像从无序的拼图碎片逐渐拼出完整的图案！</p>
+                <p>观测现实世界的随机现象时，我们收集到的总是有限的数据点，但我们能窥见隐藏在随机性背后的规律。<br />数据点开始抱团，形成直方图——这是从离散观测到连续概率分布的关键转变。</p>
             </div>
 
-            <div class="gif-block" data-steps="[7, 11, 14]">
+            <div class="gif-block" data-steps="[8, 14]">
                 <h3>3. 直方图到PDF(基于p(f(x)))及性质</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/IntroScene_GIF3.mp4" type="video/mp4">
                     您的浏览器不支持视频播放。
                 </video>
-                <p>见证奇迹的时刻到了！<br />✨ 随着越来越多的数据点加入，那些粗糙的直方图条开始变得优雅起来。<br />它们慢慢融合、平滑，最终华丽变身成一条流畅的曲线——这就是大名鼎鼎的概率密度函数(PDF)！<br />可能是经典的钟形高斯曲线，也可能是其他有趣的形状。</p>
-                
-                <p>这里体现了统计学的一个核心思想：从离散到连续，从有限到无限。<br />当我们看到公式 \(p(y) = \langle\delta(x-y)\rangle_x\) 时，别被它吓到——它其实在说：这个概率密度就是系统处于状态 \(y\) 附近的平均"响应强度"。<br />而曲线下方被逐渐填充的面积，优雅地展示了 \(\int p(x)dx = 1\) 这个基本真理：所有可能性加起来必须等于100%！</p>
+                <p>✨ 随着数据点不断汇入，粗糙的直方图轮廓逐渐变得平滑，这体现了统计学从离散到连续的核心思想。</p>
+                <p>最终，这条轮廓线"变身"为一条平滑的连续曲线——这就是大名鼎鼎的概率密度函数（PDF），它描绘了可观测量的概率分布。</p>
+                <p>最后，曲线下方被逐渐填充的面积，则直观地展示了 \(\int p(x)dx = 1\) 这一基本原则：所有可能性之和必须为1。</p>
             </div>
 
 
 
-            <div class="gif-block" data-steps="[4, 8]">
-                <h3>3.1 公式概览：\(p(y) = \langle\delta(x-y)\rangle_x\)</h3>
+            <div class="gif-block" data-steps="[3, 6, 9]">
+                <h3>4. 公式概览：\(p(y) = \langle\delta(x-y)\rangle_x\)</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=0,10" type="video/mp4">
                     您的浏览器不支持视频播放。
                 </video>
-                <p>准备好迎接一个看起来有点"吓人"但实际上很友好的公式了吗？<br />😄 \(p(y) = \langle\delta(x-y)\rangle_x\) 这个等式就像是概率论的"身份证"。<br />动画首先展示完整的公式，然后聚焦到左边的 \(p(y)\)——这就是我们的概率密度函数，它描述的是随机变量取特定值 \(y\) 附近的相对可能性大小。<br />配上一个示例性的PDF曲线图，你就能直观地理解它在说什么了！</p>
+                <p>准备好迎接一个核心公式了吗？动画首先展示了概率密度函数的定义式：\(p(y) = \langle\delta(x-y)\rangle_x\)。</p>
+                <p>接着，动画将聚焦于等式左侧的 \(p(y)\)。它就是我们最终要求解的概率密度函数，描述了系统处于特定状态 \(y\) 的可能性。</p>
+                <p>最后，一个示例性的PDF曲线图优雅地出现，直观地诠释了 \(p(y)\) 的含义：曲线的高度反映了随机变量在对应位置的概率密度。</p>
             </div>
 
             <div class="gif-block">
-                <h3>3.2 解释 \(y\) (特定状态) 与 \(x\) (随机状态)</h3>
+                <h3>5. 解释 \(y\) (特定状态) 与 \(x\) (随机状态)</h3>
                 <p>让我们来玩一个"角色扮演"游戏！<br />在公式 \(p(y) = \langle\delta(x-y)\rangle_x\) 中，\(y\) 和 \(x\) 就像两个性格完全不同的角色。</p>
                 
                 <div class="side-by-side">
@@ -195,8 +197,8 @@
                 </div>
             </div>
 
-            <div class="gif-block" data-steps="[24, 28]">
-                <h3>3.3 狄拉克 \(\delta\) 函数：\(\delta(x-y)\)</h3>
+            <div class="gif-block" data-steps="[22, 25, 28]">
+                <h3>6. 狄拉克 \(\delta\) 函数：\(\delta(x-y)\)</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=20,30" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -206,8 +208,8 @@
                 <p>在动画中，你会看到一个坐标系，\(y\) 像个稳重的守卫站在固定位置，而 \(x\) 点在横轴上到处游走。神奇的时刻出现了：每当 \(x\) 经过 \(y\) 点时，就会有一个尖锐的脉冲在 \(y\) 位置闪现——这就是Delta函数在"工作"！其他时候？一片安静，什么都没有。</p>
             </div>
 
-            <div class="gif-block" data-steps="[34, 38]">
-                <h3>3.4 期望值 \(\langle\dots\rangle_x\)：对所有 \(x\) 取平均</h3>
+            <div class="gif-block" data-steps="[32, 35, 38]">
+                <h3>7. 期望值 \(\langle\dots\rangle_x\)：对所有 \(x\) 取平均</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/FormulaExplanationScene.mp4#t=30,40" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -226,8 +228,8 @@
             <p><strong>概念引入 (源自VO脚本):</strong> "期望值可以通过对可观测量 \(f(x)\) 进行泰勒展开来计算，这自然地引出了'矩'的概念。如果我们将 \(f(x)\) 围绕原点展开，那么展开式中的系数就与 \(x\) 的各阶幂次的期望值，即各阶矩，联系起来了。"</p>
             <p>在理解这一概念时，脚本中设想的视觉表现为：首先展示 \(f(x)\) 的泰勒展开式 \(f(x) = f(0) + f'(0)x + f''(0)x^2/2! + \dots\)。取期望后，我们得到 \(\langle f(x) \rangle = f(0) + f'(0)\langle x \rangle + f''(0)\langle x^2 \rangle/2! + \dots\)。由此，矩的定义，例如多变量情况下的 \(\langle x_1^{n_1}\dots x_N^{n_N} \rangle := \int p(x) x_1^{n_1}\dots x_N^{n_N} dx\)，被突出显示，为后续讨论具体的矩（如均值和方差）奠定了基础。</p>
 
-            <div class="gif-block" data-steps="[3, 5, 7, 9]">
-                <h3>前导：泰勒展开与矩的引入</h3>
+            <div class="gif-block" data-steps="[1, 2, 3, 4, 5, 7, 8, 9]">
+                <h3>8. 前导：泰勒展开与矩的引入</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/TaylorExpansionScene.mp4" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -239,8 +241,8 @@
                 <p>然后神奇的事情发生了：当我们对整个展开式取期望值时，各阶矩就像明星一样闪亮登场！\(\langle x \rangle\)（一阶矩，我们熟悉的均值）、\(\langle x^2 \rangle\)（二阶矩）、\(\langle x^3 \rangle\)（三阶矩）...最后，矩的一般定义式 \(\langle x^n \rangle = \int_{-\infty}^{\infty} x^n p(x) dx\) 优雅地出现，为我们理解均值、方差乃至更高阶统计量提供了一个统一而美妙的视角。</p>
             </div>
 
-            <div class="gif-block" data-steps="[4, 8]">
-                <h3>1. 矩：均值与方差</h3>
+            <div class="gif-block" data-steps="[2, 5, 8]">
+                <h3>9. 矩：均值与方差</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=0,10" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -250,8 +252,8 @@
                 <p>接下来是方差 \(\sigma^2 = \langle (x-\mu)^2 \rangle\)，它描述的是数据的"散布程度"。动画会在均值两侧标出 \(\pm \sigma\) 的范围，并用特定颜色填充这个区域——这就是大名鼎鼎的"一个标准差范围"！这些基本统计量就像分布的"身份证"，为我们提供了理解随机现象的第一把钥匙。想象一下，一阶矩告诉你"中心在哪里"，二阶矩告诉你"散得有多开"——简单而强大！</p>
             </div>
 
-            <div class="gif-block" data-steps="[14, 18]">
-                <h3>2. 偏度 (Skewness)</h3>
+            <div class="gif-block" data-steps="[12, 15, 18]">
+                <h3>10. 偏度 (Skewness)</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=10,20" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -263,8 +265,8 @@
                 <p>三阶矩与偏斜度密切相关，它揭示了分布的不对称性：是尾巴向右拖长（右偏），还是向左拖长（左偏）？最后出现的偏度定义公式 \(\gamma_1 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^3 \right]\) 看起来复杂，实际上就是在标准化后计算三次方的期望——很酷，对吧？</p>
             </div>
 
-            <div class="gif-block" data-steps="[24, 28]">
-                <h3>3. 峰度 (Kurtosis)</h3>
+            <div class="gif-block" data-steps="[22, 25, 28, 29]">
+                <h3>11. 峰度 (Kurtosis)</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=20,30" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -276,8 +278,8 @@
                 <p>四阶矩描述的是峰的"个性"——是尖锐还是平缓？最后的超额峰度公式 \(\gamma_2 = E\left[ \left( \frac{X-\mu}{\sigma} \right)^4 \right] - 3\) 中那个"-3"很有意思，它确保了正态分布的超额峰度刚好为零！从理论上讲，如果我们知道了所有的矩，就能完全重构出原始的概率分布——这就是矩的神奇力量！</p>
             </div>
 
-            <div class="gif-block" data-steps="[35, 39]">
-                <h3>4. 矩的局限性：相同矩，不同形</h3>
+            <div class="gif-block" data-steps="[34, 38]">
+                <h3>12. 矩的局限性：相同矩，不同形</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=30,40" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -289,8 +291,8 @@
                 <p>屏幕下方会出现大大的"Same Mean & Variance, Different Shapes!"字样，就像在宣告：仅凭均值和方差来判断分布，有时就像仅凭身高体重来识别一个人一样不靠谱！这就是为什么我们需要更高阶的统计工具——它们能够捕捉到那些被低阶矩"混杂"掉的细微特征。</p>
             </div>
 
-            <div class="gif-block" data-steps="[43, 46, 49]">
-                <h3>5. 累积量：描述形状的新视角（定义）</h3>
+            <div class="gif-block" data-steps="[41, 44, 46, 48]">
+                <h3>13. 累积量：描述形状的新视角（定义）</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=40,50" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -302,8 +304,8 @@
                 <p>前几阶累积量的定义简洁明了：\(\kappa_1 = \text{Mean}\)（第一累积量就是均值），\(\kappa_2 = \text{Variance}\)（第二累积量就是方差），而 \(\kappa_3, \kappa_4, \dots\) 则用于捕捉那些更微妙的形状细节。这些定义固定在屏幕左上角，像是为即将到来的精彩表演搭建的舞台！</p>
             </div>
 
-            <div class="gif-block" data-steps="[54, 58]">
-                <h3>6. 高阶累积量：洞察细微差异</h3>
+            <div class="gif-block" data-steps="[52, 55, 58]">
+                <h3>14. 高阶累积量：洞察细微差异</h3>
                 <video width="854" height="480">
                     <source src="media/videos/brain_animation/480p15/MomentScene.mp4#t=50,60" type="video/mp4">
                     您的浏览器不支持视频播放。
@@ -323,8 +325,8 @@
             
             <p><strong>概念引入:</strong> "我们已经看到了如何通过计算各阶矩来细致地描绘一个概率分布。<br />但如果矩的阶数很高，或者变量很多，逐个计算它们可能会非常繁琐。<br />有没有一种更紧凑、更强大的方式来一次性包含所有矩的信息呢？<br />答案是肯定的！<br />这就是矩生成函数，我们通常用 Z(j) 来表示。"</p>
 
-            <div class="gif-block" data-steps="[8, 30]">
-                <h3>3.1 矩生成函数的定义</h3>
+            <div class="gif-block" data-steps="[4, 8, 12]">
+                <h3>15. 矩生成函数的定义</h3>
                 <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-1">
                     <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4#t=0,30" type="video/mp4">
                     您的浏览器不支持 HTML5 视频。
@@ -334,8 +336,8 @@
                 <p>这个视频展示了MGF的基本定义：\(M_X(t) = E[e^{tX}] = \int e^{tx} p(x) dx\)。<br />别被这个指数函数吓到，它其实就是对 \(e^{tx}\) 关于随机变量X的概率分布进行加权平均。<br />这个想法的背后，与我们熟悉的泰勒展开和傅立叶变换有着奇妙的对偶联系——数学的美妙就在于这些看似无关的概念之间的深层联系！</p>
             </div>
 
-            <div class="gif-block" data-steps="[45, 60]">
-                <h3>3.2 矩的提取与计算</h3>
+            <div class="gif-block" data-steps="[35, 42, 48, 55]">
+                <h3>16. 矩的提取与计算</h3>
                 <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-2">
                     <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4#t=30,60" type="video/mp4">
                     您的浏览器不支持 HTML5 视频。
@@ -346,7 +348,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>3.3 独立随机变量之和的性质</h3>
+                <h3>17. 独立随机变量之和的性质</h3>
                 <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-3">
                     <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4#t=60,90" type="video/mp4">
                     您的浏览器不支持 HTML5 视频。
@@ -357,7 +359,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>3.4 具体分布的矩生成函数应用</h3>
+                <h3>18. 具体分布的矩生成函数应用</h3>
                 <video controls autoplay muted loop width="854" height="480" style="display: block; margin: 10px auto; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);" id="mgf-video-4">
                     <source src="media/videos/brain_animation/1080p60/MomentGeneratingFunctionScene.mp4" type="video/mp4">
                     您的浏览器不支持 HTML5 视频。
@@ -376,7 +378,7 @@
             <p><strong>概念引入:</strong> "解决矩'混杂性'问题的一个非常巧妙的数学技巧，就是对MGF取自然对数！这样我们就得到了一个新的函数，称为累积量生成函数(CGF)，我们通常用 W(j) 来表示。"</p>
 
             <div class="gif-block">
-                <h3>4.1 累积量生成函数的定义与神奇特性</h3>
+                <h3>19. 累积量生成函数的定义与神奇特性</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/CumulantGeneratingFunctionScene_GIF1_CGFDefinition.mp4" type="video/mp4">
@@ -394,7 +396,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>4.2 累积量的定义与独立性的完美体现</h3>
+                <h3>20. 累积量的定义与独立性的完美体现</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/CumulantGeneratingFunctionScene_GIF2_CumulantDefinition.mp4" type="video/mp4">
@@ -415,7 +417,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>4.3 物理类比：配分函数与自由能</h3>
+                <h3>21. 物理类比：配分函数与自由能</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/CumulantGeneratingFunctionScene_GIF3_IndependenceProperty.mp4" type="video/mp4">
@@ -436,7 +438,7 @@
             <p><strong>概念引入:</strong> "我们已经分别探讨了矩和累积量，它们都是描述概率分布的重要统计量。现在让我们揭示连接这两类统计量的精确数学桥梁！"</p>
 
             <div class="gif-block">
-                <h3>5.1 指数函数的泰勒展开 — 变换的核心</h3>
+                <h3>22. 指数函数的泰勒展开 — 变换的核心</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/720p30/MomentCumulantTransformScene_GIF1_ExponentialExpansion.mp4" type="video/mp4">
@@ -453,7 +455,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>5.2 低阶转换：简单而优雅</h3>
+                <h3>23. 低阶转换：简单而优雅</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/MomentCumulantTransformScene_GIF2_LowOrderConversion.mp4" type="video/mp4">
@@ -473,7 +475,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>5.3 高阶组合：数学的艺术品</h3>
+                <h3>24. 高阶组合：数学的艺术品</h3>
                 <div class="gif-container">
                     <img src="MomentCumulantTransformScene_GIF3_HighOrderPartitions.gif" alt="高阶矩累积量的划分组合演示">
                 </div>
@@ -497,7 +499,7 @@
             <p><strong>概念引入:</strong> "让我们通过一个在自然界和工程领域中无处不在的分布——高斯分布——来看看累积量的威力！"</p>
 
             <div class="gif-block">
-                <h3>6.1 高斯分布的累积量：令人惊讶的简洁性</h3>
+                <h3>25. 高斯分布的累积量：令人惊讶的简洁性</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/GaussianDistributionScene_GIF1_CumulantSimplicity.mp4" type="video/mp4">
@@ -521,7 +523,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>6.2 高斯分布的独特地位</h3>
+                <h3>26. 高斯分布的独特地位</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/GaussianDistributionScene_GIF2_GoldenStandard.mp4" type="video/mp4">
@@ -544,7 +546,7 @@
             <p><strong>概念引入:</strong> "现在让我们从累积量的角度重新审视中心极限定理这个统计学的明珠！"</p>
 
             <div class="gif-block">
-                <h3>7.1 样本平均的累积量缩放</h3>
+                <h3>27. 样本平均的累积量缩放</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/CentralLimitTheoremScene_GIF1_CumulantScaling.mp4" type="video/mp4">
@@ -567,7 +569,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>7.2 收敛到高斯：累积量的"消失术"</h3>
+                <h3>28. 收敛到高斯：累积量的"消失术"</h3>
                 <div class="gif-container">
                     <img src="CentralLimitTheoremScene_GIF2_ConvergenceToGaussian.gif" alt="收敛到高斯分布的累积量消失演示">
                 </div>
@@ -593,7 +595,7 @@
             <p><strong>概念引入:</strong> "我们已经看到，MGF和CGF包含了分布的所有统计信息。但它们的作用远不止于此——它们实际上完整地编码了原始的概率密度函数本身！"</p>
 
             <div class="gif-block">
-                <h3>8.1 从生成函数到概率密度：数学的"逆向工程"</h3>
+                <h3>29. 从生成函数到概率密度：数学的"逆向工程"</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/ProbabilityReconstructionScene_GIF1_InverseTransform.mp4" type="video/mp4">
@@ -615,7 +617,7 @@
             </div>
 
             <div class="gif-block">
-                <h3>8.2 旅程总结：统计物理工具箱的完整画像</h3>
+                <h3>30. 旅程总结：统计物理工具箱的完整画像</h3>
                 <div class="gif-container">
                     <video width="854" height="480" controls autoplay muted loop>
                         <source src="media/videos/scenes_4_8_animations_simple/480p15/ProbabilityReconstructionScene_GIF2_JourneySummary.mp4" type="video/mp4">
@@ -689,7 +691,10 @@
             const controlPanel = document.createElement('div');
             controlPanel.className = 'control-panel';
             controlPanel.innerHTML = `
-                <button id="play-step-btn" title="播放此动画 (向下键)">播放此步 (↓)</button>
+                <div class="step-controls">
+                    <button id="prev-step-btn" title="上一步 (向上键)">上一步 (↑)</button>
+                    <button id="play-step-btn" title="播放此步 (向下键)">播放此步 (↓)</button>
+                </div>
                 <div class="nav-controls">
                     <button id="prev-anim-btn" title="上一个动画 (向左键)">上一个 (←)</button>
                     <button id="next-anim-btn" title="下一个动画 (向右键)">下一个 (→)</button>
@@ -704,6 +709,7 @@
             let notificationTimeout;
 
             const playStepBtn = document.getElementById('play-step-btn');
+            const prevStepBtn = document.getElementById('prev-step-btn');
             const prevAnimBtn = document.getElementById('prev-anim-btn');
             const nextAnimBtn = document.getElementById('next-anim-btn');
 
@@ -744,6 +750,11 @@
                     background-color: #95a5a6;
                     cursor: not-allowed;
                 }
+                .step-controls {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
                 .nav-controls {
                     display: flex;
                     gap: 10px;
@@ -759,7 +770,7 @@
                 }
                 .pause-notification {
                     position: fixed;
-                    bottom: 150px; /* Adjusted for new button row */
+                    bottom: 180px; /* Adjusted for new button row */
                     right: 20px;
                     background-color: #e67e22;
                     color: white;
@@ -818,6 +829,7 @@
                     steps: steps, // e.g., [10, 20, 30]
                     baseStartTime: baseStartTime, // e.g., 0 from #t=0,30
                     currentSubStep: 0,
+                    isFinished: false, // For non-stepped animations
                     timeUpdateListener: null
                 };
             });
@@ -855,26 +867,38 @@
                 return bestIndex;
             }
             
-            function updatePlayButtonText() {
+            function updateControlButtonsState() {
                 if (currentAnimationIndex === -1) {
                     playStepBtn.textContent = '播放此步 (↓)';
                     playStepBtn.disabled = true;
+                    prevStepBtn.disabled = true;
                     return;
                 }
                 const state = animationStates[currentAnimationIndex];
                 if (!state) return;
 
-                if (state.steps.length > 0) {
+                const isStepped = state.steps.length > 0;
+                
+                // Previous step button state
+                prevStepBtn.disabled = !isStepped || state.currentSubStep === 0;
+
+                // Play/Next step button state
+                if (isStepped) {
                     if (state.currentSubStep >= state.steps.length) {
-                        playStepBtn.textContent = `已完成 (${state.steps.length}/${state.steps.length})`;
-                        playStepBtn.disabled = true;
+                        playStepBtn.textContent = `循环播放 (↓)`;
+                        playStepBtn.disabled = false;
                     } else {
                         playStepBtn.textContent = `播放此步 (${state.currentSubStep + 1}/${state.steps.length}) (↓)`;
                         playStepBtn.disabled = false;
                     }
                 } else {
-                    playStepBtn.textContent = '播放此步 (↓)';
-                    playStepBtn.disabled = false;
+                     if (state.isFinished) {
+                        playStepBtn.textContent = '循环播放 (↓)';
+                        playStepBtn.disabled = !(state.video || state.gif);
+                    } else {
+                        playStepBtn.textContent = '播放此步 (↓)';
+                        playStepBtn.disabled = !(state.video || state.gif);
+                    }
                 }
             }
 
@@ -882,14 +906,28 @@
                 const visibleIndex = getVisibleAnimationIndex();
                 if (visibleIndex !== -1 && visibleIndex !== currentAnimationIndex) {
                     if(currentAnimationIndex > -1 && animationStates[currentAnimationIndex]) {
-                        animationStates[currentAnimationIndex].block.classList.remove('current-animation');
+                        const oldState = animationStates[currentAnimationIndex];
+                        oldState.block.classList.remove('current-animation');
+                        if (oldState.video) {
+                            oldState.video.pause();
+                            oldState.video.loop = false;
+                        }
+                        // Stop any active rewind on the old animation when it goes out of view
+                        if (oldState.rewindInterval) {
+                            clearInterval(oldState.rewindInterval);
+                            oldState.rewindInterval = null;
+                        }
                     }
                     currentAnimationIndex = visibleIndex;
                     if(currentAnimationIndex > -1 && animationStates[currentAnimationIndex]) {
                         const state = animationStates[currentAnimationIndex];
                         state.block.classList.add('current-animation');
                         state.currentSubStep = 0; // Reset step on focus
-                        updatePlayButtonText();
+                        state.isFinished = false; // Reset finished state
+                        if(state.video) {
+                           state.video.loop = false;
+                        }
+                        updateControlButtonsState();
                     }
                 }
             }
@@ -913,7 +951,55 @@
                     return;
                 }
                 const prevIndex = (currentAnimationIndex - 1 + animationStates.length) % animationStates.length;
-                animationStates[prevIndex].block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                animationStates[prevIndex].block.scrollIntoView({ behavior: 'smooth', 'block': 'center' });
+            }
+
+            function playPreviousStep() {
+                if (currentAnimationIndex === -1) return;
+                const state = animationStates[currentAnimationIndex];
+                if (!state || !state.video || state.steps.length === 0 || state.currentSubStep === 0) return;
+
+                // --- Stop any ongoing processes ---
+                state.video.pause();
+                state.video.loop = false;
+                if (state.timeUpdateListener) {
+                    state.video.removeEventListener('timeupdate', state.timeUpdateListener);
+                    state.timeUpdateListener = null;
+                }
+                if (state.rewindInterval) {
+                    clearInterval(state.rewindInterval);
+                    state.rewindInterval = null;
+                }
+                
+                // Disable buttons during rewind
+                playStepBtn.disabled = true;
+                prevStepBtn.disabled = true;
+
+                // --- Determine rewind start and end points ---
+                const rewindTo = (state.currentSubStep === 1) ? state.baseStartTime : state.steps[state.currentSubStep - 2];
+
+                showPauseNotification(`时间回溯...`);
+
+                // --- Execute rewind ---
+                const rewindFrameRate = 30; // fps
+                const rewindIntervalTime = 1000 / rewindFrameRate;
+                const rewindStepSeconds = 1.5 / rewindFrameRate; // Rewind at 1.5x speed
+
+                state.rewindInterval = setInterval(() => {
+                    if (state.video.currentTime <= rewindTo) {
+                        clearInterval(state.rewindInterval);
+                        state.rewindInterval = null;
+                        state.video.currentTime = rewindTo;
+                        state.video.pause();
+                        
+                        state.currentSubStep--;
+                        
+                        showPauseNotification(`已回溯至步骤 ${state.currentSubStep + 1} 的起点`);
+                        updateControlButtonsState();
+                    } else {
+                        state.video.currentTime -= rewindStepSeconds;
+                    }
+                }, rewindIntervalTime);
             }
 
             function playCurrentAnimation() {
@@ -925,10 +1011,39 @@
                 const state = animationStates[currentAnimationIndex];
                 if (!state) return;
                 
+                // Stop any active rewind before playing forward
+                if (state.rewindInterval) {
+                    clearInterval(state.rewindInterval);
+                    state.rewindInterval = null;
+                }
+                
                 const { video, gif, steps, baseStartTime } = state;
 
+                const startLooping = (vid) => {
+                    if (!vid) return;
+                    vid.loop = true;
+                    let startTime = baseStartTime;
+                    const sourceSrc = vid.querySelector('source')?.src || vid.src;
+                    if (sourceSrc && sourceSrc.includes('#t=')) {
+                        const timeParts = sourceSrc.split('#t=')[1].split(',');
+                        startTime = parseFloat(timeParts[0]);
+                    }
+                    vid.currentTime = startTime;
+                    vid.play();
+                    showPauseNotification("开始循环播放");
+                    if (state.timeUpdateListener) {
+                        vid.removeEventListener('timeupdate', state.timeUpdateListener);
+                        state.timeUpdateListener = null;
+                    }
+                };
+
                 if (steps.length > 0) {
-                    if (state.currentSubStep >= steps.length || !video) return;
+                    if (state.currentSubStep >= steps.length) {
+                        startLooping(video);
+                        return;
+                    }
+
+                    if(video) video.loop = false;
 
                     const startTime = state.currentSubStep === 0 ? baseStartTime : steps[state.currentSubStep - 1];
                     const endTime = steps[state.currentSubStep];
@@ -938,7 +1053,8 @@
                     state.timeUpdateListener = () => {
                         if (video.currentTime >= endTime) {
                             video.pause();
-                            showPauseNotification(`步骤 ${state.currentSubStep} 播放完毕`);
+                            showPauseNotification(`步骤 ${state.currentSubStep + 1} 播放完毕`);
+                            updateControlButtonsState();
                             if(state.timeUpdateListener) video.removeEventListener('timeupdate', state.timeUpdateListener);
                             state.timeUpdateListener = null;
                         }
@@ -949,26 +1065,53 @@
                     video.play();
                     
                     state.currentSubStep++;
-                    updatePlayButtonText();
+                    updateControlButtonsState();
                 } else {
-                    // Original logic for non-stepped animation
+                    // Logic for non-stepped animation
+                    if (state.isFinished) {
+                        if(video) startLooping(video);
+                        else if (gif && gif.src) {
+                           const src = gif.src;
+                           gif.src = '';
+                           gif.src = src;
+                           showPauseNotification("开始循环播放");
+                        }
+                        return;
+                    }
+
                     if (video) {
+                        video.loop = false;
+                        video.currentTime = baseStartTime;
+                        
+                        const onEnded = () => {
+                            video.removeEventListener('ended', onEnded);
+                            showPauseNotification("动画播放完毕");
+                            state.isFinished = true;
+                            updateControlButtonsState();
+                        };
+
                         const sourceSrc = video.querySelector('source')?.src || video.src;
                         if (sourceSrc && sourceSrc.includes('#t=')) {
                             const timeParts = sourceSrc.split('#t=')[1].split(',');
-                            const startTime = parseFloat(timeParts[0]);
-                            const endTime = parseFloat(timeParts[1]);
-                            if (state.timeUpdateListener) video.removeEventListener('timeupdate', state.timeUpdateListener);
-                             state.timeUpdateListener = () => {
-                                if (video.currentTime >= endTime) {
-                                   video.pause();
-                                   showPauseNotification("动画片段播放完毕");
-                                }
-                             };
-                             video.addEventListener('timeupdate', state.timeUpdateListener);
-                            video.currentTime = startTime;
+                            if (timeParts.length > 1 && timeParts[1]) {
+                                const endTime = parseFloat(timeParts[1]);
+                                if (state.timeUpdateListener) video.removeEventListener('timeupdate', state.timeUpdateListener);
+                                state.timeUpdateListener = () => {
+                                    if (video.currentTime >= endTime) {
+                                        video.pause();
+                                        video.removeEventListener('timeupdate', state.timeUpdateListener);
+                                        state.timeUpdateListener = null;
+                                        showPauseNotification("动画片段播放完毕");
+                                        state.isFinished = true;
+                                        updateControlButtonsState();
+                                    }
+                                };
+                                video.addEventListener('timeupdate', state.timeUpdateListener);
+                            } else {
+                                 video.addEventListener('ended', onEnded);
+                            }
                         } else {
-                            video.currentTime = 0;
+                            video.addEventListener('ended', onEnded);
                         }
                         video.play();
                     } else if (gif && gif.src) {
@@ -981,13 +1124,17 @@
 
             // --- 4. Event Listeners ---
             playStepBtn.addEventListener('click', playCurrentAnimation);
+            prevStepBtn.addEventListener('click', playPreviousStep);
             prevAnimBtn.addEventListener('click', scrollToPreviousAnimation);
             nextAnimBtn.addEventListener('click', scrollToNextAnimation);
             
             window.addEventListener('keydown', (e) => {
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-                if (e.key === 'ArrowDown') {
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!prevStepBtn.disabled) playPreviousStep();
+                } else if (e.key === 'ArrowDown') {
                     e.preventDefault();
                     if (!playStepBtn.disabled) playCurrentAnimation();
                 } else if (e.key === 'ArrowRight') {
@@ -1007,8 +1154,13 @@
 
             // Initial check
             setTimeout(() => {
-                updateCurrentAnimationHighlight();
-                updatePlayButtonText();
+                if (animationStates.length > 0) {
+                    animationStates[0].block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                setTimeout(() => {
+                    updateCurrentAnimationHighlight();
+                    updateControlButtonsState();
+                }, 500); // Allow scroll to finish
             }, 150);
         });
     </script>
